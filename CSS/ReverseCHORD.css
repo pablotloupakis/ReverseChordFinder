@@ -1,0 +1,66 @@
+html {
+   font-family: Verdana;
+   padding: 0px; margin: 0px; border: 0px solid #000000;
+   text-align:left;
+}
+
+svg{
+	border-style: solid;
+	border-width: thin; 
+	border-color: red;
+	display: inline;
+	float: left; 
+	background-color: white;	
+}
+
+#sectionGuitarTab{
+	border-style: solid;
+	border-width: thin; 
+	border-color: blue; 
+	height: 50vh;
+	width: 60vh;
+	overflow-y:auto;
+	background-color: green;	
+	display: inline-block; 
+}
+
+#sectionOutput {
+	border-style: solid;
+	border-width: thin; 
+	border-color: blue; 
+	height: 50vh;
+	width: 60vh;	
+	overflow-y:auto;
+	background-color: yellow;	
+	display: inline-block; 
+}
+
+.gridline{
+	stroke:grey; 
+	stroke-width: 0.25; 	
+}
+.stringAndFret{
+	stroke:black;
+	stroke-width: 1;	
+}
+
+.dotPressed{
+	fill: white; 
+	stroke:black;
+	stroke-width: 0.75;
+	opacity: 1;	
+}
+
+.dotUnpressed{
+	fill: white; 
+	stroke:white;	
+	opacity: 0.1;	
+}
+
+.barre{
+	stroke:black;
+	stroke-linecap:round;	
+}
+	
+
+
