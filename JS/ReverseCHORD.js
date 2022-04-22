@@ -89,6 +89,7 @@ function DrawGuitar() {
             aCircle.setAttribute("Fret", i);
             let iString;
             switch (j) {
+				
                 case 1: iString = 6; break;
                 case 2: iString = 5; break;
                 case 3: iString = 4; break;
@@ -119,12 +120,13 @@ function AddListenersToGuitar(){
 }
 
 function funcClickNote(eventObj){
-
 	if (eventObj.target.getAttribute("Pressed")==="Yes"){
 		//console.log ("SAQUE el dedo"); 
 		eventObj.target.setAttribute("Pressed", "No");
 		eventObj.target.setAttribute("class", "dotUnpressed");
-		funcGetChord();
+
+		let arrNotes = ReadAllNotesPressed();
+		GetTheChord(arrNotes);
 		return; 
 	}
 	if (eventObj.target.getAttribute("Pressed")==="No"){
@@ -144,12 +146,12 @@ function funcClickNote(eventObj){
                 }
             }
         }		
-		funcGetChord();
+				
+		let arrNotes = ReadAllNotesPressed();
+		GetTheChord(arrNotes);
 		return; 
 	}
-	
 	//console.log ("Click! " +" String: " + eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret") + " Pressed: " + eventObj.target.getAttribute("Pressed"));		
-
 }
 
 function funcDblClickNote(eventObj){
@@ -171,31 +173,35 @@ function funcRightClickNote(eventObj){
 	console.log ("RIGHT Click! " +" String: " +eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret"));		
 }
 
-function funcGetChord(){
+function ReadAllNotesPressed(){
 	//find all notes that are pressed
-	//INPUT: none 
-	//OUTPUT: <string>. Note being pressed in the fretboard.
+	//INPUT: None 
+	//OUTPUT: Array of 6 <string> elements. Notes being pressed in the fretboard for each string. Example: ["x","C","E","G","C","x"]
 
 	let dots = document.getElementsByClassName("dotPressed");
 	let strTuning = document.getElementById("selTuning").value; 
-	let element = document.getElementById("paraOutput");
+	
 	let iString = 0; 
 	let iFret = 0; 
 	let strNote = ""; 
-	let arrNotes = []; 
+	let arrNotes = ["x","x","x","x","x","x"]; 
 		
-	element.innerHTML =""; 	
 	for (let i = 0; i < dots.length; i++) {
 		iString = parseInt(dots[i].getAttribute("String")); 
 		iFret = parseInt(dots[i].getAttribute("Fret")); 
 		strNote = GetNoteForFret (iString, iFret, strTuning); 
 		if (strNote === "ERROR") {	return; }
 		console.log (iString +"  "+ iFret +"  "+ strNote); 		
-		arrNotes.push (strNote); 
-        //element.innerHTML = element.innerHTML +" "+strNote;		
-			
+		switch (iString){
+			case 6: arrNotes[0] = strNote; break; 
+			case 5: arrNotes[1] = strNote; break; 
+			case 4: arrNotes[2] = strNote; break; 
+			case 3: arrNotes[3] = strNote; break; 
+			case 2: arrNotes[4] = strNote; break; 
+			case 1: arrNotes[5] = strNote; break; 
+		}
 	}	
-	element.innerHTML = arrNotes.join();	
+	return (arrNotes); 
 }
 
 function GetNoteForFret(iString, iFret, strTuning) {
@@ -233,4 +239,37 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	}
 
 	return arrString[iFret];
+}
+
+function GetTheChord (arrIN){
+	
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }
+	if (arrIN.length !== 6) {console.log ("ERROR: Need 6 elements, one for each string"); return; }
+	
+	let element = document.getElementById("paraOutput");
+	element.innerHTML =""; 	
+	element.innerHTML = arrIN.join();	
+}
+
+function GetChromaticScale(strNote) {
+	//INPUT: <string>. A note. 
+	//OUTPUT: <Array> of <string> 
+	
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (typeof(strNote)=== "string") {} else{console.log ("ERROR: Invalid type");return; }
+
+	//reference, we build the string from here 
+    let arrScale = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+	let i=0; 	
+
+	let index = arrScale.indexOf(strNote.toUpperCase());
+	if (index === -1) {
+		let arrScale = []; 
+		return arrScale; 
+	}
+	for (i=0; i < index; i++){
+		arrScale.push (arrScale.shift());
+	}
+	return arrScale;		
 }
