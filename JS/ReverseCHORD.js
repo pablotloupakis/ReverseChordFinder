@@ -3,6 +3,37 @@ console.log ("Reverse Chord Finder");
 DrawGuitar(); 
 AddListenersToGuitar(); 
 
+function ReverseChordMain(){
+	//1. Read ALL the notes the fretboard 
+	let arrNotes = ReadAllNotesPressed();
+
+	//2. Clean the read notes from fretboard (remove "x" and remove duplicates, just get me the notes); 
+	let arrNotesClean = []; 
+	for (let i=0; i < arrNotes.length; i++){
+		if (arrNotes[i].toLowerCase() !== "x"){ 
+			if (arrNotesClean.indexOf(arrNotes[i]) === -1){
+				arrNotesClean.push (arrNotes[i]);
+			}
+		}
+	}	
+	
+	//3. Get all permutations of the notes 
+	let perms = permutator(arrNotesClean); 
+
+	//4. Get the formula (INTEGER) for each permutation 
+	//for (let i=0; i < perms.length; i++){ // por ahora solo la primera perm 
+	for (let i=0; i < 1; i++){
+		let arrFormulaINT = GetChordFormulaINT(perms[i]);
+		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
+	}
+		
+	let element = document.getElementById("paraOutput");
+	element.innerHTML =""; 	
+	element.innerHTML = arrNotes.join() + "&nbsp &nbsp &nbsp &nbsp" + arrNotesClean.join() ;
+		
+}
+
+
 function DrawGuitar() {
     //read screen size
     let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -124,9 +155,7 @@ function funcClickNote(eventObj){
 		//console.log ("SAQUE el dedo"); 
 		eventObj.target.setAttribute("Pressed", "No");
 		eventObj.target.setAttribute("class", "dotUnpressed");
-
-		let arrNotes = ReadAllNotesPressed();
-		GetTheChord(arrNotes);
+		ReverseChordMain(); 
 		return; 
 	}
 	if (eventObj.target.getAttribute("Pressed")==="No"){
@@ -146,9 +175,7 @@ function funcClickNote(eventObj){
                 }
             }
         }		
-				
-		let arrNotes = ReadAllNotesPressed();
-		GetTheChord(arrNotes);
+		ReverseChordMain(); 
 		return; 
 	}
 	//console.log ("Click! " +" String: " + eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret") + " Pressed: " + eventObj.target.getAttribute("Pressed"));		
@@ -223,6 +250,7 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	
 	//build the string 
     let strFirstNote = ""; 
+
 	switch (iString) {
         case 1:	strFirstNote = arrTuning[5]; break;
         case 2: strFirstNote = arrTuning[4]; break;
@@ -231,6 +259,7 @@ function GetNoteForFret(iString, iFret, strTuning) {
         case 5: strFirstNote = arrTuning[1]; break;
         case 6: strFirstNote = arrTuning[0]; break;
     }	
+
 	let index = arrString.indexOf(strFirstNote.toUpperCase()); 
 	if (index === -1) {return "ERROR"}; 	
 	let i=0; 
@@ -241,15 +270,68 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	return arrString[iFret];
 }
 
-function GetTheChord (arrIN){
-	
+function GetChordFormulaINT(arrIN){
+	//INPUT: Array <string>. Notes, with no duplicates nor ("x")
+	//OUTPUT: Array of <integer> 
 	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
 	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }
-	if (arrIN.length !== 6) {console.log ("ERROR: Need 6 elements, one for each string"); return; }
 	
-	let element = document.getElementById("paraOutput");
-	element.innerHTML =""; 	
-	element.innerHTML = arrIN.join();	
+	let arrOUT =[]; 
+	let scale= GetChromaticScale(arrIN[0]);
+	
+	for (let i = 0; i < arrIN.length; i++) {
+		arrOUT.push (scale.indexOf(arrIN[i])); 
+	}
+
+	arrOUT.sort( function( a , b){
+		if(a > b) return 1;
+		if(a < b) return -1;
+		return 0;
+	});	
+	return arrOUT; 	
+}
+
+function GetChordFormulaSTR(arrIN){
+	//INPUT: Array of <integer>. 
+	//OUTPUT: Array of <string> 
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }
+	
+	let arrOUT =[]; 
+	
+	for (let i = 0; i < arrIN.length; i++) {
+		switch (arrIN[i]){
+			case 0: arrOUT.push("1"); break;  
+			case 1: arrOUT.push("b2"); break;  
+			case 2: arrOUT.push("2"); break;  
+			case 3: arrOUT.push("b3"); break;  
+			case 4: arrOUT.push("3"); break;  
+			case 5: arrOUT.push("4"); break;  
+			case 6: arrOUT.push("b5"); break;  
+			case 7: arrOUT.push("5"); break;  
+			case 8: arrOUT.push("#5"); break;  
+			case 9: arrOUT.push("6"); break;  
+			//case 9: arrOUT.push("bb7"); break;  
+			case 10: arrOUT.push("b7"); break;  
+			case 11: arrOUT.push("7"); break;  
+			case 12: arrOUT.push("#7"); break;  
+			case 13: arrOUT.push("b9"); break;  
+			case 14: arrOUT.push("9"); break;  
+			case 15: arrOUT.push("#9"); break;  
+			case 16: arrOUT.push("b11"); break;  
+			case 17: arrOUT.push("11"); break;  
+			case 18: arrOUT.push("#11"); break; 
+			case 20: arrOUT.push("b13"); break;  
+			case 21: arrOUT.push("13"); break; 
+			case 22: arrOUT.push("#13"); break; 
+			case 23: arrOUT.push("7"); break;  
+		}
+	}
+
+	console.log (arrIN); 
+	console.log (arrOUT); 
+
+	return arrOUT; 	
 }
 
 function GetChromaticScale(strNote) {
@@ -272,4 +354,25 @@ function GetChromaticScale(strNote) {
 		arrScale.push (arrScale.shift());
 	}
 	return arrScale;		
+}
+
+function permutator(arrIN) {
+  var arrOUT = [];
+
+  function permute(arr, memo) {
+    var cur, memo = memo || [];
+
+    for (var i = 0; i < arr.length; i++) {
+      cur = arr.splice(i, 1);
+      if (arr.length === 0) {
+        arrOUT.push(memo.concat(cur));
+      }
+      permute(arr.slice(), memo.concat(cur));
+      arr.splice(i, 0, cur[0]);
+    }
+
+    return arrOUT;
+  }
+
+  return permute(arrIN);
 }
