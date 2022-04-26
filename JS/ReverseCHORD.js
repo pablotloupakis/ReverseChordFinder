@@ -17,20 +17,25 @@ function ReverseChordMain(){
 		}
 	}	
 	
-	//3. Get all permutations of the notes 
-	let perms = permutator(arrNotesClean); 
+	//3. Get all rotations of the notes 
+	let rotations = GetArrayRotations(arrNotesClean); 
 
 	//4. Get the formula (INTEGER) for each permutation 
-	//for (let i=0; i < perms.length; i++){ // por ahora solo la primera perm 
-	for (let i=0; i < 1; i++){
-		let arrFormulaINT = GetChordFormulaINT(perms[i]);
+	let ChordNames = []; 
+	let sTriad  = ""; 
+	let iSeven = 0;  
+	//for (let i=0; i < 1; i++){ // por ahora solo la primera rotacion 
+	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join());
+	for (let i=0; i < rotations.length; i++){ 		
+		let arrFormulaINT = GetChordFormulaINT(rotations[i]);
 		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
+		sTriad = GetTriad (arrFormulaSTR); 
+		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Triad: "+ sTriad); 		
 	}
-		
 	let element = document.getElementById("paraOutput");
 	element.innerHTML =""; 	
 	element.innerHTML = arrNotes.join() + "&nbsp &nbsp &nbsp &nbsp" + arrNotesClean.join() ;
-		
+
 }
 
 
@@ -218,7 +223,7 @@ function ReadAllNotesPressed(){
 		iFret = parseInt(dots[i].getAttribute("Fret")); 
 		strNote = GetNoteForFret (iString, iFret, strTuning); 
 		if (strNote === "ERROR") {	return; }
-		console.log (iString +"  "+ iFret +"  "+ strNote); 		
+		//console.log (iString +"  "+ iFret +"  "+ strNote); 		
 		switch (iString){
 			case 6: arrNotes[0] = strNote; break; 
 			case 5: arrNotes[1] = strNote; break; 
@@ -250,7 +255,6 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	
 	//build the string 
     let strFirstNote = ""; 
-
 	switch (iString) {
         case 1:	strFirstNote = arrTuning[5]; break;
         case 2: strFirstNote = arrTuning[4]; break;
@@ -260,6 +264,7 @@ function GetNoteForFret(iString, iFret, strTuning) {
         case 6: strFirstNote = arrTuning[0]; break;
     }	
 
+	//rotation of arrString
 	let index = arrString.indexOf(strFirstNote.toUpperCase()); 
 	if (index === -1) {return "ERROR"}; 	
 	let i=0; 
@@ -327,10 +332,6 @@ function GetChordFormulaSTR(arrIN){
 			case 23: arrOUT.push("7"); break;  
 		}
 	}
-
-	console.log (arrIN); 
-	console.log (arrOUT); 
-
 	return arrOUT; 	
 }
 
@@ -356,8 +357,11 @@ function GetChromaticScale(strNote) {
 	return arrScale;		
 }
 
-function permutator(arrIN) {
-  var arrOUT = [];
+function GetArrayPermutations(arrIN) {
+   //returns all permutations of an array 
+   //INPUT: array 
+   //OUTPUT: array of arrays 
+  let arrOUT = [];
 
   function permute(arr, memo) {
     var cur, memo = memo || [];
@@ -375,4 +379,70 @@ function permutator(arrIN) {
   }
 
   return permute(arrIN);
+}
+
+function GetArrayRotations (arrIN) {
+   //returns all rotations of an array 
+   //INPUT: array 
+   //OUTPUT: array of arrays 	
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   
+   
+	let arrOUT=[]; 
+	let arrTEMP=[]; 
+	arrTEMP = arrIN.slice(); 
+	arrOUT.push (arrTEMP); 
+	
+	for (let i= 1; i < arrIN.length; i++){
+		arrTEMP = arrTEMP.slice(); //new array
+		arrTEMP.push (arrTEMP.shift());	//real rotation 
+		arrOUT.push (arrTEMP); 
+	}
+	
+	return (arrOUT); 		
+}
+
+function GetTriad(arrIN){
+	//INPUT: arrIN with degrees (NOT integers) 
+	//OUTPUT: string with triad name; returns "" if not valid triad 
+	let sTriad = "esta es el triad";
+
+	return sTriad; 
+}
+
+function GetSeven(arrIN){
+	//INPUT: arrIN with degrees (NOT integers) 
+	//OUPUT: integer: 0, 7, 9, 11, 13 
+	let iiSeven = 0; 
+	let i=0; 
+
+	let s1 = arrIN[0];
+	let s2 = arrIN[1]; 
+	let s3 = arrIN[2]; 
+	let s4 = arrIN[3]; 
+	let s5 = arrIN[4]; 
+	let s6 = arrIN[5]; 
+	let s7 = arrIN[6]; 
+	let s9 = arrIN[7]; 
+	let s11 = arrIN[8]; 
+	let s13 = arrIN[9]; 	
+
+	//bb7 only valid for Dim 
+	if (s7 === "bb7") {
+		if (s3 === "b3"  && s5 === "b5" ) {
+			//do nothing 
+		}
+		else {
+			isOk = false;
+			return isOk; 	
+		}
+	}
+
+	if (s7 === "b7" || s7 === "7" || s7 === "bb7") { 
+		iiSeven = 7; 
+		if (s9 === "9" && s11 === "11" && s13 === "13") {iiSeven = 13;}
+		if (s9 === "9" && s11 === "11" && s13 !== "13") {iiSeven = 11;}
+		if (s9 === "9" && s11 !== "11")   {iiSeven = 9;}	
+	}
+	return iiSeven; 
 }
