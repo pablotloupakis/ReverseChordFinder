@@ -405,7 +405,51 @@ function GetArrayRotations (arrIN) {
 function GetTriad(arrIN){
 	//INPUT: arrIN with degrees (NOT integers) 
 	//OUTPUT: string with triad name; returns "" if not valid triad 
-	let sTriad = "esta es el triad";
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   	
+
+	let sTriad = "";
+	if (arrIN[0]==="1"){
+		switch (arrIN[1]){
+			case "2": 
+				switch (arrIN[2]){
+					case "5": sTriad="sus2"; break;
+					default: break; 				
+				}		
+				break; 
+			case "b2":
+				switch (arrIN[2]){
+					case ("5") : sTriad="susb2"; break;
+					case ("b5"): sTriad="susb2b5"; break;					
+					default: break;			
+				}
+				break; 
+			case "3": 
+				switch (arrIN[2]){
+					case "5": sTriad="Maj"; break;
+					case "b5": sTriad="Maj b5"; break;
+					case "#5": sTriad="Aug"; break; 
+					default: break; 
+				}
+				break; 
+			case "b3": 
+				switch (arrIN[2]){
+					case ("5") : sTriad="min"; break;
+					case ("b5"): sTriad="dim"; break;			
+					default: break; 
+				}
+				break; 
+			case "4": {
+				switch (arrIN[2]){
+					case ("5") : sTriad="sus4"; break;
+					case ("b5"): sTriad="sus4b5"; break;			
+					default: break; 
+				}
+				break; 
+			} 
+			default: break; 
+		}
+	}
 
 	return sTriad; 
 }
