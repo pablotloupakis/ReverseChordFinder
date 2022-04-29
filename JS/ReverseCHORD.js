@@ -3,6 +3,8 @@ console.log ("Reverse Chord Finder");
 DrawGuitar(); 
 AddListenersToGuitar(); 
 
+console.log (GetChordFormulaSTR([0,4,5])); 
+
 function ReverseChordMain(){
 	//1. Read ALL the notes the fretboard 
 	let arrNotes = ReadAllNotesPressed();
@@ -20,7 +22,7 @@ function ReverseChordMain(){
 	//3. Get all rotations of the notes 
 	let rotations = GetArrayRotations(arrNotesClean); 
 
-	//4. Get the formula (INTEGER) for each permutation 
+	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let ChordNames = []; 
 	let sTriad  = ""; 
 	let iSeven = 0;  
@@ -30,7 +32,8 @@ function ReverseChordMain(){
 		let arrFormulaINT = GetChordFormulaINT(rotations[i]);
 		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
 		sTriad = GetTriad (arrFormulaSTR); 
-		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Triad: "+ sTriad); 		
+		iSeven = GetSeven (arrFormulaSTR); 
+		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Triad: "+ sTriad +"  iSeven: "+iSeven); 		
 	}
 	let element = document.getElementById("paraOutput");
 	element.innerHTML =""; 	
@@ -283,7 +286,7 @@ function GetChordFormulaINT(arrIN){
 	
 	let arrOUT =[]; 
 	let scale= GetChromaticScale(arrIN[0]);
-	
+
 	for (let i = 0; i < arrIN.length; i++) {
 		arrOUT.push (scale.indexOf(arrIN[i])); 
 	}
@@ -303,6 +306,18 @@ function GetChordFormulaSTR(arrIN){
 	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }
 	
 	let arrOUT =[]; 
+	
+	//remember that 9, 11 and 13 can also be thought of as 2, 4 and 6. 
+	if ((arrIN.indexOf(3) > -1) || (arrIN.indexOf(4)) > -1) {		//si hay "3" o "b3" no puede haber "2", "b2", "4", son 9 u 11 (OJO que los index son los Integers)
+		if (arrIN.indexOf(1) > -1)  {arrIN[arrIN.indexOf(1)]+=12; }	//"b2"
+		if (arrIN.indexOf(2) > -1)  {arrIN[arrIN.indexOf(2)]+=12; }  //"2"
+		if (arrIN.indexOf(5) > -1)  {arrIN[arrIN.indexOf(5)]+=12; }  //"4"
+	}
+	arrIN.sort( function( a , b){
+		if(a > b) return 1;
+		if(a < b) return -1;
+		return 0;
+	});		
 	
 	for (let i = 0; i < arrIN.length; i++) {
 		switch (arrIN[i]){
@@ -403,7 +418,7 @@ function GetArrayRotations (arrIN) {
 }
 
 function GetTriad(arrIN){
-	//INPUT: arrIN with degrees (NOT integers) 
+	//INPUT: arrIN with degrees (NOT integers). Example: ["1","b3","5","b7"]; 
 	//OUTPUT: string with triad name; returns "" if not valid triad 
 	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
 	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   	
@@ -450,43 +465,44 @@ function GetTriad(arrIN){
 			default: break; 
 		}
 	}
-
 	return sTriad; 
 }
 
 function GetSeven(arrIN){
-	//INPUT: arrIN with degrees (NOT integers) 
-	//OUPUT: integer: 0, 7, 9, 11, 13 
-	let iiSeven = 0; 
-	let i=0; 
+	//INPUT: arrIN with degrees (NOT integers). Example: ["1","b3","5","b7"]; 
+	//OUPUT: integer: 0 || 7 || 9 || 11 || 13 
+	
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   		
+	
+	let iSeven = 0; 
+	let s3 = ""; 
+	let s5 = ""; 
+	let s7 = ""; 
+	let s9 = ""; 
+	let s11 = ""; 
+	let s13 = ""; 	
 
-	let s1 = arrIN[0];
-	let s2 = arrIN[1]; 
-	let s3 = arrIN[2]; 
-	let s4 = arrIN[3]; 
-	let s5 = arrIN[4]; 
-	let s6 = arrIN[5]; 
-	let s7 = arrIN[6]; 
-	let s9 = arrIN[7]; 
-	let s11 = arrIN[8]; 
-	let s13 = arrIN[9]; 	
-
+	if (arrIN.indexOf("b3") > -1){s3 = "b3"; }
+	if (arrIN.indexOf("b5") > -1){s5 = "b5"; }
+	if (arrIN.indexOf("b7") > -1){s7 = "b7"; }
+	if (arrIN.indexOf("7")  > -1) {s7 = "7"; }
+	if (arrIN.indexOf("bb7")> -1){s7 = "bb7";}
+	if (arrIN.indexOf("9")  > -1){s9 = "9";  }
+	if (arrIN.indexOf("11") > -1){s11 = "11";}
+	if (arrIN.indexOf("13") > -1){s13 = "13";}
+	
+	if (s7 === "b7" || s7 === "7" || s7 === "bb7") { 
+		iSeven = 7; 
+		if (s9 === "9" && s11 === "11" && s13 === "13") {iSeven = 13;}
+		if (s9 === "9" && s11 === "11" && s13 !== "13") {iSeven = 11;}
+		if (s9 === "9" && s11 !== "11")   {iSeven = 9;}	
+	}
+	
 	//bb7 only valid for Dim 
 	if (s7 === "bb7") {
-		if (s3 === "b3"  && s5 === "b5" ) {
-			//do nothing 
-		}
-		else {
-			isOk = false;
-			return isOk; 	
-		}
+		//if (s3 === "b3"  && s5 === "b5" ) {//do nothing } else {//do something }
 	}
 
-	if (s7 === "b7" || s7 === "7" || s7 === "bb7") { 
-		iiSeven = 7; 
-		if (s9 === "9" && s11 === "11" && s13 === "13") {iiSeven = 13;}
-		if (s9 === "9" && s11 === "11" && s13 !== "13") {iiSeven = 11;}
-		if (s9 === "9" && s11 !== "11")   {iiSeven = 9;}	
-	}
-	return iiSeven; 
+	return iSeven; 
 }
