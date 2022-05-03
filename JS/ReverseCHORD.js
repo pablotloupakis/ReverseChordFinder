@@ -529,7 +529,7 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	let s9 = ""; 
 	let s11 = ""; 
 	let s13 = ""; 	
-
+	
 	if (arrIN.indexOf("1")  > -1){s1 = "1"; }
 	if (arrIN.indexOf("b2") > -1){s2 = "b2"; }
 	if (arrIN.indexOf("2")  > -1){s2 = "2"; }
@@ -553,6 +553,16 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	if (arrIN.indexOf("b13")> -1){s13 = "b13";}
 	if (arrIN.indexOf("13") > -1){s13 = "13";}
 	if (arrIN.indexOf("#13")> -1){s13 = "#13";}
+	
+	let sName = "";
+	//------------ Check if single note or diad 
+	if (arrIN.length === 1) { return (sName.trim())}; 
+	if (arrIN.length === 2) { 
+		sName = arrIN[1]+" "+ "Interval"; 
+		sName = sName.trim(); 
+		return (sName);
+	}; 
+	
 	
 	//------------- Get iSeven
 	let iSeven = 0;
@@ -583,31 +593,123 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	console.log (sTemp); 
 	switch (sTemp) {
 		case ("1,3,5") 	: 
-			sTriad="Maj"; 
-			if (iSeven > 0){if (s7 === "b7") {sTriad = "Dom";}}
+			sTriad="Major"; 
+			if (iSeven > 0){if (s7 === "b7") {sTriad = "Dominant";}}
 		break;
 		
-		case ("1,3,b5") : sTriad="Maj b5"; break;
-		case ("1,3,#5") : sTriad="Aug"; break;
+		case ("1,3,b5") : 
+			sTriad="Major b5"; 
+			if (iSeven > 0){if (s7 === "b7") {sTriad = "Dominant b5";}}
+			break;
+		case ("1,3,#5") : 
+			sTriad="Augmented"; 
+			if (iSeven > 0){
+				if (s7 === "b7") {sTriad = "Augmented minor";}
+				if (s7 === "7")  {sTriad = "Augmented Major";}
+			}			
+			break;			
+		case ("1,b3,5") :
+			sTriad="minor"; 
+			if (iSeven > 0){
+				if (s7 === "7")  {sTriad = "min/Maj";}
+			}			
+			break;
+		case ("1,b3,b5"): 
+			sTriad="Diminished"; 
+			if (iSeven > 0){
+				if (s7 === "bb7") {sTriad = "Diminished";}
+				if (s7 === "b7")  {sTriad = "Half Diminished (m7b5)";}
+				if (s7 === "7")  {sTriad = "dim Maj";}
+			}
+			break;
+		case ("1,2,5")  : 
+			sTriad="sus2"; 
+			if (iSeven > 0){
+				if (s7 === "b7") {sTriad = "sus2";}
+				if (s7 === "7")  {sTriad = "Maj sus2";}
+			}					
+			break;
+		case ("1,b2,5") : 
+			sTriad="susb2"; 
+			if (iSeven > 0){
+				if (s7 === "b7") {sTriad = "susb2";}
+				if (s7 === "7")  {sTriad = "Maj susb2";}
+			}				
+			break;
+		case ("1,b2,b5"): 
+			sTriad="sus b2b5"; 
+			if (iSeven > 0){
+				if (s7 === "b7") {sTriad = "sus b2b5";}
+				if (s7 === "7")  {sTriad = "Maj sus b2b5";}
+			}			
+			break;
+		case ("1,4,5")  : 
+			sTriad="sus4"; 
+			if (iSeven > 0){
+				if (s7 === "b7") {sTriad = "sus4";}
+				if (s7 === "7")  {sTriad = "Maj sus4";}
+			}			
+			break;
+		case ("1,4,b5") : 
+			sTriad="sus4b5"; 
+			if (iSeven > 0){
+				if (s7 === "b7") {sTriad = "sus4b5";}
+				if (s7 === "7")  {sTriad = "Maj sus4b5";}
+			}				
+			break;
 
-		case ("1,b3,5") : sTriad="min"; break;
-		case ("1,b3,b5"): sTriad="dim"; break;
-
-		case ("1,2,5")  : sTriad="sus2"; break;
-		case ("1,b2,5") : sTriad="susb2"; break;
-		case ("1,b2,b5"): sTriad="sus b2b5"; break;
-
-		case ("1,4,5")  : sTriad="sus4"; ;break;
-		//case ("1,#4,5") : sTriad="sus#4"; ;break;
-		case ("1,4,b5") : sTriad="sus4b5"; ;break;
-
-		default: sTriad="ERROR";  break; 
+		default: sTriad="";  break; 
 	}	
 
 	//--------Finally build the chord name 
-	let sName = ""; 
-	sName = sTriad + " " + iSeven.toString(); 
+	let sExtensions = [];
 
+	switch (iSeven){
+		case 0: 
+			if (s6 !== "") {sExtensions.push (s6); }
+			if (s7 !== "") {sExtensions.push (s7); }
+			if (s9 !== "") {sExtensions.push (s9); }		
+			if (s11 !== "") {sExtensions.push (s11); }
+			if (s13 !== "") {sExtensions.push (s13); }
+			sName = sTriad + " " + sExtensions.join("/");
+			//---- ver si esta excepción es válida, como son los 7 para los sus?
+			if (sExtensions[0]==="7" || sExtensions[0]==="b7" || sExtensions[0]==="9" || sExtensions[0]==="11" || sExtensions[0]==="13") {
+				sName = sTriad + " add " + sExtensions.join("/");
+			}	
+			break; 
+		case 7:
+			if (s6 !== "") {sExtensions.push (s6); }
+			if (s9 !== "") {sExtensions.push (s9); }		
+			if (s11 !== "") {sExtensions.push (s11); }
+			if (s13 !== "") {sExtensions.push (s13); }	
+			sName = sTriad + " " + iSeven.toString() + " " + sExtensions.join("/");		
+			if (sExtensions[0]==="9" || sExtensions[0]==="11" || sExtensions[0]==="13") {
+				sName = sTriad + " " + iSeven.toString() + " add " + sExtensions.join("/");
+			}						
+			break; 
+		case 9:
+			if (s6 !== "") {sExtensions.push (s6); }
+			if (s11 !== "") {sExtensions.push (s11); }
+			if (s13 !== "") {sExtensions.push (s13); }
+			sName = sTriad + " " + iSeven.toString() + " " + sExtensions.join("/");
+			if (sExtensions[0]==="13") {
+				sName = sTriad + " " + iSeven.toString() + " add " + sExtensions.join("/");
+			}				
+			break; 
+		case 11: 
+			if (s6 !== "") {sExtensions.push (s6); }
+			if (s13 !== "") {sExtensions.push (s13); }
+			sName = sTriad + " " + iSeven.toString() + " " + sExtensions.join("/");
+			break; 
+		case 13: 
+			sName = sTriad + " " + iSeven.toString() + " " + sExtensions.join("/");
+			break; 
+		default:
+			break; 
+	}
+
+
+	sName = sName.trim(); 
 	return (sName); 
 	
 }
