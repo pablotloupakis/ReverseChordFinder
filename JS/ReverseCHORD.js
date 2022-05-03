@@ -3,8 +3,6 @@ console.log ("Reverse Chord Finder");
 DrawGuitar(); 
 AddListenersToGuitar(); 
 
-console.log (GetChordFormulaSTR([0,4,5])); 
-
 function ReverseChordMain(){
 	//1. Read ALL the notes the fretboard 
 	let arrNotes = ReadAllNotesPressed();
@@ -24,6 +22,7 @@ function ReverseChordMain(){
 
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let ChordNames = []; 
+	let sName = ""; 
 	let sTriad  = ""; 
 	let iSeven = 0;  
 	//for (let i=0; i < 1; i++){ // por ahora solo la primera rotacion 
@@ -33,7 +32,9 @@ function ReverseChordMain(){
 		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
 		sTriad = GetTriad (arrFormulaSTR); 
 		iSeven = GetSeven (arrFormulaSTR); 
+		sName = BuildChordName (arrFormulaSTR);
 		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Triad: "+ sTriad +"  iSeven: "+iSeven); 		
+		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 		
 	}
 	let element = document.getElementById("paraOutput");
 	element.innerHTML =""; 	
@@ -505,4 +506,108 @@ function GetSeven(arrIN){
 	}
 
 	return iSeven; 
+}
+
+function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
+	//INPUT: arrIN with degrees (NOT integers). Example: ["1","b3","5","b7"]; 
+	//OUTPUT: string with chord name; returns "" if not valid triad or < not diad 
+	//https://music.stackexchange.com/questions/11659/what-determines-a-chords-name	
+	//https://music.stackexchange.com/questions/42999/how-do-you-figure-out-a-chords-name
+	//http://www.smithfowler.org/music/Chord_Formulas.htm
+	//https://music.stackexchange.com/questions/91623/whats-an-add-chord 
+	
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   	
+	
+	let s1 = ""; 	
+	let s2 = ""; 	
+	let s3 = ""; 
+	let s4 = ""; 
+	let s5 = ""; 
+	let s6 = "";
+	let s7 = ""; 
+	let s9 = ""; 
+	let s11 = ""; 
+	let s13 = ""; 	
+
+	if (arrIN.indexOf("1")  > -1){s1 = "1"; }
+	if (arrIN.indexOf("b2") > -1){s2 = "b2"; }
+	if (arrIN.indexOf("2")  > -1){s2 = "2"; }
+	if (arrIN.indexOf("b3") > -1){s3 = "b3"; }
+	if (arrIN.indexOf("3")  > -1){s3 = "3"; }
+	if (arrIN.indexOf("4")  > -1){s4 = "4"; }
+	if (arrIN.indexOf("#5") > -1){s5 = "#5"; }
+	if (arrIN.indexOf("5") > -1) {s5 = "5"; }
+	if (arrIN.indexOf("b5") > -1){s5 = "b5"; }
+	if (arrIN.indexOf("6")  > -1){s6 = "6"; }
+	if (arrIN.indexOf("bb7")> -1){s7 = "bb7";}
+	if (arrIN.indexOf("b7") > -1){s7 = "b7"; }
+	if (arrIN.indexOf("7")  > -1){s7 = "7"; }
+	if (arrIN.indexOf("#7") > -1){s7 = "#7"; }
+	if (arrIN.indexOf("b9") > -1){s9 = "b9";  }
+	if (arrIN.indexOf("9")  > -1){s9 = "9";  }
+	if (arrIN.indexOf("#9") > -1){s9 = "#9";  }
+	if (arrIN.indexOf("b11")> -1){s11 = "b11";  }
+	if (arrIN.indexOf("11") > -1){s11 = "11";}
+	if (arrIN.indexOf("#11")> -1){s11 = "#11";  }
+	if (arrIN.indexOf("b13")> -1){s13 = "b13";}
+	if (arrIN.indexOf("13") > -1){s13 = "13";}
+	if (arrIN.indexOf("#13")> -1){s13 = "#13";}
+	
+	//------------- Get iSeven
+	let iSeven = 0;
+	if (s7 === "b7" || s7 === "7" || s7 === "bb7") { 
+		iSeven = 7; 
+		if (s9 === "9" && s11 === "11" && s13 === "13") {iSeven = 13;}
+		if (s9 === "9" && s11 === "11" && s13 !== "13") {iSeven = 11;}
+		if (s9 === "9" && s11 !== "11")   {iSeven = 9;}	
+	}	
+	//bb7 only valid for Dim 
+	if (s7 === "bb7") {
+		if (s3 === "b3"  && s5 === "b5" ) {iSeven=7; }
+	}	
+
+	//------------ Get the triad 
+	let arrTriad = []; 
+	let sTriad = ""; 
+	if (s1 !== "") {arrTriad.push(s1);}
+	if (s2 !== "") {arrTriad.push(s2);}
+	if (s3 !== "") {arrTriad.push(s3);}
+	if (s4 !== "") {arrTriad.push(s4);}
+	if (s5 !== "") {arrTriad.push(s5);}
+	if (s7 !== "") {arrTriad.push(s7);}
+
+	//let sTemp = arrTriad.join(); 
+	let sTemp = arrTriad[0]+","+arrTriad[1]+","+arrTriad[2]; 
+
+	console.log (sTemp); 
+	switch (sTemp) {
+		case ("1,3,5") 	: 
+			sTriad="Maj"; 
+			if (iSeven > 0){if (s7 === "b7") {sTriad = "Dom";}}
+		break;
+		
+		case ("1,3,b5") : sTriad="Maj b5"; break;
+		case ("1,3,#5") : sTriad="Aug"; break;
+
+		case ("1,b3,5") : sTriad="min"; break;
+		case ("1,b3,b5"): sTriad="dim"; break;
+
+		case ("1,2,5")  : sTriad="sus2"; break;
+		case ("1,b2,5") : sTriad="susb2"; break;
+		case ("1,b2,b5"): sTriad="sus b2b5"; break;
+
+		case ("1,4,5")  : sTriad="sus4"; ;break;
+		//case ("1,#4,5") : sTriad="sus#4"; ;break;
+		case ("1,4,b5") : sTriad="sus4b5"; ;break;
+
+		default: sTriad="ERROR";  break; 
+	}	
+
+	//--------Finally build the chord name 
+	let sName = ""; 
+	sName = sTriad + " " + iSeven.toString(); 
+
+	return (sName); 
+	
 }
