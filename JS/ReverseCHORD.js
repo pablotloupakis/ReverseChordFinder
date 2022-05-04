@@ -1,5 +1,4 @@
 "use strict";
-console.log ("Reverse Chord Finder"); 
 DrawGuitar(); 
 AddListenersToGuitar(); 
 
@@ -21,21 +20,22 @@ function ReverseChordMain(){
 	let rotations = GetArrayRotations(arrNotesClean); 
 
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
-	let ChordNames = []; 
+	let arrNames = []; 
 	let sName = ""; 
-	let sTriad  = ""; 
-	let iSeven = 0;  
 	//for (let i=0; i < 1; i++){ // por ahora solo la primera rotacion 
+	console.log ("--------------------------------------------------------------------------------------------"); 
 	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join());
 	for (let i=0; i < rotations.length; i++){ 		
 		let arrFormulaINT = GetChordFormulaINT(rotations[i]);
 		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
-		sTriad = GetTriad (arrFormulaSTR); 
-		iSeven = GetSeven (arrFormulaSTR); 
 		sName = BuildChordName (arrFormulaSTR);
-		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Triad: "+ sTriad +"  iSeven: "+iSeven); 		
+		if (sName !== ""){
+			sName = rotations[i][0] +" " +sName; 
+			arrNames.push(sName); 
+		}
 		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 		
 	}
+	console.log (arrNames); 
 	let element = document.getElementById("paraOutput");
 	element.innerHTML =""; 	
 	element.innerHTML = arrNotes.join() + "&nbsp &nbsp &nbsp &nbsp" + arrNotesClean.join() ;
@@ -310,10 +310,23 @@ function GetChordFormulaSTR(arrIN){
 	
 	//remember that 9, 11 and 13 can also be thought of as 2, 4 and 6. 
 	if ((arrIN.indexOf(3) > -1) || (arrIN.indexOf(4)) > -1) {		//si hay "3" o "b3" no puede haber "2", "b2", "4", son 9 u 11 (OJO que los index son los Integers)
-		if (arrIN.indexOf(1) > -1)  {arrIN[arrIN.indexOf(1)]+=12; }	//"b2"
-		if (arrIN.indexOf(2) > -1)  {arrIN[arrIN.indexOf(2)]+=12; }  //"2"
-		if (arrIN.indexOf(5) > -1)  {arrIN[arrIN.indexOf(5)]+=12; }  //"4"
+		if (arrIN.indexOf(1) > -1)  {arrIN[arrIN.indexOf(1)]+=12; }	//"b2" --> "b9"
+		if (arrIN.indexOf(2) > -1)  {arrIN[arrIN.indexOf(2)]+=12; } //"2" --> "9"
+		if (arrIN.indexOf(5) > -1)  {arrIN[arrIN.indexOf(5)]+=12; } //"4" --> "11"
 	}
+	
+	if ((arrIN.indexOf(3) > -1) && (arrIN.indexOf(4)) > -1) {  //si hay "b3" y 3", "b3" --> "#9"
+		arrIN[arrIN.indexOf(3)]+=12; 
+	}
+	
+	//A 6th chord is a major triad with an added 6th.
+	//A 13th chord is a dominant 7th chord in which the 5th is (in at least one voice) replaced by the 6th. 
+	if (arrIN.indexOf(9) > -1){
+		if ((arrIN.indexOf(10) > -1)&& arrIN.indexOf(11)){
+			if (arrIN.indexOf(9) > -1)  {arrIN[arrIN.indexOf(9)]+=12; }  //"6" --> "13"
+		}
+	}
+	
 	arrIN.sort( function( a , b){
 		if(a > b) return 1;
 		if(a < b) return -1;
@@ -418,96 +431,6 @@ function GetArrayRotations (arrIN) {
 	return (arrOUT); 		
 }
 
-function GetTriad(arrIN){
-	//INPUT: arrIN with degrees (NOT integers). Example: ["1","b3","5","b7"]; 
-	//OUTPUT: string with triad name; returns "" if not valid triad 
-	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
-	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   	
-
-	let sTriad = "";
-	if (arrIN[0]==="1"){
-		switch (arrIN[1]){
-			case "2": 
-				switch (arrIN[2]){
-					case "5": sTriad="sus2"; break;
-					default: break; 				
-				}		
-				break; 
-			case "b2":
-				switch (arrIN[2]){
-					case ("5") : sTriad="susb2"; break;
-					case ("b5"): sTriad="susb2b5"; break;					
-					default: break;			
-				}
-				break; 
-			case "3": 
-				switch (arrIN[2]){
-					case "5": sTriad="Maj"; break;
-					case "b5": sTriad="Maj b5"; break;
-					case "#5": sTriad="Aug"; break; 
-					default: break; 
-				}
-				break; 
-			case "b3": 
-				switch (arrIN[2]){
-					case ("5") : sTriad="min"; break;
-					case ("b5"): sTriad="dim"; break;			
-					default: break; 
-				}
-				break; 
-			case "4": {
-				switch (arrIN[2]){
-					case ("5") : sTriad="sus4"; break;
-					case ("b5"): sTriad="sus4b5"; break;			
-					default: break; 
-				}
-				break; 
-			} 
-			default: break; 
-		}
-	}
-	return sTriad; 
-}
-
-function GetSeven(arrIN){
-	//INPUT: arrIN with degrees (NOT integers). Example: ["1","b3","5","b7"]; 
-	//OUPUT: integer: 0 || 7 || 9 || 11 || 13 
-	
-	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
-	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   		
-	
-	let iSeven = 0; 
-	let s3 = ""; 
-	let s5 = ""; 
-	let s7 = ""; 
-	let s9 = ""; 
-	let s11 = ""; 
-	let s13 = ""; 	
-
-	if (arrIN.indexOf("b3") > -1){s3 = "b3"; }
-	if (arrIN.indexOf("b5") > -1){s5 = "b5"; }
-	if (arrIN.indexOf("b7") > -1){s7 = "b7"; }
-	if (arrIN.indexOf("7")  > -1) {s7 = "7"; }
-	if (arrIN.indexOf("bb7")> -1){s7 = "bb7";}
-	if (arrIN.indexOf("9")  > -1){s9 = "9";  }
-	if (arrIN.indexOf("11") > -1){s11 = "11";}
-	if (arrIN.indexOf("13") > -1){s13 = "13";}
-	
-	if (s7 === "b7" || s7 === "7" || s7 === "bb7") { 
-		iSeven = 7; 
-		if (s9 === "9" && s11 === "11" && s13 === "13") {iSeven = 13;}
-		if (s9 === "9" && s11 === "11" && s13 !== "13") {iSeven = 11;}
-		if (s9 === "9" && s11 !== "11")   {iSeven = 9;}	
-	}
-	
-	//bb7 only valid for Dim 
-	if (s7 === "bb7") {
-		//if (s3 === "b3"  && s5 === "b5" ) {//do nothing } else {//do something }
-	}
-
-	return iSeven; 
-}
-
 function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	//INPUT: arrIN with degrees (NOT integers). Example: ["1","b3","5","b7"]; 
 	//OUTPUT: string with chord name; returns "" if not valid triad or < not diad 
@@ -556,22 +479,31 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	
 	let sName = "";
 	//------------ Check if single note or diad 
-	if (arrIN.length === 1) { return (sName.trim())}; 
+	if (arrIN.length === 1) { 
+		return (sName.trim())
+	}; 
 	if (arrIN.length === 2) { 
 		sName = arrIN[1]+" "+ "Interval"; 
 		sName = sName.trim(); 
 		return (sName);
 	}; 
 	
-	
 	//------------- Get iSeven
 	let iSeven = 0;
 	if (s7 === "b7" || s7 === "7" || s7 === "bb7") { 
 		iSeven = 7; 
-		if (s9 === "9" && s11 === "11" && s13 === "13") {iSeven = 13;}
-		if (s9 === "9" && s11 === "11" && s13 !== "13") {iSeven = 11;}
-		if (s9 === "9" && s11 !== "11")   {iSeven = 9;}	
+		if (s13 === "13") {
+			if ((s9 === "9" || s9 === "") && (s11 === "11" || s11 === "")) {iSeven = 13;} //9 and 11 optional in 13th		
+		}
+		if (s11 === "11" && s13 !== "13"){
+			if (s9 === "9" || s9 === "")  {iSeven = 11;} //9 optional in 11th	
+		}
+		if (s9 === "9" && s11 !== "11" && s13 !== "13"){
+			iSeven = 9; 
+		}		
 	}	
+	
+	//console.log ("iSeven: " + iSeven); 
 	//bb7 only valid for Dim 
 	if (s7 === "bb7") {
 		if (s3 === "b3"  && s5 === "b5" ) {iSeven=7; }
@@ -587,15 +519,14 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	if (s5 !== "") {arrTriad.push(s5);}
 	if (s7 !== "") {arrTriad.push(s7);}
 
-	//let sTemp = arrTriad.join(); 
 	let sTemp = arrTriad[0]+","+arrTriad[1]+","+arrTriad[2]; 
 
-	console.log (sTemp); 
 	switch (sTemp) {
+		
 		case ("1,3,5") 	: 
 			sTriad="Major"; 
 			if (iSeven > 0){if (s7 === "b7") {sTriad = "Dominant";}}
-		break;
+			break;
 		
 		case ("1,3,b5") : 
 			sTriad="Major b5"; 
@@ -607,16 +538,36 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 				if (s7 === "b7") {sTriad = "Augmented minor";}
 				if (s7 === "7")  {sTriad = "Augmented Major";}
 			}			
-			break;			
+			break;		
+			
+		//--------------------5th can be ommitted for 7/b7 chords for guitar, http://www.smithfowler.org/music/Chord_Formulas.htm
+		
+		case ("1,3,b7")	:
+			sTriad="Dominant"; 
+			break; 	
+		case ("1,3,7")	: 
+			sTriad="Major"; 
+			break; 			
+		case ("1,b3,7") :
+			sTriad="min/Maj"; 
+			break;	
+		case ("1,b3,b7") :
+			sTriad="minor"; 
+			break;
+		
+		//--------------------	
+			
 		case ("1,b3,5") :
 			sTriad="minor"; 
 			if (iSeven > 0){
 				if (s7 === "7")  {sTriad = "min/Maj";}
 			}			
 			break;
+			
 		case ("1,b3,b5"): 
 			sTriad="Diminished"; 
 			if (iSeven > 0){
+				if (s6 === "6") {sTriad = "Diminished";	}
 				if (s7 === "bb7") {sTriad = "Diminished";}
 				if (s7 === "b7")  {sTriad = "Half Diminished (m7b5)";}
 				if (s7 === "7")  {sTriad = "dim Maj";}
@@ -662,6 +613,8 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	}	
 
 	//--------Finally build the chord name 
+	if (sTriad === "") {return (sName.trim())}
+	
 	let sExtensions = [];
 
 	switch (iSeven){
@@ -708,8 +661,131 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 			break; 
 	}
 
+	//---exceptions .... 
+	//"Diminished 6" --> "Diminished" ("1,b3,b5,6" --> ": 1,b3,b5,bb7")
+	if (sName.indexOf("Diminished 6") > -1) {sName = sName.replace ("Diminished 6","Diminished"); }
 
 	sName = sName.trim(); 
 	return (sName); 
 	
 }
+
+//yet another chord generator test 
+function PRUEBA (){
+    let arr1 = ["1"];
+	let arr2 = ["","b2", "2"]; 
+	let arr3 = ["","b3", "3"];
+    let arr4 = ["", "4"]; 
+	let arr5 = ["","b5", "5", "#5"];
+    let arr6 = ["", "6"];
+    let arr7 = ["", "bb7", "b7", "7"];
+	let arr9 = ["", "b9", "9", "#9"];
+    let arr11 = ["", "b11", "11", "#11"];
+    let arr13 = ["", "b13", "13", "#13"];												
+ 
+    let i1, i2, i4, i3, i5, i6, i7, i9, i11, i13;
+	
+    let counterChords = 0;
+	let bolOk = true; 	
+	
+	for (i1 = 0; i1 < arr1.length; i1++){
+		for (i2 = 0; i2 < arr2.length; i2++) {
+			for (i3 = 0; i3 < arr3.length; i3++) {
+				for (i4=0; i4< arr4.length; i4++){
+					for (i5 = 0; i5 < arr5.length; i5++) {
+						for (i6 = 0; i6 < arr6.length; i6++) {
+							for (i7 = 0; i7 < arr7.length; i7++) {
+								for (i9 = 0; i9 < arr9.length; i9++) {
+									for (i11 = 0; i11 < arr11.length; i11++) {
+										for (i13 = 0; i13 < arr13.length; i13++) {
+											//console.log ("1", arr2[i2], arr3[i3], arr5[i5], arr6[i6], arr7[i7], arr9[i9], arr11[i11], arr13[i13]);	
+											bolOk = true;
+											
+											//generate the Chord FormulaStr 
+											let arrFormulaStr=[]; 
+											arrFormulaStr.length = 0; 
+											if (arr1[i1] !== "") {arrFormulaStr.push(arr1[i1])}; 
+											if (arr2[i2] !== "") {arrFormulaStr.push(arr2[i2])};
+											if (arr3[i3] !== "") {arrFormulaStr.push(arr3[i3])};
+											if (arr4[i4] !== "") {arrFormulaStr.push(arr4[i4])};
+											if (arr5[i5] !== "") {arrFormulaStr.push(arr5[i5])};
+											if (arr6[i6] !== "") {arrFormulaStr.push(arr6[i6])};
+											if (arr7[i7] !== "") {arrFormulaStr.push(arr7[i7])};
+											if (arr9[i9] !== "") {arrFormulaStr.push(arr9[i9])};
+											if (arr11[i11] !== "") {arrFormulaStr.push(arr11[i11])};
+											if (arr13[i13] !== "") {arrFormulaStr.push(arr13[i13])};
+											
+											//remember that 9, 11 and 13 can also be thought of as 2, 4 and 6
+											if (1){
+												if (arr1[i1] ==="1" 	&& arr7[i7]  ==="#7")	{bolOk = false;}
+												if (arr2[i2] ==="b2" 	&& arr9[i9]  ==="b9") 	{bolOk = false;}	
+												if (arr2[i2] ==="2" 	&& arr9[i9]  ==="9") 	{bolOk = false;}
+												if (arr3[i3] ==="b3" 	&& arr9[i9]  ==="#9") 	{bolOk = false;}		
+												if (arr3[i3] ==="3" 	&& arr11[i11] ==="b11")	{bolOk = false;}	
+												if (arr4[i4] ==="4" 	&& arr11[i11] ==="11") 	{bolOk = false;}
+												if (arr5[i5] ==="b5" 	&& arr11[i11] ==="#11")	{bolOk = false;}	
+												if (arr5[i5] ==="5" 	&& arr13[i13] ==="bb13"){bolOk = false;}	
+												if (arr5[i5] ==="#5" 	&& arr13[i13] ==="b13") {bolOk = false;}
+												if (arr6[i6] ==="6" 	&& arr13[i13] ==="13") 	{bolOk = false;}
+												if (arr7[i7] ==="b7" 	&& arr13[i13] ==="#13") {bolOk = false;}
+												if (arr7[i7] ==="bb7" 	&& arr6[i6]   ==="6") 	{bolOk = false;}		
+											}
+											
+											//bb7 only valid for Dim 
+											if (arr7[i7] === "bb7") {
+												if (arr2[i2] === "" && arr3[i3]=== "b3" && arr4[i4] === "" && arr5[i5] === "b5" && arr6[i6]  === "") {
+													//do nothing 
+												}
+												else {
+													bolOk = false;
+												}
+											}											
+											
+											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="") {bolOk = false;} 
+											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="" && arr5[i5] ==="") {bolOk = false;} 
+											if (arr3[i3] !=="" && arr2[i2] !=="") {bolOk = false;} //2 and 3 not a valid triad
+											if (arr3[i3] !=="" && arr4[i4] !=="") {bolOk = false;} //3 and 4 not a valid triad
+											if (arr2[i2] !=="" && arr4[i4] !=="") {bolOk = false;} //2 and 4 not a valid triad
+											if (arr2[i2] ==="2" && arr5[i5] ==="b5") {bolOk = false;} //2 and b5 not a valid triad
+											if (arr2[i2] ==="2" && arr5[i5] ==="#5") {bolOk = false;} //2 and #5 not a valid triad
+											if (arr2[i2] ==="b2" && arr5[i5] ==="#5") {bolOk = false;} //b2 and #5 not a valid triad
+											if (arr3[i3] ==="b3" && arr5[i5] ==="#5") {bolOk = false;} //b3 and #5 not a valid triad
+											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="4" && arr5[i5] ==="#5") {bolOk = false;} //b3 and #5 not a valid triad
+											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="" && arr5[i5] ==="b5") {bolOk = false;} 
+											
+											//5 is optional for 7/9/11/13 chords 
+											if (arr5[i5] === ""){
+												if (arr7[i7] === "b7" || arr7[i7] === "7" || arr7[i7] === "bb7") { } else {bolOk = false;}
+											}
+											//9 is optional por 11/13 chords 
+											if (arr9[i9] === ""){
+												if (arr7[i7] === "b7" || arr7[i7] === "7" || arr7[i7] === "bb7") { } else {bolOk = false;}
+												if (arr11[i11] === "11" ) { } else {bolOk = false;}
+											}
+											
+											//11 is optional por 13 chords 
+											if (arr11[i11] === ""){
+												
+												
+											}
+											
+											
+											if (bolOk){
+												counterChords++;
+												console.log (arrFormulaStr.join()); 
+											}
+										
+										}
+									}
+								}														
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+console.log (counterChords + "  " + "chords!");  
+}
+
+		
