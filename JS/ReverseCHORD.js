@@ -15,6 +15,7 @@ function ReverseChordMain(){
 			}
 		}
 	}	
+	let strRoot = arrNotesClean[0]; 
 	
 	//3. Get all rotations of the notes 
 	let rotations = GetArrayRotations(arrNotesClean); 
@@ -23,22 +24,25 @@ function ReverseChordMain(){
 	let arrNames = []; 
 	let sName = ""; 
 	//for (let i=0; i < 1; i++){ // por ahora solo la primera rotacion 
-	console.log ("--------------------------------------------------------------------------------------------"); 
-	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join());
+	console.log ("--------------------------------------------------------------------------------------------------------------------------------------"); 
+	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
 	for (let i=0; i < rotations.length; i++){ 		
 		let arrFormulaINT = GetChordFormulaINT(rotations[i]);
 		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
 		sName = BuildChordName (arrFormulaSTR);
 		if (sName !== ""){
-			sName = rotations[i][0] +" " +sName; 
+			if (rotations[i][0] === strRoot){
+				sName = rotations[i][0] +" " +sName; 
+			}else{
+				sName = rotations[i][0] +" " +sName + " /" + strRoot; 
+			}
 			arrNames.push(sName); 
 		}
 		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 		
 	}
-	console.log (arrNames); 
 	let element = document.getElementById("paraOutput");
-	element.innerHTML =""; 	
-	element.innerHTML = arrNotes.join() + "&nbsp &nbsp &nbsp &nbsp" + arrNotesClean.join() ;
+	element.innerHTML = arrNames.join(); 
+	element.innerHTML =arrNames.join("<br>");
 
 }
 

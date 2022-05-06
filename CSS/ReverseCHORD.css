@@ -37,7 +37,7 @@ svg{
 
 .gridline{
 	stroke:grey; 
-	stroke-width: 0.25; 	
+	stroke-width: 0; 	
 }
 .stringAndFret{
 	stroke:black;
@@ -45,7 +45,7 @@ svg{
 }
 
 .dotPressed{
-	fill: white; 
+	fill: black; 
 	stroke:black;
 	stroke-width: 0.75;
 	opacity: 1;	
