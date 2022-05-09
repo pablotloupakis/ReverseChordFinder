@@ -23,7 +23,6 @@ function ReverseChordMain(){
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let arrNames = []; 
 	let sName = ""; 
-	//for (let i=0; i < 1; i++){ // por ahora solo la primera rotacion 
 	console.log ("--------------------------------------------------------------------------------------------------------------------------------------"); 
 	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
 	for (let i=0; i < rotations.length; i++){ 		
@@ -45,7 +44,6 @@ function ReverseChordMain(){
 	element.innerHTML =arrNames.join("<br>");
 
 }
-
 
 function DrawGuitar() {
     //read screen size
@@ -161,6 +159,9 @@ function AddListenersToGuitar(){
 		dots[i].addEventListener("dblclick", funcDblClickNote, false);
 		dots[i].addEventListener("contextmenu", funcRightClickNote, false);
 	}
+	
+	let selTuning = document.getElementById("selTuning").addEventListener("change", ReverseChordMain, false);
+	
 }
 
 function funcClickNote(eventObj){
@@ -217,6 +218,7 @@ function ReadAllNotesPressed(){
 	//find all notes that are pressed
 	//INPUT: None 
 	//OUTPUT: Array of 6 <string> elements. Notes being pressed in the fretboard for each string. Example: ["x","C","E","G","C","x"]
+	//returns empty array if note is not found for any of the frets pressed
 
 	let dots = document.getElementsByClassName("dotPressed");
 	let strTuning = document.getElementById("selTuning").value; 
@@ -230,7 +232,7 @@ function ReadAllNotesPressed(){
 		iString = parseInt(dots[i].getAttribute("String")); 
 		iFret = parseInt(dots[i].getAttribute("Fret")); 
 		strNote = GetNoteForFret (iString, iFret, strTuning); 
-		if (strNote === "ERROR") {	return; }
+		if (strNote === "ERROR") {return[];}
 		//console.log (iString +"  "+ iFret +"  "+ strNote); 		
 		switch (iString){
 			case 6: arrNotes[0] = strNote; break; 
@@ -249,18 +251,34 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	//OUTPUT: (string) note in that string/fret
 	//strTuning format: "E-A-D-g-b-e" 
 
-	//argument validation
-	if (arguments.length < 3) {return "ERROR"}; 
-	if (typeof(iString) !== "number") {return "ERROR"}; 
-	if (typeof(iFret) !== "number") {return "ERROR"}; 
-	if (iString < 0 || iString > 6) {return "ERROR"};
-	if (iFret < 0) {return "ERROR"};
-	const arrTuning = strTuning.split ("-"); 
-	if (arrTuning.length < 6) {return "ERROR"}
-	
+	if (arguments.length < 3) {return "ERROR: Invalid number of arguments"}; 
+	if (typeof(iString) !== "number") {return "ERROR: Invalid type"}; 
+	if (typeof(iFret) !== "number") {return "ERROR: Invalid type"}; 
+	if (iString < 0 || iString > 6) {return "ERROR: Invalid arguments"};
+	if (iFret < 0) {return "ERROR: Invalid arguments"};
+		
 	//reference, we build the string from here 
     let arrString = ["A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
 	
+	//----------------sanitize strTuning---------- 
+	if (strTuning.indexOf("'") > -1 ){
+		strTuning = strTuning.replace (/'/g,''); 
+	}
+	if (strTuning.indexOf("b") > -1 ){
+		strTuning = strTuning.replace (/Ab/g,'G#'); 
+		strTuning = strTuning.replace (/Bb/g,'A#'); 
+		strTuning = strTuning.replace (/Cb/g,'B'); 
+		strTuning = strTuning.replace (/Db/g,'C#'); 
+		strTuning = strTuning.replace (/Eb/g,'D#'); 
+		strTuning = strTuning.replace (/Fb/g,'E'); 
+		strTuning = strTuning.replace (/Gb/g,'F#');
+	}
+	//--------------------------------------------
+		
+	const arrTuning = strTuning.split ("-"); 
+	if (arrTuning.length < 6) {return "ERROR: arguments"}
+
+
 	//build the string 
     let strFirstNote = ""; 
 	switch (iString) {
@@ -274,7 +292,10 @@ function GetNoteForFret(iString, iFret, strTuning) {
 
 	//rotation of arrString
 	let index = arrString.indexOf(strFirstNote.toUpperCase()); 
-	if (index === -1) {return "ERROR"}; 	
+	if (index === -1) {
+		console.log (strTuning + " strFirstNote: " + strFirstNote); 
+		return "ERROR";
+	}; 	
 	let i=0; 
 	for (i=0; i < index; i++){
 		arrString.push (arrString.shift());
@@ -322,6 +343,10 @@ function GetChordFormulaSTR(arrIN){
 	if ((arrIN.indexOf(3) > -1) && (arrIN.indexOf(4)) > -1) {  //si hay "b3" y 3", "b3" --> "#9"
 		arrIN[arrIN.indexOf(3)]+=12; 
 	}
+	
+	if ((arrIN.indexOf(7) > -1) && (arrIN.indexOf(8)) > -1) {  //si hay "5" y #5", "#5" --> "b13"
+		arrIN[arrIN.indexOf(8)]+=12; 
+	}	
 	
 	//A 6th chord is a major triad with an added 6th.
 	//A 13th chord is a dominant 7th chord in which the 5th is (in at least one voice) replaced by the 6th. 
