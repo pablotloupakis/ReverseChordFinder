@@ -3,7 +3,7 @@ DrawGuitar();
 AddListenersToGuitar(); 
 
 function ReverseChordMain(){
-	//1. Read ALL the notes the fretboard 
+	//1. Read ALL the notes pressed in the fretboard 
 	let arrNotes = ReadAllNotesPressed();
 
 	//2. Clean the read notes from fretboard (remove "x" and remove duplicates, just get me the notes); 
@@ -45,6 +45,122 @@ function ReverseChordMain(){
 
 }
 
+//--------Event handlers-------------------------------------------------- 
+function AddListenersToGuitar(){
+	let dots = document.getElementsByClassName("dotUnpressed" || "dotPressed");
+	for (let i = 0; i < dots.length; i++) {
+		dots[i].addEventListener("click", funcClickNote, false);
+		dots[i].addEventListener("dblclick", funcDblClickNote, false);
+		dots[i].addEventListener("contextmenu", funcRightClickNote, false);
+	}
+	
+	if (document.getElementById("selTuning")){
+		document.getElementById("selTuning").addEventListener("change", ReverseChordMain, false);
+	}
+	
+	
+	//--------- barre-------------------------------------------------------------------------------------------------
+	if (document.getElementById("sectionGuitarTab")){
+		let iStringA = 0; let iFretA = 0; //mousedown
+		let iStringB = 0; let iFretB = 0; //mouseup	
+		let iString = 0; let iFret = 0; 
+		
+		document.getElementById("sectionGuitarTab").addEventListener("mousedown", function (event) {
+			if (event.target.localName ===  "circle"){
+				iStringA = parseInt(event.target.getAttribute("String"));
+				iFretA = parseInt(event.target.getAttribute("Fret"));			
+			}
+		});
+
+		document.getElementById("sectionGuitarTab").addEventListener('mouseup', function (event) {
+			if (event.target.localName ===  "circle"){
+				iStringB = parseInt(event.target.getAttribute("String")); 
+				iFretB = parseInt(event.target.getAttribute("Fret"));	
+				if (iFretA === iFretB && iStringA != iStringB){
+					if (iStringA >= 1 && iStringA <= 6 && iStringB >= 1 && iStringB <= 6){
+						iString = Math.max (iStringA, iStringB); 
+					}else{
+						console.log ("ERROR: String number must be >=1 and <=6");
+						return; 
+					}
+					iFret = iFretA //could be also iFreatB, for cleanliness 
+					DeleteBarres(); 
+					DrawBarre (iFret, iString); 
+					AddListenersToBarre(); 
+					DeleteDotsBeforeBarre(); 
+				}
+			}
+		});
+	}
+	//--------- barre-------------------------------------------------------------------------------------------------	
+
+}
+
+function funcClickNote(eventObj){
+	if (eventObj.target.getAttribute("Pressed")==="Yes"){
+		//console.log ("SAQUE el dedo"); 
+		eventObj.target.setAttribute("Pressed", "No");
+		eventObj.target.setAttribute("class", "dotUnpressed");
+		ReverseChordMain(); 
+		return; 
+	}
+	if (eventObj.target.getAttribute("Pressed")==="No"){
+		//console.log ("PUSE el dedo"); 
+		eventObj.target.setAttribute("Pressed", "Yes");
+		eventObj.target.setAttribute("class", "dotPressed");
+		
+		//unpress all the dots in the same string 
+        let dots = document.getElementsByClassName("dotPressed");
+        let iString = eventObj.target.getAttribute("String");
+        let iFret = eventObj.target.getAttribute("Fret");
+		
+        for (let i = 0; i < dots.length; i++) {
+            if (dots[i].getAttribute("String") === iString) {
+                if (dots[i].getAttribute("Fret") !== iFret) {
+                    dots[i].setAttribute("class", "dotUnpressed");
+                }
+            }
+        }
+
+		//if fret number of the dot < barre (if any), need to delete the barre
+		let colBarres = document.getElementsByClassName("barre"); 
+		if (colBarres.length > 0){
+			let iTempFret = parseInt(eventObj.target.getAttribute("Fret"));	
+			let iTempString = parseInt(eventObj.target.getAttribute("String"));	
+			
+			if (iTempFret <= parseInt(colBarres[0].getAttribute("Fret"))){
+				if (iTempString <= parseInt(colBarres[0].getAttribute("String"))){
+					DeleteBarres(); 
+				}
+			}
+		}
+		
+		ReverseChordMain(); 
+		return; 
+	}
+	//console.log ("Click! " +" String: " + eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret") + " Pressed: " + eventObj.target.getAttribute("Pressed"));		
+}
+
+function funcDblClickNote(eventObj){
+	console.log ("DOUBLE Click! " +" String: " +eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret"));	
+	if (eventObj.target.getAttribute("Pressed")==="Yes"){
+		console.log ("DOBLECLICK el dedo"); 
+		eventObj.target.setAttribute("Pressed", "No");
+		eventObj.target.setAttribute("class", "dotUnpressed");
+		return; 
+	}	
+	if (eventObj.target.getAttribute("Pressed")==="No"){
+		eventObj.target.setAttribute("class", "dotUnpressed");
+		return; 
+	}
+}
+
+function funcRightClickNote(eventObj){
+	eventObj.preventDefault();
+	console.log ("RIGHT Click! " +" String: " +eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret"));		
+}
+
+//--------The DOM---------------------------------------------------------
 function DrawGuitar() {
     //read screen size
     let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
@@ -151,69 +267,6 @@ function DrawGuitar() {
 	}
 }
 
-//add event handlers to click on notes 
-function AddListenersToGuitar(){
-	let dots = document.getElementsByClassName("dotUnpressed" || "dotPressed");
-	for (let i = 0; i < dots.length; i++) {
-		dots[i].addEventListener("click", funcClickNote, false);
-		dots[i].addEventListener("dblclick", funcDblClickNote, false);
-		dots[i].addEventListener("contextmenu", funcRightClickNote, false);
-	}
-	
-	let selTuning = document.getElementById("selTuning").addEventListener("change", ReverseChordMain, false);
-	
-}
-
-function funcClickNote(eventObj){
-	if (eventObj.target.getAttribute("Pressed")==="Yes"){
-		//console.log ("SAQUE el dedo"); 
-		eventObj.target.setAttribute("Pressed", "No");
-		eventObj.target.setAttribute("class", "dotUnpressed");
-		ReverseChordMain(); 
-		return; 
-	}
-	if (eventObj.target.getAttribute("Pressed")==="No"){
-		//console.log ("PUSE el dedo"); 
-		eventObj.target.setAttribute("Pressed", "Yes");
-		eventObj.target.setAttribute("class", "dotPressed");
-		
-		//unpress all the dots in the same string 
-        let dots = document.getElementsByClassName("dotPressed");
-        let iString = eventObj.target.getAttribute("String");
-        let iFret = eventObj.target.getAttribute("Fret");
-		
-        for (let i = 0; i < dots.length; i++) {
-            if (dots[i].getAttribute("String") === iString) {
-                if (dots[i].getAttribute("Fret") !== iFret) {
-                    dots[i].setAttribute("class", "dotUnpressed");
-                }
-            }
-        }		
-		ReverseChordMain(); 
-		return; 
-	}
-	//console.log ("Click! " +" String: " + eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret") + " Pressed: " + eventObj.target.getAttribute("Pressed"));		
-}
-
-function funcDblClickNote(eventObj){
-	console.log ("DOUBLE Click! " +" String: " +eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret"));	
-	if (eventObj.target.getAttribute("Pressed")==="Yes"){
-		console.log ("DOBLECLICK el dedo"); 
-		eventObj.target.setAttribute("Pressed", "No");
-		eventObj.target.setAttribute("class", "dotUnpressed");
-		return; 
-	}	
-	if (eventObj.target.getAttribute("Pressed")==="No"){
-		eventObj.target.setAttribute("class", "dotUnpressed");
-		return; 
-	}
-}
-
-function funcRightClickNote(eventObj){
-	eventObj.preventDefault();
-	console.log ("RIGHT Click! " +" String: " +eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret"));		
-}
-
 function ReadAllNotesPressed(){
 	//find all notes that are pressed
 	//INPUT: None 
@@ -246,6 +299,7 @@ function ReadAllNotesPressed(){
 	return (arrNotes); 
 }
 
+//-------Music Theory-----------------------------------------------------
 function GetNoteForFret(iString, iFret, strTuning) {
     //INPUT:  a guitar string number (1 to 6), fret number and tuning
 	//OUTPUT: (string) note in that string/fret
@@ -413,51 +467,6 @@ function GetChromaticScale(strNote) {
 		arrScale.push (arrScale.shift());
 	}
 	return arrScale;		
-}
-
-function GetArrayPermutations(arrIN) {
-   //returns all permutations of an array 
-   //INPUT: array 
-   //OUTPUT: array of arrays 
-  let arrOUT = [];
-
-  function permute(arr, memo) {
-    var cur, memo = memo || [];
-
-    for (var i = 0; i < arr.length; i++) {
-      cur = arr.splice(i, 1);
-      if (arr.length === 0) {
-        arrOUT.push(memo.concat(cur));
-      }
-      permute(arr.slice(), memo.concat(cur));
-      arr.splice(i, 0, cur[0]);
-    }
-
-    return arrOUT;
-  }
-
-  return permute(arrIN);
-}
-
-function GetArrayRotations (arrIN) {
-   //returns all rotations of an array 
-   //INPUT: array 
-   //OUTPUT: array of arrays 	
-	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
-	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   
-   
-	let arrOUT=[]; 
-	let arrTEMP=[]; 
-	arrTEMP = arrIN.slice(); 
-	arrOUT.push (arrTEMP); 
-	
-	for (let i= 1; i < arrIN.length; i++){
-		arrTEMP = arrTEMP.slice(); //new array
-		arrTEMP.push (arrTEMP.shift());	//real rotation 
-		arrOUT.push (arrTEMP); 
-	}
-	
-	return (arrOUT); 		
 }
 
 function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
@@ -697,6 +706,144 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	sName = sName.trim(); 
 	return (sName); 
 	
+}
+
+//-------Auxiliary functions for arrays-----------------------------------
+function GetArrayPermutations(arrIN) {
+   //returns all permutations of an array 
+   //INPUT: array 
+   //OUTPUT: array of arrays 
+  let arrOUT = [];
+
+  function permute(arr, memo) {
+    var cur, memo = memo || [];
+
+    for (var i = 0; i < arr.length; i++) {
+      cur = arr.splice(i, 1);
+      if (arr.length === 0) {
+        arrOUT.push(memo.concat(cur));
+      }
+      permute(arr.slice(), memo.concat(cur));
+      arr.splice(i, 0, cur[0]);
+    }
+
+    return arrOUT;
+  }
+
+  return permute(arrIN);
+}
+
+function GetArrayRotations (arrIN) {
+   //returns all rotations of an array 
+   //INPUT: array 
+   //OUTPUT: array of arrays 	
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }   
+   
+	let arrOUT=[]; 
+	let arrTEMP=[]; 
+	arrTEMP = arrIN.slice(); 
+	arrOUT.push (arrTEMP); 
+	
+	for (let i= 1; i < arrIN.length; i++){
+		arrTEMP = arrTEMP.slice(); //new array
+		arrTEMP.push (arrTEMP.shift());	//real rotation 
+		arrOUT.push (arrTEMP); 
+	}
+	
+	return (arrOUT); 		
+}
+
+//-------Functions related to barre---------------------------------------
+function DrawBarre(iFret,iString){
+   //INPUT: iString <integer>: number of string 1 to 6. iFret:<integer> Fret number of the barre
+   //OUTPUT: none	
+   
+	if (arguments.length !==2) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (typeof(iFret) !== "number") {console.log ("ERROR: Invalid type"); return;}
+	if (typeof(iString) !== "number") {console.log ("ERROR: Invalid type"); return;};	
+	if (parseInt(iString)> 6) {console.log ("ERROR: Invalid input"); return;}; 
+	if (parseInt(iFret)< 0) {console.log ("ERROR: Invalid input"); return;}; 	
+	
+    let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    let unitW = 0.014 * w;
+    let unitH = unitW * 1.618;
+    if (unitW < 19.124 || unitH < 30.942632) { //keep a bigger size for smaller screens
+        unitW = 19.124;
+        unitH = 30.942632;
+    }	
+	
+	let guitar = document.getElementById("SVGReverseChordFinderGeneric"); 
+	let aBarre = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    let colDots = document.getElementsByClassName("dotUnpressed" || "dotPressed");
+
+	for (let i = 0; i < colDots.length; i++) {
+		if (parseInt(colDots[i].getAttribute("Fret")) === parseInt(iFret)){
+			if (parseInt(colDots[i].getAttribute("String")) === 1){
+				aBarre.setAttribute("x1", colDots[i].getAttribute("cx"));
+				aBarre.setAttribute("y1", colDots[i].getAttribute("cy"));			
+			}
+			if (parseInt(colDots[i].getAttribute("String")) === parseInt(iString)){
+				aBarre.setAttribute("x2", colDots[i].getAttribute("cx"));
+				aBarre.setAttribute("y2", colDots[i].getAttribute("cy"));				
+			}
+		}
+	}		
+	
+    aBarre.setAttribute('stroke-width', unitH/2);
+    aBarre.setAttribute("class", "barre");
+	aBarre.setAttribute("Fret", iFret);
+	aBarre.setAttribute("String", iString);
+    guitar.appendChild(aBarre);		
+}
+
+function DeleteBarres(){
+	//Erase all barres if any
+	let aBarres = document.getElementsByClassName("barre");
+	for (let i=0; i<aBarres.length; i++){aBarres[i].remove(); }
+}
+
+function DeleteDotsBeforeBarre(){
+   //INPUT: none
+   //OUTPUT: none	
+   let iFret = 0; 
+   let iString = 0; 
+   
+	if (arguments.length !==0) {console.log ("ERROR: Invalid number of arguments"); return;}
+	
+	let aBarres = document.getElementsByClassName("barre");
+	if (aBarres.length === 0){
+		console.log ("No barre found!");
+		return;
+	}else{
+		iFret = aBarres[0].getAttribute("Fret");
+		iString = aBarres[0].getAttribute("String");
+		//console.log ("Fret: "+iFret +"   String: "+iString); 		
+	}
+
+	let colDots = document.getElementsByClassName("dotPressed"); //HTML LIVE Collection....
+	let arrDots = []; 
+	for (let i = 0; i < colDots.length; i++) {
+		if (parseInt(colDots[i].getAttribute("Fret")) <= parseInt(iFret)) {
+			if (parseInt(colDots[i].getAttribute("String")) <= parseInt(iString) ){
+				arrDots.push (colDots[i]); 
+			}
+		}
+	}
+	for (let i = 0; i < arrDots.length; i++) {
+		arrDots[i].setAttribute("Pressed", "No");
+		arrDots[i].setAttribute("class", "dotUnpressed");				
+	}
+}
+
+function AddListenersToBarre(){
+	let aBarres = document.getElementsByClassName("barre");
+	if (aBarres.length > 0){
+		aBarres[0].addEventListener("click", function (event) {
+			aBarres[0].remove(); 
+		});
+	}
 }
 
 //yet another chord generator test 
