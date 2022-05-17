@@ -83,11 +83,11 @@ function AddListenersToGuitar(){
 						console.log ("ERROR: String number must be >=1 and <=6");
 						return; 
 					}
-					iFret = iFretA //could be also iFreatB, for cleanliness 
+					iFret = iFretA //could be also iFretB, for cleanliness 
 					DeleteBarres(); 
 					DrawBarre (iFret, iString); 
 					AddListenersToBarre(); 
-					DeleteDotsBeforeBarre(); 
+					FixDotsWhenBarre(); 
 				}
 			}
 		});
@@ -256,7 +256,8 @@ function DrawGuitar() {
                 case 6: iString = 1; break;
             }
             aCircle.setAttribute("String", iString);
-            aCircle.setAttribute("Pressed", "No");			
+            aCircle.setAttribute("Pressed", "No");
+			aCircle.setAttribute ("id", "String" + iString + "Fret" + i); 	
             svg.appendChild(aCircle);
         }
     }
@@ -758,7 +759,7 @@ function GetArrayRotations (arrIN) {
 function DrawBarre(iFret,iString){
    //INPUT: iString <integer>: number of string 1 to 6. iFret:<integer> Fret number of the barre
    //OUTPUT: none	
-   
+  
 	if (arguments.length !==2) {console.log ("ERROR: Invalid number of arguments"); return;}
 	if (typeof(iFret) !== "number") {console.log ("ERROR: Invalid type"); return;}
 	if (typeof(iString) !== "number") {console.log ("ERROR: Invalid type"); return;};	
@@ -776,26 +777,55 @@ function DrawBarre(iFret,iString){
 	
 	let guitar = document.getElementById("SVGReverseChordFinderGeneric"); 
 	let aBarre = document.createElementNS("http://www.w3.org/2000/svg", "line");
-    let colDots = document.getElementsByClassName("dotUnpressed" || "dotPressed");
-
-	for (let i = 0; i < colDots.length; i++) {
-		if (parseInt(colDots[i].getAttribute("Fret")) === parseInt(iFret)){
-			if (parseInt(colDots[i].getAttribute("String")) === 1){
-				aBarre.setAttribute("x1", colDots[i].getAttribute("cx"));
-				aBarre.setAttribute("y1", colDots[i].getAttribute("cy"));			
-			}
-			if (parseInt(colDots[i].getAttribute("String")) === parseInt(iString)){
-				aBarre.setAttribute("x2", colDots[i].getAttribute("cx"));
-				aBarre.setAttribute("y2", colDots[i].getAttribute("cy"));				
-			}
+    let colDots1 = document.getElementsByClassName("dotPressed"); //this is a LIVE collection and that's why we need an array (arrDots[])
+	let colDots2 = document.getElementsByClassName("dotUnpressed"); //this is a LIVE collection and that's why we need an array (arrDots[])
+	let arrDots =[]; 
+	
+	for (let i=0; i<colDots1.length; i++){
+		if (parseInt(colDots1[i].getAttribute("Fret")) === parseInt(iFret)){
+			if (parseInt(colDots1[i].getAttribute("String")) <= parseInt(iString)){arrDots.push (colDots1[i]);}
 		}
+	}
+	for (let i=0; i<colDots2.length; i++){
+		if (parseInt(colDots2[i].getAttribute("Fret")) === parseInt(iFret)){
+			if (parseInt(colDots2[i].getAttribute("String")) <= parseInt(iString)){arrDots.push (colDots2[i]);}
+		}
+	}	
+
+
+	//find coordinates for the starting and ending point of the barre
+	let x1 = 0; let y1 = 0; 
+	let x2 = 0; let y2 = 0; 
+	for (let i = 0; i < arrDots.length; i++) {
+		if (parseInt(arrDots[i].getAttribute("String")) === 1){
+			x1 = parseFloat(arrDots[i].getAttribute("cx")); 
+			y1 = parseFloat(arrDots[i].getAttribute("cy")); 
+		}
+		if (parseInt(arrDots[i].getAttribute("String")) === parseInt(iString)){
+			x2 = parseFloat (arrDots[i].getAttribute("cx"));
+			y2 = parseFloat (arrDots[i].getAttribute("cy"));				
+		}			
 	}		
 	
+	if (aBarre.getAttribute("y1") !== aBarre.getAttribute("y2")){
+		console.log ("ERROR: There is no such a concept as a diagonal barre"); 
+		return; 
+	}
+		
+	aBarre.setAttribute("x1", x1);
+	aBarre.setAttribute("y1", y1);		
+	aBarre.setAttribute("x2", x2);
+	aBarre.setAttribute("y2", y2);				
     aBarre.setAttribute('stroke-width', unitH/2);
     aBarre.setAttribute("class", "barre");
 	aBarre.setAttribute("Fret", iFret);
 	aBarre.setAttribute("String", iString);
     guitar.appendChild(aBarre);		
+	
+	
+	FixDotsWhenBarre(); 
+	ReverseChordMain(); 
+	
 }
 
 function DeleteBarres(){
@@ -804,7 +834,7 @@ function DeleteBarres(){
 	for (let i=0; i<aBarres.length; i++){aBarres[i].remove(); }
 }
 
-function DeleteDotsBeforeBarre(){
+function FixDotsWhenBarre(){
    //INPUT: none
    //OUTPUT: none	
    let iFret = 0; 
@@ -823,18 +853,36 @@ function DeleteDotsBeforeBarre(){
 	}
 
 	let colDots = document.getElementsByClassName("dotPressed"); //HTML LIVE Collection....
-	let arrDots = []; 
+	let arrPreDots = []; //array with all dots pressed BEFORE the barre
+	let arrPostDots = []; //array with all dots pressed AFTER the barre
+	
 	for (let i = 0; i < colDots.length; i++) {
-		if (parseInt(colDots[i].getAttribute("Fret")) <= parseInt(iFret)) {
-			if (parseInt(colDots[i].getAttribute("String")) <= parseInt(iString) ){
-				arrDots.push (colDots[i]); 
+		if (parseInt(colDots[i].getAttribute("String")) <= parseInt(iString) ){
+			if (parseInt(colDots[i].getAttribute("Fret")) < parseInt(iFret) ){arrPreDots.push (colDots[i]); }		
+			if (parseInt(colDots[i].getAttribute("Fret")) > parseInt(iFret) ){arrPostDots.push (colDots[i]); }		
+		}
+	}
+	//"unpress" all dots pressed BEFORE ("pre") the barre
+	for (let i = 0; i < arrPreDots.length; i++) {
+		arrPreDots[i].setAttribute("Pressed", "No");
+		arrPreDots[i].setAttribute("class", "dotUnpressed");				
+	}
+	
+	//check if there are dots pressed AFTER ("post") the barre
+	for (let i=1; i <= iString; i++){  //for each guitar string pressed by the barre 
+		let bolFlag = true; 
+		for (let j=0; j < arrPostDots.length; j++){
+			if (parseInt(arrPostDots[j].getAttribute("String"))===i){bolFlag = false; }
+		}
+		if (bolFlag){  //if no pressed dots found after the barre, then dots under the barred should be pressed
+			if (document.getElementById("String"+i+"Fret"+iFret)){
+				let dot = document.getElementById("String"+i+"Fret"+iFret); 
+				dot.setAttribute("Pressed", "Yes");
+				dot.setAttribute("class", "dotPressed");
 			}
 		}
 	}
-	for (let i = 0; i < arrDots.length; i++) {
-		arrDots[i].setAttribute("Pressed", "No");
-		arrDots[i].setAttribute("class", "dotUnpressed");				
-	}
+	
 }
 
 function AddListenersToBarre(){
