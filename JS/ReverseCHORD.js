@@ -5,7 +5,7 @@ AddListenersToGuitar();
 function ReverseChordMain(){
 	//1. Read ALL the notes pressed in the fretboard 
 	let arrNotes = ReadAllNotesPressed();
-
+	
 	//2. Clean the read notes from fretboard (remove "x" and remove duplicates, just get me the notes); 
 	let arrNotesClean = []; 
 	for (let i=0; i < arrNotes.length; i++){
@@ -15,8 +15,15 @@ function ReverseChordMain(){
 			}
 		}
 	}	
-	let strRoot = arrNotesClean[0]; 
 	
+	let strRoot =""; 
+	if (arrNotesClean.length === 0) {
+		console.log ("No notes pressed, exiting!"); 
+		return; 
+	}else{
+		strRoot = arrNotesClean[0]; 
+	}
+		
 	//3. Get all rotations of the notes 
 	let rotations = GetArrayRotations(arrNotesClean); 
 
@@ -792,7 +799,6 @@ function DrawBarre(iFret,iString){
 		}
 	}	
 
-
 	//find coordinates for the starting and ending point of the barre
 	let x1 = 0; let y1 = 0; 
 	let x2 = 0; let y2 = 0; 
@@ -830,67 +836,81 @@ function DrawBarre(iFret,iString){
 
 function DeleteBarres(){
 	//Erase all barres if any
+	let iBarreString = 0; 
+	let iBarreFret = 0; 
+	
 	let aBarres = document.getElementsByClassName("barre");
-	for (let i=0; i<aBarres.length; i++){aBarres[i].remove(); }
+	if (aBarres.length === 0){return;}  //exit since there is no barre
+	
+	iBarreString = parseInt(aBarres[0].getAttribute("String")); 
+	iBarreFret = parseInt(aBarres[0].getAttribute("Fret"));
+	
+	//1. Unpress the dots under the barre
+	for (let i=0; i <= iBarreString; i++){
+		let dot = document.getElementById("String"+i+"Fret"+iBarreFret); 		
+		if (dot !== null){		
+			dot.setAttribute("Pressed", "No");
+			dot.setAttribute("class", "dotUnpressed");		
+		}
+	}
+	
+	//2. Remove the barre
+	for (let i=0; i < aBarres.length; i++){aBarres[i].remove();}		
+	
+	ReverseChordMain(); 
 }
 
 function FixDotsWhenBarre(){
    //INPUT: none
    //OUTPUT: none	
-   let iFret = 0; 
-   let iString = 0; 
+   
+   let iBarreString = 0; 
+   let iBarreFret = 0; 
    
 	if (arguments.length !==0) {console.log ("ERROR: Invalid number of arguments"); return;}
 	
 	let aBarres = document.getElementsByClassName("barre");
 	if (aBarres.length === 0){
-		console.log ("No barre found!");
+		console.log ("No barre found!");	
 		return;
 	}else{
-		iFret = aBarres[0].getAttribute("Fret");
-		iString = aBarres[0].getAttribute("String");
-		//console.log ("Fret: "+iFret +"   String: "+iString); 		
+		iBarreFret = parseInt(aBarres[0].getAttribute("Fret"));
+		iBarreString = parseInt(aBarres[0].getAttribute("String"));
+		//console.log ("String: "+iBarreString +"   Fret: "+iBarreFret);  		
 	}
 
-	let colDots = document.getElementsByClassName("dotPressed"); //HTML LIVE Collection....
-	let arrPreDots = []; //array with all dots pressed BEFORE the barre
-	let arrPostDots = []; //array with all dots pressed AFTER the barre
-	
-	for (let i = 0; i < colDots.length; i++) {
-		if (parseInt(colDots[i].getAttribute("String")) <= parseInt(iString) ){
-			if (parseInt(colDots[i].getAttribute("Fret")) < parseInt(iFret) ){arrPreDots.push (colDots[i]); }		
-			if (parseInt(colDots[i].getAttribute("Fret")) > parseInt(iFret) ){arrPostDots.push (colDots[i]); }		
-		}
-	}
-	//"unpress" all dots pressed BEFORE ("pre") the barre
-	for (let i = 0; i < arrPreDots.length; i++) {
-		arrPreDots[i].setAttribute("Pressed", "No");
-		arrPreDots[i].setAttribute("class", "dotUnpressed");				
-	}
-	
-	//check if there are dots pressed AFTER ("post") the barre
-	for (let i=1; i <= iString; i++){  //for each guitar string pressed by the barre 
-		let bolFlag = true; 
-		for (let j=0; j < arrPostDots.length; j++){
-			if (parseInt(arrPostDots[j].getAttribute("String"))===i){bolFlag = false; }
-		}
-		if (bolFlag){  //if no pressed dots found after the barre, then dots under the barred should be pressed
-			if (document.getElementById("String"+i+"Fret"+iFret)){
-				let dot = document.getElementById("String"+i+"Fret"+iFret); 
-				dot.setAttribute("Pressed", "Yes");
-				dot.setAttribute("class", "dotPressed");
+	for (let i=1; i <= iBarreString; i++){  //for each guitar string pressed by the barre 
+		for (let j=0; j<26; j++){	        //for each fret in that string 
+			let dot = document.getElementById("String"+i+"Fret"+j); 		
+			if (dot !== null){
+				if (j === iBarreFret){				//press all dots UNDER the barre 
+					dot.setAttribute("Pressed", "Yes");
+					dot.setAttribute("class", "dotPressed");						
+				}
+				if (dot.getAttribute("Pressed") === "Yes") {
+					if (j < iBarreFret){				//unpress all dots before the barre
+						dot.setAttribute("Pressed", "No");
+						dot.setAttribute("class", "dotUnpressed");
+					}
+
+					if (j > iBarreFret){				//this is a dot pressed after the barre, need to unpress the dot under the barre
+						let dot2 = document.getElementById("String"+i+"Fret"+iBarreFret); 
+						if (dot2 !== null){
+							dot2.setAttribute("Pressed", "No");
+							dot2.setAttribute("class", "dotUnpressed");							
+						}
+					}
+				}
 			}
 		}
-	}
-	
+	}	
 }
 
 function AddListenersToBarre(){
 	let aBarres = document.getElementsByClassName("barre");
 	if (aBarres.length > 0){
-		aBarres[0].addEventListener("click", function (event) {
-			aBarres[0].remove(); 
-		});
+		//aBarres[0].addEventListener("click", function (event) {aBarres[0].remove(); });
+		aBarres[0].addEventListener("click", function (event) {DeleteBarres()});
 	}
 }
 
