@@ -108,7 +108,10 @@ function funcClickNote(eventObj){
 		//console.log ("SAQUE el dedo"); 
 		eventObj.target.setAttribute("Pressed", "No");
 		eventObj.target.setAttribute("class", "dotUnpressed");
+		
+		FixDotsWhenBarre(); //need to check if there is a barre 
 		ReverseChordMain(); 
+		
 		return; 
 	}
 	if (eventObj.target.getAttribute("Pressed")==="No"){
@@ -116,15 +119,15 @@ function funcClickNote(eventObj){
 		eventObj.target.setAttribute("Pressed", "Yes");
 		eventObj.target.setAttribute("class", "dotPressed");
 		
-		//unpress all the dots in the same string 
-        let dots = document.getElementsByClassName("dotPressed");
+		//unpress all the arrDots in the same string 
+        let arrDots = document.getElementsByClassName("dotPressed");
         let iString = eventObj.target.getAttribute("String");
         let iFret = eventObj.target.getAttribute("Fret");
 		
-        for (let i = 0; i < dots.length; i++) {
-            if (dots[i].getAttribute("String") === iString) {
-                if (dots[i].getAttribute("Fret") !== iFret) {
-                    dots[i].setAttribute("class", "dotUnpressed");
+        for (let i = 0; i < arrDots.length; i++) {
+            if (arrDots[i].getAttribute("String") === iString) {
+                if (arrDots[i].getAttribute("Fret") !== iFret) {
+                    arrDots[i].setAttribute("class", "dotUnpressed");
                 }
             }
         }
