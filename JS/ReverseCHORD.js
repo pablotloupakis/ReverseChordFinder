@@ -144,8 +144,10 @@ function funcClickNote(eventObj){
 				}
 			}
 		}
-		
+
+		FixDotsWhenBarre(); //need to check if there is a barre 
 		ReverseChordMain(); 
+
 		return; 
 	}
 	//console.log ("Click! " +" String: " + eventObj.target.getAttribute("String") + " Fret: " +eventObj.target.getAttribute("Fret") + " Pressed: " + eventObj.target.getAttribute("Pressed"));		
@@ -157,10 +159,18 @@ function funcDblClickNote(eventObj){
 		console.log ("DOBLECLICK el dedo"); 
 		eventObj.target.setAttribute("Pressed", "No");
 		eventObj.target.setAttribute("class", "dotUnpressed");
+
+		FixDotsWhenBarre(); //need to check if there is a barre 
+		ReverseChordMain(); 
+
 		return; 
 	}	
 	if (eventObj.target.getAttribute("Pressed")==="No"){
 		eventObj.target.setAttribute("class", "dotUnpressed");
+
+		FixDotsWhenBarre(); //need to check if there is a barre 
+		ReverseChordMain(); 
+
 		return; 
 	}
 }
@@ -882,27 +892,34 @@ function FixDotsWhenBarre(){
 		//console.log ("String: "+iBarreString +"   Fret: "+iBarreFret);  		
 	}
 
+	console.log ("(DOM ) FRET IS ON String:  "+ parseInt(iBarreString) + "  Fret: " + parseInt (iBarreFret));
 	for (let i=1; i <= iBarreString; i++){  //for each guitar string pressed by the barre 
 		for (let j=0; j<26; j++){	        //for each fret in that string 
 			let dot = document.getElementById("String"+i+"Fret"+j); 		
 			if (dot !== null){
 				if (j === iBarreFret){				//press all dots UNDER the barre 
 					dot.setAttribute("Pressed", "Yes");
-					dot.setAttribute("class", "dotPressed");						
+					dot.setAttribute("class", "dotPressed");	
+					console.log ("(LOOP) FRET IS ON String:  "+ parseInt(i) + "  Fret: " + parseInt (j));
+					console.log (dot); 
+					
 				}
-				if (dot.getAttribute("Pressed") === "Yes") {
-					if (j < iBarreFret){				//unpress all dots before the barre
+				
+				if (j < iBarreFret){				//unpress all dots before the barre
+					if (dot.getAttribute("Pressed") === "Yes") {
 						dot.setAttribute("Pressed", "No");
 						dot.setAttribute("class", "dotUnpressed");
 					}
+				}
 
-					if (j > iBarreFret){				//this is a dot pressed after the barre, need to unpress the dot under the barre
+				if (j > iBarreFret){				//this is a dot pressed after the barre, need to unpress the dot under the barre
+					if (dot.getAttribute("Pressed") === "Yes") {
 						let dot2 = document.getElementById("String"+i+"Fret"+iBarreFret); 
 						if (dot2 !== null){
 							dot2.setAttribute("Pressed", "No");
 							dot2.setAttribute("class", "dotUnpressed");							
 						}
-					}
+					}		
 				}
 			}
 		}
