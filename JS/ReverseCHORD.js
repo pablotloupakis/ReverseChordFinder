@@ -5,6 +5,10 @@ AddListenersToGuitar();
 function ReverseChordMain(){
 	//1. Read ALL the notes pressed in the fretboard 
 	let arrNotes = ReadAllNotesPressed();
+	let arrNotesInt = ReadAllNotesPressedOInt();//we don't use this one in the algorithm, just for debugging purposes
+	
+	let element = document.getElementById("paraOutput");
+	element.innerHTML =""; 
 	
 	//2. Clean the read notes from fretboard (remove "x" and remove duplicates, just get me the notes); 
 	let arrNotesClean = []; 
@@ -31,6 +35,7 @@ function ReverseChordMain(){
 	let arrNames = []; 
 	let sName = ""; 
 	console.log ("--------------------------------------------------------------------------------------------------------------------------------------"); 
+	console.log ("Frets pressed: " + arrNotesInt.join()); 
 	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
 	for (let i=0; i < rotations.length; i++){ 		
 		let arrFormulaINT = GetChordFormulaINT(rotations[i]);
@@ -46,7 +51,6 @@ function ReverseChordMain(){
 		}
 		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 		
 	}
-	let element = document.getElementById("paraOutput");
 	element.innerHTML = arrNames.join(); 
 	element.innerHTML =arrNames.join("<br>");
 
@@ -93,8 +97,8 @@ function AddListenersToGuitar(){
 					iFret = iFretA //could be also iFretB, for cleanliness 
 					DeleteBarres(); 
 					DrawBarre (iFret, iString); 
-					AddListenersToBarre(); 
-					FixDotsWhenBarre(); 
+					//AddListenersToBarre(); 
+					//FixDotsWhenBarre(); 
 				}
 			}
 		});
@@ -120,14 +124,18 @@ function funcClickNote(eventObj){
 		eventObj.target.setAttribute("class", "dotPressed");
 		
 		//unpress all the arrDots in the same string 
-        let arrDots = document.getElementsByClassName("dotPressed");
-        let iString = eventObj.target.getAttribute("String");
-        let iFret = eventObj.target.getAttribute("Fret");
+        let arrDots = []; 
+		let colDots = document.getElementsByClassName("dotPressed"); //HTML Live Collection 
+		for (let i=0; i<colDots.length; i++){arrDots.push (colDots[i]); }
+				
+        let iString = parseInt(eventObj.target.getAttribute("String"));
+        let iFret = parseInt(eventObj.target.getAttribute("Fret"));
 		
         for (let i = 0; i < arrDots.length; i++) {
-            if (arrDots[i].getAttribute("String") === iString) {
-                if (arrDots[i].getAttribute("Fret") !== iFret) {
+            if (parseInt(arrDots[i].getAttribute("String")) === iString) {
+                if (parseInt(arrDots[i].getAttribute("Fret")) !== iFret) {
                     arrDots[i].setAttribute("class", "dotUnpressed");
+					arrDots[i].setAttribute("Pressed", "No");
                 }
             }
         }
@@ -318,6 +326,33 @@ function ReadAllNotesPressed(){
 		}
 	}	
 	return (arrNotes); 
+}
+
+function ReadAllNotesPressedOInt(){
+	//we don't use this one in the algorithm, just for debugging purposes
+	//find all notes that are pressed
+	//INPUT: None 
+	//OUTPUT: Array of 6 <integer> || <string> elements. Fret number being pressed each string. Example: ["x",3,2,0,1,"x"]
+	//returns ["x","x","x","x","x"] nothing is pressed
+
+	let dots = document.getElementsByClassName("dotPressed");
+	
+	let iString = 0; let iFret = 0; 
+	let arrNotesInt = ["x","x","x","x","x","x"]; 
+		
+	for (let i = 0; i < dots.length; i++) {
+		iString = parseInt(dots[i].getAttribute("String")); 
+		iFret = parseInt(dots[i].getAttribute("Fret")); 
+		switch (iString){
+			case 6: arrNotesInt[0] = iFret; break; 
+			case 5: arrNotesInt[1] = iFret; break; 
+			case 4: arrNotesInt[2] = iFret; break; 
+			case 3: arrNotesInt[3] = iFret; break; 
+			case 2: arrNotesInt[4] = iFret; break; 
+			case 1: arrNotesInt[5] = iFret; break; 
+		}
+	}	
+	return (arrNotesInt); 
 }
 
 //-------Music Theory-----------------------------------------------------
@@ -841,10 +876,9 @@ function DrawBarre(iFret,iString){
 	aBarre.setAttribute("String", iString);
     guitar.appendChild(aBarre);		
 	
-	
+	AddListenersToBarre(); 
 	FixDotsWhenBarre(); 
 	ReverseChordMain(); 
-	
 }
 
 function DeleteBarres(){
@@ -877,9 +911,7 @@ function FixDotsWhenBarre(){
    //INPUT: none
    //OUTPUT: none	
    
-   let iBarreString = 0; 
-   let iBarreFret = 0; 
-   
+	let iBarreString = 0; let iBarreFret = 0; 
 	if (arguments.length !==0) {console.log ("ERROR: Invalid number of arguments"); return;}
 	
 	let aBarres = document.getElementsByClassName("barre");
@@ -889,29 +921,22 @@ function FixDotsWhenBarre(){
 	}else{
 		iBarreFret = parseInt(aBarres[0].getAttribute("Fret"));
 		iBarreString = parseInt(aBarres[0].getAttribute("String"));
-		//console.log ("String: "+iBarreString +"   Fret: "+iBarreFret);  		
 	}
 
-	console.log ("(DOM ) FRET IS ON String:  "+ parseInt(iBarreString) + "  Fret: " + parseInt (iBarreFret));
 	for (let i=1; i <= iBarreString; i++){  //for each guitar string pressed by the barre 
 		for (let j=0; j<26; j++){	        //for each fret in that string 
 			let dot = document.getElementById("String"+i+"Fret"+j); 		
 			if (dot !== null){
-				if (j === iBarreFret){				//press all dots UNDER the barre 
-					dot.setAttribute("Pressed", "Yes");
-					dot.setAttribute("class", "dotPressed");	
-					console.log ("(LOOP) FRET IS ON String:  "+ parseInt(i) + "  Fret: " + parseInt (j));
-					console.log (dot); 
-					
-				}
-				
 				if (j < iBarreFret){				//unpress all dots before the barre
 					if (dot.getAttribute("Pressed") === "Yes") {
 						dot.setAttribute("Pressed", "No");
 						dot.setAttribute("class", "dotUnpressed");
 					}
 				}
-
+				if (j === iBarreFret){				//press all dots UNDER the barre 
+					dot.setAttribute("Pressed", "Yes");
+					dot.setAttribute("class", "dotPressed");	
+				}
 				if (j > iBarreFret){				//this is a dot pressed after the barre, need to unpress the dot under the barre
 					if (dot.getAttribute("Pressed") === "Yes") {
 						let dot2 = document.getElementById("String"+i+"Fret"+iBarreFret); 
