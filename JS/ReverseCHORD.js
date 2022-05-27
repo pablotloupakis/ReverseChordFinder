@@ -30,6 +30,7 @@ function ReverseChordMain(){
 		
 	//3. Get all rotations of the notes 
 	let rotations = GetArrayRotations(arrNotesClean); 
+ 
 
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let arrNames = []; 

@@ -1,38 +1,52 @@
 html {
-   font-family: Verdana;
+   font-family: Verdana,  Geneva, sans-serif;;
    padding: 0px; margin: 0px; border: 0px solid #000000;
-   text-align:left;
 }
 
 svg{
-	border-style: solid;
-	border-width: thin; 
-	border-color: red;
+	border-style: none;
 	display: inline;
 	float: left; 
 	background-color: white;	
+	min-width: 12%
+}
+
+
+#selTuning{
+	display: block; 
+	overflow-y:auto;
+	margin: auto;
+	width: 12%;
+	min-width: 12%; 
 }
 
 #sectionGuitarTab{
-	border-style: solid;
-	border-width: thin; 
-	border-color: blue; 
-	height: 50vh;
-	width: 60vh;
+	border-style: none;
+	display: block; 
+	margin: auto;
 	overflow-y:auto;
-	background-color: green;	
-	display: inline-block; 
+	
+	background-color: white;	
+
+	height: 30vh;
+	width: 12%;
+	min-width: 12%; 
+
 }
 
 #sectionOutput {
-	border-style: solid;
-	border-width: thin; 
-	border-color: blue; 
-	height: 50vh;
-	width: 60vh;	
+	border-style: none;
+	display: block; 
+	margin: auto;
 	overflow-y:auto;
-	background-color: yellow;	
-	display: inline-block; 
+
+	height: 20vh;
+	width: 12%;		
+	
+	background-color: white;	
+
+	font-size:0.85vw;  
+
 }
 
 .gridline{
