@@ -1,52 +1,113 @@
+* {
+  box-sizing: border-box;
+}
+
 html {
    font-family: Verdana,  Geneva, sans-serif;;
    padding: 0px; margin: 0px; border: 0px solid #000000;
 }
 
-svg{
-	border-style: none;
-	display: inline;
-	float: left; 
-	background-color: white;	
-	min-width: 12%
+ /* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+	#sectionOutput {
+		font-size: 1vw;  
+	}	
+	#selTuning{
+		font-size: 1vw;	
+		width: 12vw;			
+	}	
 }
 
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+	#sectionOutput {
+		font-size: 1vw;  
+	}	
+	#selTuning{
+		font-size: 1vw;
+		width: 12vw;			
+	}	
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	#sectionOutput {
+		font-size: 1vw;  
+	}
+	#selTuning{
+		font-size: 1vw;
+		width: 12vw;			
+	}
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	#sectionOutput {
+		font-size: 1vw;  
+	}	
+	#selTuning{
+		font-size: 1.5vw;
+		width: 12vw;	
+	}	
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+	#sectionOutput {
+		font-size: 1vw;  
+	}
+	#selTuning{
+		font-size: 1vw;
+		width: 12vw;		
+	}	
+} 
 
 #selTuning{
-	display: block; 
-	overflow-y:auto;
+    margin: auto;
+    overflow: hidden;
+    padding-top: 0.2vh;
+    padding-bottom: 0.2vh;
+    text-overflow: ellipsis;
+	min-width: 3vw; 	
+}
+
+#sectionTuning{
+	border-style: none;
+	display: flex;	
+	justify-content: center;	
 	margin: auto;
-	width: 12%;
-	min-width: 12%; 
+	overflow-y:auto;
+    padding-top: 0.2vh;
+    padding-bottom: 0.2vh;
 }
 
 #sectionGuitarTab{
 	border-style: none;
-	display: block; 
+	display: flex; 
+	justify-content: center;	
+	
 	margin: auto;
 	overflow-y:auto;
 	
 	background-color: white;	
 
-	height: 30vh;
-	width: 12%;
-	min-width: 12%; 
+	height: 50vh;
 
+	min-width: 3vw; 
+    
+	padding-top: 0.2vh;
+    padding-bottom: 0.2vh;	
 }
 
 #sectionOutput {
 	border-style: none;
-	display: block; 
+	display: flex; 
+	justify-content: center;	
+	align-items: center;	
 	margin: auto;
 	overflow-y:auto;
 
-	height: 20vh;
-	width: 12%;		
-	
 	background-color: white;	
-
-	font-size:0.85vw;  
-
 }
 
 .gridline{
@@ -63,6 +124,7 @@ svg{
 	stroke:black;
 	stroke-width: 0.75;
 	opacity: 1;	
+			
 }
 
 .dotUnpressed{
@@ -76,5 +138,3 @@ svg{
 	stroke-linecap:round;	
 }
 	
-
-

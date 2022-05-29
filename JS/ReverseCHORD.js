@@ -30,8 +30,7 @@ function ReverseChordMain(){
 		
 	//3. Get all rotations of the notes 
 	let rotations = GetArrayRotations(arrNotesClean); 
- 
-
+	
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let arrNames = []; 
 	let sName = ""; 
@@ -54,7 +53,70 @@ function ReverseChordMain(){
 	}
 	element.innerHTML = arrNames.join(); 
 	element.innerHTML =arrNames.join("<br>");
-
+		
+	//new code 
+	console.log ("NEW NEW NEW--------------------------------------------------------------------------------------------------------------------------------"); 
+	console.log ("Frets pressed: " + arrNotesInt.join()); 
+	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
+	for (let i=0; i < rotations.length; i++){ 		
+		let arrAllIntegers = GetAllIntegers(rotations[i]);
+		console.log ("Rotation: " + rotations[i].join()); 
+		console.log (arrAllIntegers); 
+		let arrFormulaINT =[]; 
+		
+		switch (arrAllIntegers.length){
+			case 6:	
+				for (let j=0; j<2; j++){
+					for (let k=0; k<2; k++){
+						for (let l=0; l<2; l++){	
+							for (let m=0; m<2; m++){					
+								for (let n=0; n<2; n++){
+									arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k],arrAllIntegers[3][l], arrAllIntegers[4][m],arrAllIntegers[5][n]]; 									
+								}	
+							}
+						}
+					}
+				}			
+				break;
+			case 5:	
+				for (let j=0; j<2; j++){
+					for (let k=0; k<2; k++){
+						for (let l=0; l<2; l++){	
+							for (let m=0; m<2; m++){					
+								arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k],arrAllIntegers[3][l], arrAllIntegers[4][m]];  									
+							}
+						}
+					}
+				}			
+				break;
+			case 4: 
+				for (let j=0; j<2; j++){
+					for (let k=0; k<2; k++){
+						for (let l=0; l<2; l++){	
+							arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k],arrAllIntegers[3][l]]; 
+						}
+					}
+				}	
+				break;
+			case 3: 
+				for (let j=0; j<2; j++){
+					for (let k=0; k<2; k++){
+						arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k]]; 
+						console.log (arrFormulaINT);
+					}
+				}			
+				break;
+			case 2: 
+				for (let j=0; j<2; j++){
+					arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j]]; 								
+				}			
+				break;
+			case 1: 
+				arrFormulaINT = [arrAllIntegers[0][0]]; 								
+				break;
+			default: break;
+		}
+	}	
 }
 
 //--------Event handlers-------------------------------------------------- 
@@ -194,7 +256,11 @@ function DrawGuitar() {
     //read screen size
     let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    let unitW = 0.014 * w;
+    //let unitW = 0.014 * w;
+	
+	let unitW = 0.02 * w;
+	
+	
     let unitH = unitW * 1.618;
     if (unitW < 19.124 || unitH < 30.942632) { //keep a bigger size for smaller screens
         unitW = 19.124;
@@ -433,6 +499,23 @@ function GetChordFormulaINT(arrIN){
 		if(a < b) return -1;
 		return 0;
 	});	
+	return arrOUT; 	
+}
+
+function GetAllIntegers(arrIN){
+	//INPUT: Array <string>. Notes, with no duplicates nor "x"
+	//OUTPUT: Array of arrays <integer>. Example for a Maj chord [[0],[4,16],[7,19]]
+	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
+	if (Array.isArray(arrIN)) {}else{console.log ("ERROR: Invalid type");return; }
+	
+	let arrOUT =[]; 
+	let scale= GetChromaticScale(arrIN[0]);
+	
+	arrOUT.push ([0]); 
+	for (let i = 1; i < arrIN.length; i++) {
+		arrOUT.push ([scale.indexOf(arrIN[i]),scale.lastIndexOf(arrIN[i])]); //first and 2nd occurence of the note in the chromatica scale 
+	}
+
 	return arrOUT; 	
 }
 
@@ -824,7 +907,8 @@ function DrawBarre(iFret,iString){
 	
     let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    let unitW = 0.014 * w;
+    //let unitW = 0.014 * w;
+	let unitW = 0.02 * w;
     let unitH = unitW * 1.618;
     if (unitW < 19.124 || unitH < 30.942632) { //keep a bigger size for smaller screens
         unitW = 19.124;
