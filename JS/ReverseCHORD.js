@@ -32,46 +32,22 @@ function ReverseChordMain(){
 	let rotations = GetArrayRotations(arrNotesClean); 
 	
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
-	let arrNames = []; 
-	let sName = ""; 
-	console.log ("--------------------------------------------------------------------------------------------------------------------------------------"); 
+	let arrNames = []; let arrNames2 = []; 
+	let sName = "";
+	console.log ("-----------------------------------------------------------------------------------------------------------------------------------"); 
 	console.log ("Frets pressed: " + arrNotesInt.join()); 
 	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
 	for (let i=0; i < rotations.length; i++){ 		
-		let arrFormulaINT = GetChordFormulaINT(rotations[i]);
-		let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 
-		sName = BuildChordName (arrFormulaSTR);
-		if (sName !== ""){
-			if (rotations[i][0] === strRoot){
-				sName = rotations[i][0] +" " +sName; 
-			}else{
-				sName = rotations[i][0] +" " +sName + " /" + strRoot; 
-			}
-			arrNames.push(sName); 
-		}
-		console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 		
-	}
-	element.innerHTML = arrNames.join(); 
-	element.innerHTML =arrNames.join("<br>");
-		
-	//new code 
-	console.log ("NEW NEW NEW--------------------------------------------------------------------------------------------------------------------------------"); 
-	console.log ("Frets pressed: " + arrNotesInt.join()); 
-	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
-	for (let i=0; i < rotations.length; i++){ 		
-		let arrAllIntegers = GetAllIntegers(rotations[i]);
-		console.log ("Rotation: " + rotations[i].join()); 
-		console.log (arrAllIntegers); 
-		let arrFormulaINT =[]; 
-		
-		switch (arrAllIntegers.length){
+		let arrFormulaINT2 = GetChordFormulaINT2(rotations[i]);
+		let arrFormulas =[]; //stores all possible formulas for this rotation. E.g. for a Major chord: [[0,7,4 ] ,[0,7,16], [0,19,4], [0,19,16]] 
+		switch (arrFormulaINT2.length){//builds all possible formulas for this rotation
 			case 6:	
 				for (let j=0; j<2; j++){
 					for (let k=0; k<2; k++){
 						for (let l=0; l<2; l++){	
 							for (let m=0; m<2; m++){					
 								for (let n=0; n<2; n++){
-									arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k],arrAllIntegers[3][l], arrAllIntegers[4][m],arrAllIntegers[5][n]]; 									
+									arrFormulas.push ([arrFormulaINT2[0][0],arrFormulaINT2[1][j],arrFormulaINT2[2][k],arrFormulaINT2[3][l], arrFormulaINT2[4][m],arrFormulaINT2[5][n]]);
 								}	
 							}
 						}
@@ -83,7 +59,7 @@ function ReverseChordMain(){
 					for (let k=0; k<2; k++){
 						for (let l=0; l<2; l++){	
 							for (let m=0; m<2; m++){					
-								arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k],arrAllIntegers[3][l], arrAllIntegers[4][m]];  									
+								arrFormulas.push ([arrFormulaINT2[0][0],arrFormulaINT2[1][j],arrFormulaINT2[2][k],arrFormulaINT2[3][l], arrFormulaINT2[4][m]]);  									
 							}
 						}
 					}
@@ -93,7 +69,7 @@ function ReverseChordMain(){
 				for (let j=0; j<2; j++){
 					for (let k=0; k<2; k++){
 						for (let l=0; l<2; l++){	
-							arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k],arrAllIntegers[3][l]]; 
+							arrFormulas.push ([arrFormulaINT2[0][0],arrFormulaINT2[1][j],arrFormulaINT2[2][k],arrFormulaINT2[3][l]]); 
 						}
 					}
 				}	
@@ -101,22 +77,39 @@ function ReverseChordMain(){
 			case 3: 
 				for (let j=0; j<2; j++){
 					for (let k=0; k<2; k++){
-						arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j],arrAllIntegers[2][k]]; 
-						console.log (arrFormulaINT);
+						arrFormulas.push ([arrFormulaINT2[0][0],arrFormulaINT2[1][j],arrFormulaINT2[2][k]]); 
 					}
 				}			
 				break;
 			case 2: 
 				for (let j=0; j<2; j++){
-					arrFormulaINT = [arrAllIntegers[0][0],arrAllIntegers[1][j]]; 								
+					arrFormulas.push ([arrFormulaINT2[0][0],arrFormulaINT2[1][j]]); 								
 				}			
 				break;
 			case 1: 
-				arrFormulaINT = [arrAllIntegers[0][0]]; 								
+				arrFormulas.push ([arrFormulaINT2[0][0]]); 								
 				break;
 			default: break;
+		}		
+		
+		for (let j=0; j < arrFormulas.length; j++){//finally, for each formula in each rotation, build the chord name
+			let arrFormulaINT = arrFormulas[j]; 
+			let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 			
+			sName = BuildChordName (arrFormulaSTR);
+			if (sName !== ""){
+				if (rotations[i][0] === strRoot){
+					sName = rotations[i][0] +" " +sName; 
+				}else{
+					sName = rotations[i][0] +" " +sName + " /" + strRoot; 
+				}
+				arrNames.push(sName); 
+			}			
+			arrNames2 = [... new Set(arrNames)]; //remove duplicates 
+			console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 
 		}
-	}	
+	}
+	element.innerHTML = arrNames2.join(); 
+	element.innerHTML =arrNames2.join("<br>");
 }
 
 //--------Event handlers-------------------------------------------------- 
@@ -502,7 +495,9 @@ function GetChordFormulaINT(arrIN){
 	return arrOUT; 	
 }
 
-function GetAllIntegers(arrIN){
+function GetChordFormulaINT2(arrIN){
+	//GetChordFormulaINT returns only the FIRST occurence (integer) of the note in the scale
+	//GetChordFormulaINT2 returns the FIRST AND SECOND occurence (integer) of the note in the scale (except for the root)
 	//INPUT: Array <string>. Notes, with no duplicates nor "x"
 	//OUTPUT: Array of arrays <integer>. Example for a Maj chord [[0],[4,16],[7,19]]
 	if (arguments.length !==1) {console.log ("ERROR: Invalid number of arguments"); return;}
@@ -578,6 +573,7 @@ function GetChordFormulaSTR(arrIN){
 			case 16: arrOUT.push("b11"); break;  
 			case 17: arrOUT.push("11"); break;  
 			case 18: arrOUT.push("#11"); break; 
+			case 19: arrOUT.push("5"); break; 			
 			case 20: arrOUT.push("b13"); break;  
 			case 21: arrOUT.push("13"); break; 
 			case 22: arrOUT.push("#13"); break; 
