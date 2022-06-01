@@ -2,6 +2,9 @@
 DrawGuitar(); 
 AddListenersToGuitar(); 
 
+//node[i] = [parent, firstChild, secondChild, ... nthChild];
+
+
 function ReverseChordMain(){
 	//1. Read ALL the notes pressed in the fretboard 
 	let arrNotes = ReadAllNotesPressed();
@@ -34,6 +37,7 @@ function ReverseChordMain(){
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let arrNames = []; let arrNames2 = []; 
 	let sName = "";
+	console.clear(); 
 	console.log ("-----------------------------------------------------------------------------------------------------------------------------------"); 
 	console.log ("Frets pressed: " + arrNotesInt.join()); 
 	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
@@ -92,6 +96,8 @@ function ReverseChordMain(){
 			default: break;
 		}		
 		
+		
+		console.log ("Rotation: " + rotations[i].join()); 
 		for (let j=0; j < arrFormulas.length; j++){//finally, for each formula in each rotation, build the chord name
 			let arrFormulaINT = arrFormulas[j]; 
 			let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 			
@@ -105,7 +111,7 @@ function ReverseChordMain(){
 				arrNames.push(sName); 
 			}			
 			arrNames2 = [... new Set(arrNames)]; //remove duplicates 
-			console.log ("Rotation: " + rotations[i].join()+"   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 
+			console.log ("   FormulaINT: "+arrFormulaINT +"   FormulaSTR: "+ arrFormulaSTR+"   Name: "+ sName ); 
 		}
 	}
 	element.innerHTML = arrNames2.join(); 
@@ -573,10 +579,12 @@ function GetChordFormulaSTR(arrIN){
 			case 16: arrOUT.push("b11"); break;  
 			case 17: arrOUT.push("11"); break;  
 			case 18: arrOUT.push("#11"); break; 
+			//case 19: arrOUT.push("bb13"); break; 	
 			case 19: arrOUT.push("5"); break; 			
 			case 20: arrOUT.push("b13"); break;  
 			case 21: arrOUT.push("13"); break; 
-			case 22: arrOUT.push("#13"); break; 
+			case 22: arrOUT.push("b7"); break; 
+			//case 22: arrOUT.push("#13"); break; 
 			case 23: arrOUT.push("7"); break;  
 		}
 	}
@@ -653,9 +661,7 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	
 	let sName = "";
 	//------------ Check if single note or diad 
-	if (arrIN.length === 1) { 
-		return (sName.trim())
-	}; 
+	if (arrIN.length === 1) { return (sName.trim())	}; 
 	if (arrIN.length === 2) { 
 		sName = arrIN[1]+" "+ "Interval"; 
 		sName = sName.trim(); 
@@ -679,7 +685,8 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	
 	//console.log ("iSeven: " + iSeven); 
 	//bb7 only valid for Dim 
-	if (s7 === "bb7") {
+	//bb7 = 6 
+	if (s7 === "bb7" || s6  === "6") {
 		if (s3 === "b3"  && s5 === "b5" ) {iSeven=7; }
 	}	
 
@@ -691,6 +698,7 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 	if (s3 !== "") {arrTriad.push(s3);}
 	if (s4 !== "") {arrTriad.push(s4);}
 	if (s5 !== "") {arrTriad.push(s5);}
+	if (s6 !== "") {arrTriad.push(s6);}
 	if (s7 !== "") {arrTriad.push(s7);}
 
 	let sTemp = arrTriad[0]+","+arrTriad[1]+","+arrTriad[2]; 
@@ -729,8 +737,16 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 			sTriad="minor"; 
 			break;
 		
-		//--------------------	
-			
+		//-------------------5th can be omitted for Maj6 ? ----------------------------------------------------------------------
+		case ("1,3,6")	: 
+			sTriad="Major"; 
+			break; 	
+		//-------------------5th can be omitted for min6 ? ----------------------------------------------------------------------
+		case ("1,b3,6")	: 
+			sTriad="minor"; 
+			break; 			
+		//------------------------------------------------------------------------------------------------------------------------		
+
 		case ("1,b3,5") :
 			sTriad="minor"; 
 			if (iSeven > 0){
@@ -793,7 +809,7 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 
 	switch (iSeven){
 		case 0: 
-			if (s6 !== "") {sExtensions.push (s6); }
+			if (s6 !== "") {sExtensions.push (s6);}
 			if (s7 !== "") {sExtensions.push (s7); }
 			if (s9 !== "") {sExtensions.push (s9); }		
 			if (s11 !== "") {sExtensions.push (s11); }
@@ -812,7 +828,7 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 			sName = sTriad + " " + iSeven.toString() + " " + sExtensions.join("/");		
 			if (sExtensions[0]==="9" || sExtensions[0]==="11" || sExtensions[0]==="13") {
 				sName = sTriad + " " + iSeven.toString() + " add " + sExtensions.join("/");
-			}						
+			}	
 			break; 
 		case 9:
 			if (s6 !== "") {sExtensions.push (s6); }
@@ -837,7 +853,14 @@ function BuildChordName (arrIN) {  //consolida GetTriad y GetSeven
 
 	//---exceptions .... 
 	//"Diminished 6" --> "Diminished" ("1,b3,b5,6" --> ": 1,b3,b5,bb7")
-	if (sName.indexOf("Diminished 6") > -1) {sName = sName.replace ("Diminished 6","Diminished"); }
+	if (sName.toLowerCase().indexOf("dim") > -1 && sName.indexOf("6") >-1 ){
+		sName = sName.replace ("6",""); 
+	}
+	
+	//"Half Diminished 7" --> "Half Diminished"  ("E Half Diminished (m7b5) 7"  --> "E Half Diminished (m7b5)" 
+	if (sName.toLowerCase().indexOf("(m7b5) 7")) {
+		sName = sName.replace ("(m7b5) 7","(m7b5)"); 
+	}
 
 	sName = sName.trim(); 
 	return (sName); 
