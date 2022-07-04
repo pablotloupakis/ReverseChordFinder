@@ -1,11 +1,14 @@
-* {
+html {
   box-sizing: border-box;
+   font-family: Verdana,  Geneva, sans-serif;;
+   padding: 0px; margin: 0px; border: 0px solid #000000;  
+}
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
-html {
-   font-family: Verdana,  Geneva, sans-serif;;
-   padding: 0px; margin: 0px; border: 0px solid #000000;
-}
+
+
 
  /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
