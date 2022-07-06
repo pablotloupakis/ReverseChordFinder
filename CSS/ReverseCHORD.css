@@ -1,5 +1,5 @@
 html {
-  box-sizing: border-box;
+   box-sizing: border-box;
    font-family: Verdana,  Geneva, sans-serif;;
    padding: 0px; margin: 0px; border: 0px solid #000000;  
 }
@@ -7,17 +7,24 @@ html {
   box-sizing: inherit;
 }
 
-
-
-
  /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	#sectionOutput {
-		font-size: 1vw;  
+		font-size: 2vh;  
 	}	
 	#selTuning{
-		font-size: 1vw;	
-		width: 12vw;			
+		font-size: 2vh;	
+		width: 100vw;	
+		padding-left: 1vw;
+	}	
+	#sectionOutput{
+		font-size: 2vh;
+	}	
+	.SVGGuitar{
+		font-size: 2vh;
+	}	
+	body {
+		background-color: lightblue;
 	}	
 }
 
@@ -27,18 +34,22 @@ html {
 		font-size: 1vw;  
 	}	
 	#selTuning{
-		font-size: 1vw;
+		font-size: 1vh;
 		width: 12vw;			
 	}	
+	#sectionOutput{
+		font-size: 1vh;
+	}	
+	
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
 	#sectionOutput {
-		font-size: 1vw;  
+		font-size: 12vw;  
 	}
 	#selTuning{
-		font-size: 1vw;
+		font-size: 12vw;
 		width: 12vw;			
 	}
 }
@@ -63,19 +74,16 @@ html {
 		font-size: 1vw;
 		width: 12vw;		
 	}	
+
 } 
 
 #selTuning{
-    margin: auto;
-    overflow: hidden;
-    padding-top: 0.2vh;
-    padding-bottom: 0.2vh;
-    text-overflow: ellipsis;
-	min-width: 3vw; 	
+
 }
 
 #sectionTuning{
 	border-style: none;
+	border-style: solid; border-color: red; border-width: thin;
 	display: flex;	
 	justify-content: center;	
 	margin: auto;
@@ -85,11 +93,12 @@ html {
 }
 
 #sectionGuitarTab{
-	border-style: none;
+	border-style: solid; border-color: red; border-width: thin;
 	display: flex; 
 	justify-content: center;	
 	
 	margin: auto;
+	margin-top: 1vh; 
 	overflow-y:auto;
 	
 	background-color: white;	
@@ -104,13 +113,30 @@ html {
 
 #sectionOutput {
 	border-style: none;
+	border-style: solid; border-color: red; border-width: thin;
+	display: flex; 
+	justify-content: center;	
+
+	margin: auto;
+	margin-top: 1vh; 
+
+	height: 12vh;
+	overflow-y:auto;
+
+	background-color: white;	
+}
+
+#sectionControls{
+	border-style: none;
+	border-style: solid; border-color: red; border-width: thin;
 	display: flex; 
 	justify-content: center;	
 	align-items: center;	
 	margin: auto;
-	overflow-y:auto;
-
-	background-color: white;	
+	margin-top: 1vh; 
+	padding-top: 1vh; 
+	padding-bottom: 1vh; 
+	
 }
 
 .gridline{
@@ -140,4 +166,11 @@ html {
 	stroke:black;
 	stroke-linecap:round;	
 }
-	
+
+img{
+	opacity: 1;
+	width: 3vh;
+	height:3vh;
+	margin-left: 1vw; 
+	margin-right: 1vw; 
+}

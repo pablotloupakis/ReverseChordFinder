@@ -1,6 +1,7 @@
 "use strict";
 DrawGuitar(); 
 AddListenersToGuitar(); 
+AddListenersToControls(); 
 
 //node[i] = [parent, firstChild, secondChild, ... nthChild];
 
@@ -119,6 +120,22 @@ function ReverseChordMain(){
 }
 
 //--------Event handlers-------------------------------------------------- 
+function AddListenersToControls(){
+	if (document.getElementById("imgClear")){
+		document.getElementById("imgClear").addEventListener("click", ResetNotes, false);
+	}
+	if (document.getElementById("imgMute")){
+		document.getElementById("imgMute").setAttribute("IsMuted", "No");
+		document.getElementById('imgMute').style.display = "inline-block";
+		document.getElementById("imgMute").addEventListener("click", MuteUnmute, false);
+	}	
+	if (document.getElementById("imgUnmute")){
+		document.getElementById('imgUnmute').style.display = "none";
+		document.getElementById("imgUnmute").addEventListener("click", MuteUnmute, false);
+	}		
+	
+}
+
 function AddListenersToGuitar(){
 	let dots = document.getElementsByClassName("dotUnpressed" || "dotPressed");
 	for (let i = 0; i < dots.length; i++) {
@@ -167,6 +184,43 @@ function AddListenersToGuitar(){
 	}
 	//--------- barre-------------------------------------------------------------------------------------------------	
 
+}
+
+function ResetNotes(){
+	//find all notes that are pressed, and unpress them
+	//INPUT: None 
+	//OUTPUT: None
+
+	let arrDots = []; 
+	let colDots = document.getElementsByClassName("dotPressed"); //HTML Live Collection 
+	for (let i=0; i<colDots.length; i++){arrDots.push (colDots[i]); }
+			
+	for (let i = 0; i < arrDots.length; i++) {
+		arrDots[i].setAttribute("class", "dotUnpressed");
+		arrDots[i].setAttribute("Pressed", "No");
+	}
+
+	document.getElementById("paraOutput").innerHTML =""; 
+
+	return; 
+}
+
+function MuteUnmute(){
+	let x = document.getElementById("imgMute"); 
+	let y = document.getElementById("imgUnmute"); 
+
+	if (x.getAttribute("IsMuted")  === "No"){
+		x.setAttribute("IsMuted", "Yes");
+		x.style.display = "inline-block";		
+		y.style.display = "none";		
+		return; 
+	}
+	if (x.getAttribute("IsMuted") === "Yes"){
+		x.setAttribute("IsMuted", "No");
+		x.style.display = "none";		
+		y.style.display = "inline-block";		
+		return; 
+	}
 }
 
 function funcClickNote(eventObj){
@@ -255,10 +309,8 @@ function DrawGuitar() {
     //read screen size
     let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    //let unitW = 0.014 * w;
-	
-	let unitW = 0.02 * w;
-	
+
+	let unitW = 0.1 * w;
 	
     let unitH = unitW * 1.618;
     if (unitW < 19.124 || unitH < 30.942632) { //keep a bigger size for smaller screens
@@ -321,11 +373,12 @@ function DrawGuitar() {
 		let aText = document.createElementNS("http://www.w3.org/2000/svg", "text");
 		aText.setAttribute("x", xDot);
 		aText.setAttribute("y", yDot);
-		aText.setAttribute("font-size", unitH / 3);
+		//aText.setAttribute("font-size", unitH / 3);
 		aText.setAttribute("class", "fretNumberText");
+		aText.setAttribute("color", "red");
+		aText.style.fill = "gray" 
 		aText.textContent = i;
 		svg.appendChild(aText);
-
     }
 	
 	 //draw the dots 
