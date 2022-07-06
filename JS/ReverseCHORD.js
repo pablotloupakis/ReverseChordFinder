@@ -314,7 +314,7 @@ function DetermineSize(){
 	let unitW = 0; 
 
 	switch (true){
-		case (w <= 600): unitW = 0.08 * w;break; 
+		case (w <= 600): unitW = 0.1 * w;break; 
 		case (w <= 768): unitW = 0.07 * w;break;
 		case (w <= 992): unitW = 0.06 * w;break;
 		case (w <= 1200):unitW = 0.05 * w;break;
