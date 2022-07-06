@@ -14,7 +14,73 @@ html {
 	}	
 	#selTuning{
 		font-size: 2vh;	
-		width: 100vw;	
+		width: 60vw;	
+		padding-left: 1vw;
+	}	
+	#sectionOutput{
+		font-size: 2vh;
+		max-height: 30vh;
+	}	
+	.SVGGuitar{
+		font-size: 2vh;
+	}	
+	#sectionGuitarTab{
+		height: 40vh;
+	}		
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+	#sectionOutput {
+		font-size: 2vh;  
+	}	
+	#selTuning{
+		font-size: 2vh;	
+		width: 40vw;	
+		padding-left: 1vw;
+	}	
+	#sectionOutput{
+		font-size: 2vh;
+		max-height: 20vh;
+	}	
+	.SVGGuitar{
+		font-size: 2vh;
+	}	
+	#sectionGuitarTab{
+		height: 40vh;
+	}		
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+	#sectionOutput {
+		font-size: 2vh;  
+	}	
+	#selTuning{
+		font-size: 1.5vh;	
+		width: 40vw;	
+		padding-left: 1vw;
+	}	
+	#sectionOutput{
+		font-size: 1.5vh;
+	}	
+	.SVGGuitar{
+		font-size: 1.5vh;
+	}	
+	#sectionGuitarTab{
+		height: 40vh;
+	}		
+
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+	#sectionOutput {
+		font-size: 2vh;  
+	}	
+	#selTuning{
+		font-size: 2vh;	
+		width: 30vw;	
 		padding-left: 1vw;
 	}	
 	#sectionOutput{
@@ -23,58 +89,30 @@ html {
 	.SVGGuitar{
 		font-size: 2vh;
 	}	
-	body {
-		background-color: lightblue;
-	}	
-}
-
-/* Small devices (portrait tablets and large phones, 600px and up) */
-@media only screen and (min-width: 600px) {
-	#sectionOutput {
-		font-size: 1vw;  
-	}	
-	#selTuning{
-		font-size: 1vh;
-		width: 12vw;			
-	}	
-	#sectionOutput{
-		font-size: 1vh;
-	}	
-	
-}
-
-/* Medium devices (landscape tablets, 768px and up) */
-@media only screen and (min-width: 768px) {
-	#sectionOutput {
-		font-size: 12vw;  
-	}
-	#selTuning{
-		font-size: 12vw;
-		width: 12vw;			
-	}
-}
-
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-	#sectionOutput {
-		font-size: 1vw;  
-	}	
-	#selTuning{
-		font-size: 1.5vw;
-		width: 12vw;	
+	#sectionGuitarTab{
+		height: 50vh;
 	}	
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
 	#sectionOutput {
-		font-size: 1vw;  
-	}
-	#selTuning{
-		font-size: 1vw;
-		width: 12vw;		
+		font-size: 2vh;  
 	}	
-
+	#selTuning{
+		font-size: 2vh;	
+		width: 30vw;	
+		padding-left: 1vw;
+	}	
+	#sectionOutput{
+		font-size: 2vh;
+	}	
+	.SVGGuitar{
+		font-size: 2vh;
+	}	
+	#sectionGuitarTab{
+		height: 60vh;
+	}
 } 
 
 #selTuning{
@@ -82,8 +120,6 @@ html {
 }
 
 #sectionTuning{
-	border-style: none;
-	border-style: solid; border-color: red; border-width: thin;
 	display: flex;	
 	justify-content: center;	
 	margin: auto;
@@ -93,17 +129,12 @@ html {
 }
 
 #sectionGuitarTab{
-	border-style: solid; border-color: red; border-width: thin;
 	display: flex; 
 	justify-content: center;	
-	
 	margin: auto;
 	margin-top: 1vh; 
 	overflow-y:auto;
-	
 	background-color: white;	
-
-	height: 50vh;
 
 	min-width: 3vw; 
     
@@ -113,22 +144,17 @@ html {
 
 #sectionOutput {
 	border-style: none;
-	border-style: solid; border-color: red; border-width: thin;
 	display: flex; 
 	justify-content: center;	
-
 	margin: auto;
 	margin-top: 1vh; 
-
-	height: 12vh;
+	margin-bottom: 1vh; 
 	overflow-y:auto;
-
 	background-color: white;	
 }
 
 #sectionControls{
 	border-style: none;
-	border-style: solid; border-color: red; border-width: thin;
 	display: flex; 
 	justify-content: center;	
 	align-items: center;	

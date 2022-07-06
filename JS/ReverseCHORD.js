@@ -309,8 +309,15 @@ function DrawGuitar() {
     //read screen size
     let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+	let unitW = 0; 
 
-	let unitW = 0.1 * w;
+	switch (true){
+		case (w <= 600): unitW = 0.08 * w; console.log (unitW ); console.log ("caso 1");  break; 
+		case (w <= 768): unitW = 0.07 * w;console.log (unitW ); console.log ("caso 2"); break;
+		case (w <= 992): unitW = 0.06 * w;console.log (unitW ); console.log ("caso 3"); break;
+		case (w <= 1200):unitW = 0.05 * w;console.log (unitW ); console.log ("caso 4"); break;
+		default: unitW = 0.04 * w; console.log (unitW ); console.log ("caso 5"); break;
+	}
 	
     let unitH = unitW * 1.618;
     if (unitW < 19.124 || unitH < 30.942632) { //keep a bigger size for smaller screens
