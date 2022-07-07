@@ -1,10 +1,8 @@
 "use strict";
 DrawGuitar(); 
+SetNotes(); 
 AddListenersToGuitar(); 
 AddListenersToControls(); 
-
-//node[i] = [parent, firstChild, secondChild, ... nthChild];
-
 
 function ReverseChordMain(){
 	//1. Read ALL the notes pressed in the fretboard 
@@ -133,7 +131,13 @@ function AddListenersToControls(){
 		document.getElementById('imgUnmute').style.display = "none";
 		document.getElementById("imgUnmute").addEventListener("click", MuteUnmute, false);
 	}		
-	
+	if (document.getElementById("imgNote")){
+		document.getElementById("imgNote").setAttribute("ShowNotes", "No");
+		document.getElementById("imgNote").addEventListener("click", ShowNotes, false);
+	}	
+	if (document.getElementById("imgPlay")){
+		document.getElementById("imgPlay").addEventListener("click", PlayChord, false);
+	}		
 }
 
 function AddListenersToGuitar(){
@@ -145,10 +149,11 @@ function AddListenersToGuitar(){
 	}
 	
 	if (document.getElementById("selTuning")){
+		document.getElementById("selTuning").addEventListener("change", SetNotes, false);
+		document.getElementById("selTuning").addEventListener("change", ShowNotes, false);
 		document.getElementById("selTuning").addEventListener("change", ReverseChordMain, false);
 	}
-	
-	
+
 	//--------- barre-------------------------------------------------------------------------------------------------
 	if (document.getElementById("sectionGuitarTab")){
 		let iStringA = 0; let iFretA = 0; //mousedown
@@ -270,6 +275,7 @@ function funcClickNote(eventObj){
 		}
 
 		FixDotsWhenBarre(); //need to check if there is a barre 
+		ShowNotes(); //display the note names 
 		ReverseChordMain(); 
 
 		return; 
@@ -318,7 +324,7 @@ function DetermineSize(){
 		case (w <= 768): unitW = 0.07 * w;break;
 		case (w <= 992): unitW = 0.06 * w;break;
 		case (w <= 1200):unitW = 0.05 * w;break;
-		default: unitW = 0.04 * w; break;
+		default: unitW = 0.02 * w; break;
 	}	
 	return (unitW); 
 }
@@ -388,7 +394,6 @@ function DrawGuitar() {
 		aText.setAttribute("y", yDot);
 		//aText.setAttribute("font-size", unitH / 3);
 		aText.setAttribute("class", "fretNumberText");
-		aText.setAttribute("color", "red");
 		aText.style.fill = "gray" 
 		aText.textContent = i;
 		svg.appendChild(aText);
@@ -407,7 +412,6 @@ function DrawGuitar() {
             aCircle.setAttribute("Fret", i);
             let iString;
             switch (j) {
-				
                 case 1: iString = 6; break;
                 case 2: iString = 5; break;
                 case 3: iString = 4; break;
@@ -419,6 +423,20 @@ function DrawGuitar() {
             aCircle.setAttribute("Pressed", "No");
 			aCircle.setAttribute ("id", "String" + iString + "Fret" + i); 	
             svg.appendChild(aCircle);
+			
+			//add text nodes for each note 
+			let txtElement = document.createElementNS("http://www.w3.org/2000/svg", "text");
+			let txtNode = document.createTextNode("Z");
+			txtElement.setAttribute("x", xDot.toString());
+			txtElement.setAttribute("y", yDot.toString());
+			//txtElement.setAttribute("fill", "red");
+			txtElement.setAttributeNS(null, 'text-anchor', 'middle');
+			txtElement.setAttributeNS(null, 'alignment-baseline', 'central');
+			txtElement.setAttribute ("id", "TXT" + "String" + iString + "Fret" + i); 	
+			txtElement.setAttribute("class", "dotUnpressedTEXT");
+			txtElement.appendChild(txtNode);
+			svg.appendChild(txtElement);	
+	
         }
     }
 	
@@ -426,6 +444,68 @@ function DrawGuitar() {
 	if (document.getElementById("sectionGuitarTab")){
 		document.getElementById("sectionGuitarTab").appendChild(svg);
 	}
+}
+
+function SetNotes(){
+	//sets the Musical Note attribute for each note in the fretboard
+	//needs to be invoked whenever the tuning changes
+	//INPUT: none
+	//OUTPUT: none
+	
+	let sTuning = document.getElementById("selTuning").value; 	
+	let colDots = document.querySelectorAll(".dotUnpressed, .dotPressed"); //HTML Live Collection 
+	
+	let svg = document.getElementById("SVGReverseChordFinderGeneric");
+
+	for (let i=0; i < colDots.length; i++){
+        let iString = parseInt(colDots[i].getAttribute("String"));
+        let iFret = parseInt(colDots[i].getAttribute("Fret"));
+		let sNote = GetNoteForFret (iString, iFret, sTuning); 
+		
+		//set the attribute = Note 
+		colDots[i].setAttribute("Note", sNote);
+		
+		//sets the SVG text = Note 
+		let txtID = "TXT" + "String" + iString.toString() + "Fret" + iFret.toString(); 
+		let svgTextElement = document.getElementById(txtID);
+		let textNode = svgTextElement.childNodes[0];
+		textNode.nodeValue = sNote;		
+	}		
+}
+
+function ShowNotes(){
+	//INPUT: None 
+	//OUTPUT: None
+	let x = document.getElementById("imgNote"); 
+		
+	let svg = document.getElementById("SVGReverseChordFinderGeneric");
+	let colDots = document.querySelectorAll (".dotPressed,.dotUnpressed"); //HTML Live Collection 
+	
+	if (x.getAttribute("ShowNotes")  === "No"){
+		x.setAttribute("ShowNotes", "Yes");
+		for (let i=0; i < colDots.length; i++){
+			let sID = colDots[i].getAttribute("id"); 
+			let txtElement = document.getElementById("TXT"+sID);
+			if (colDots[i].getAttribute("class")==="dotPressed"){
+				txtElement.setAttribute("class", "dotPressedTEXT");
+			}
+			if (colDots[i].getAttribute("class")==="dotUnpressed"){
+				txtElement.setAttribute("class", "dotUnpressedTEXT");
+			}			
+		}	
+		return; 
+	}
+
+	if (x.getAttribute("ShowNotes") === "Yes"){
+		x.setAttribute("ShowNotes", "No");
+		for (let i=0; i < colDots.length; i++){
+			let sID=colDots[i].getAttribute("id"); 
+			let txtElement = document.getElementById("TXT"+sID);
+			txtElement.setAttribute("class", "dotUnpressedTEXT");
+		}	
+		return; 
+	}
+	return; 	
 }
 
 function ReadAllNotesPressed(){
@@ -487,6 +567,12 @@ function ReadAllNotesPressedOInt(){
 	return (arrNotesInt); 
 }
 
+
+//-------Sound------------------------------------------------------------
+function PlayChord(){
+	console.log ("PlayChord"); 
+
+}
 //-------Music Theory-----------------------------------------------------
 function GetNoteForFret(iString, iFret, strTuning) {
     //INPUT:  a guitar string number (1 to 6), fret number and tuning

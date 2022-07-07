@@ -179,7 +179,18 @@ html {
 	stroke:black;
 	stroke-width: 0.75;
 	opacity: 1;	
+	filter: drop-shadow(3px 5px 2px gray);
 			
+}
+
+.dotUnpressedTEXT{
+	fill: black;
+	visibility: hidden;
+}
+.dotPressedTEXT{
+	fill: white;	
+	visibility: visible;
+	font-size: 1.2vh;  
 }
 
 .dotUnpressed{
@@ -187,7 +198,6 @@ html {
 	stroke:white;	
 	opacity: 0.1;	
 }
-
 .barre{
 	stroke:black;
 	stroke-linecap:round;	
