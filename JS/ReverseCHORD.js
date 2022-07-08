@@ -571,7 +571,6 @@ function ReadAllNotesPressedOInt(){
 //-------Sound------------------------------------------------------------
 function PlayChord(){
 	console.log ("PlayChord"); 
-
 }
 //-------Music Theory-----------------------------------------------------
 function GetNoteForFret(iString, iFret, strTuning) {
