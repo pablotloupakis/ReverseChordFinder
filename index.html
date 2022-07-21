@@ -8,188 +8,192 @@
 	<link rel="stylesheet" type="text/css" href="CSS/ReverseCHORD.css">
 </head>
 <body>
-	<section id="sectionTuning">	
-		<select id="selTuning">
-		  <option value="E-A-D-g-b-e">Standard Tuning</option>
-		  <optgroup label="Open Tunings">
-			<optgroup label="Major">
-				<option value="E-A-C#-E-A-E">		Open A (E-A-C#-E-A-E)				</option>
-				<option value="A-E-A-E-A-C#">		Open A Alternative 1 (A-E-A-E-A-C#)	</option>
-				<option value="E-A-E-A-E-A">		Open A (Sitar A) (E-A-E-A-E-A)		</option>
-				<option value="B-F#-B-F#-B-D#">		Open B (B-F#-B-F#-B-D#)				</option>
-				<option value="F#-B-D#-F#-B-D#">	Open B Alternative (F#-B-D#-F#-B-D#)</option>
-				<option value="C-G-C-G-C-E">		Open C (C-G-C-G-C-E)				</option>
-				<option value="D-A-D-F#-A-D">		Open D (D-A-D-F#-A-D)				</option>
-				<option value="C#-G#-C#-F-G#-C#">	Open D Alternative (C#-G#-C#-F-G#-C#)</option>
-				<option value="E-B-E-G#-B-E">		Open E (E-B-E-G#-B-E)				</option>
-				<option value="F-A-C-F-C-F">		Open F (F-A-C-F-C-F)				</option>
-				<option value="C-F-C-F-A-C">		Open F Alternative 1 (C-F-C-F-A-C)	</option>
-				<option value="F-F-C-F-A-C">		Open F Alternative 2 (F-F-C-F-A-C)	</option>
-				<option value="F-A-C-G-C-E">		Open F Alternative 3 (F-A-C-G-C-E)	</option>
-				<option value="D-G-D-G-B-D">		Open G (D-G-D-G-B-D)				</option>
-				<option value="G-B-D-G-B-D">		Open G Alternative 1 (G-B-D-G-B-D)	</option>
-				<option value="C-G-D-G-B-D">		Open G Alternative 2 (C-G-D-G-B-D)	</option>
-				<option value="G-B-D-G-B-D">		Dobro Open G (G-B-D-G-B-D)			</option>
-			</optgroup>
-			<optgroup label="Minor">
-				<option value="E-A-E-A-C-E">		Cross-note A (E-A-E-A-C-E)			</option>
-				<option value="E-A-C-E-A-E">		Cross-note A Alternative (E-A-C-E-A-E)</option>
-				<option value="C-G-C-G-C-Eb">		Cross-note C (C-G-C-G-C-Eb)			</option>
-				<option value="C-C-G-C-D#-G">		Cross-note C Alternative 1 (C-C-G-C-Eb-G)</option>
-				<option value="C-C-G-C-D#-Ab">		Cross-note C Alternative 2 (C-C-G-C-Eb-Ab)</option>
-				<option value="D-A-D-F-A-D">		Cross-note D (D-A-D-F-A-D)			</option>
-				<option value="D-A-D-A-D-F">		Cross-note D Alternative 1 (D-A-D-A-D-F)</option>
-				<option value="E-B-E-G-B-E">		Cross-note E (E-B-E-G-B-E)			</option>
-				<option value="F-G#-C-F-C-F">		Cross-note F (F-Ab-C-F-C-F)			</option>
-				<option value="F-C-F-G#-C-F">		Cross-note F Alternative 1(F-C-F-Ab-C-F)</option>
-				<option value="D-G-D-G-A#-D">		Cross-note G (D-G-D-G-Bb-D)		</option>
-			</optgroup>	
-			<optgroup label="Minor">
-				<option value="E-A-B-E-A-E">		Asus2 (E-A-B-E-A-E)					</option>
-				<option value="E-A-D-E-A-E">		Asus4 (E-A-D-E-A-E)					</option>				
-				<option value="A#-F-A#-D#-G-A">		Bb modal (Bb-F-Bb-Eb-G-Bb)			</option>
-				<option value="B-E-B-E-B-E">		B modal (B-E-B-E-B-E)				</option>
-				<option value="B-F#-B-E-F#-B">		Bsus4 (B-F#-B-E-F#-B)				</option>
-				<option value="B-F#-C#-F#-B-D#">	Badd9 (B-F#-C#-F#-B-D#)				</option>
-				<option value="C-G-C-G-C-D">		Csus2 (C-G-C-G-C-D)					</option>
-				<option value="C-G-C-F-C-D">		Csus4+9 (C-G-C-F-C-D)				</option>
-				<option value="C-G-C-F-G-C">		Csus4 (C-G-C-F-G-C)					</option>
-				<option value="C-G-D-G-A-D">		Low C (C-G-D-G-A-D)					</option>
-				<option value="D-A-D-E-A-D">		Dsus2 (D-A-D-E-A-D)					</option>
-				<option value="D-A-D-G-A-D">		Dsus4 (D-A-D-G-A-D)					</option>
-				<option value="E-B-E-F#-B-E">		Esus2 (E-B-E-F#-B-E)				</option>
-				<option value="E-B-E-A-B-E">		Esus4 (E-B-E-A-B-E)					</option>
-				<option value="E-A-B-E-B-E">		Esus4 Alternative (E-A-B-E-B-E )	</option>
-				<option value="E-A-D-E-B-E">		E7sus4 (E-A-D-E-B-E)				</option>
-				<option value="D-G-D-G-A-D">		Gsus2 (D-G-D-G-A-D)					</option>
-				<option value="D-G-D-G-C-D">		Gsus4 (D-G-D-G-C-D)					</option>
-				<option value="C-G-D-G-C-D">		Gsus4/4/Orkney Tuning (C-G-D-G-C-D)</option>				
-				<option value="E-E-E-E-B-E">		Bruce Palmer Modal Tuning (E-E-E-E-B-E)</option>
-				<option value="E-B-E-E-B-E">		E modal (E-B-E-E-B-E)				</option>
-				<option value="E-E-B-B-B-B">		E modal Alternative (E-E-B-B-B-B)	</option>
-			</optgroup>	
-			<optgroup label="Extended Chord">
-				<option value="E-B-D#-F#-B-E">		B add4 (E-B-D#-F#-B-E)				</option>
-				<option value="C-A-C-G-C-E">		C6 (C-A-C-G-C-E)					</option>
-				<option value="C-F-C-G-B-E">		Cmaj11 (C-F-C-G-B-E)				</option>
-				<option value="C-F-C-G-C-D#">		Cm add4 (C-F-C-G-C-D#)				</option>
-				<option value="D-G-C-G-C-D">		Open Page/Csus2/Gsus4(D-G-C-G-C-D)	</option>
-				<option value="D-A-D-F-A-C">		Dm7 (D-A-D-F-A-C)					</option>
-				<option value="D-A-D-F-A-E">		Dm add9 (D-A-D-F-A-E)				</option>
-				<option value="D-A-D-F#-A-E">		Dadd9 (D-A-D-F#-A-E)				</option>
-				<option value="D-A-D-F#-A-C">		D7 (D-A-D-F#-A-C)					</option>
-				<option value="D-A-D-F#-A-C#">		Dmaj7 (D-A-D-F#-A-C#)				</option>
-				<option value="F-G#-D#-F#-A#-D#">	D#m add2/4 (F-G#-D#-F#-A#-D#)		</option>
-				<option value="C-G-D-G-B-E">		Em7/C (C-G-D-G-B-E)					</option>
-				<option value="F-A-C-G-C-E">		Fmaj9 (F-A-C-G-C-E)					</option>
-				<option value="D-G-D-G-B-E">		G6 (D-G-D-G-B-E)					</option>
-				<option value="D-G-D-G-B-F">		G7 (D-G-D-G-B-F)					</option>
-				<option value="D-G-D-F#-B-D">		Gmaj7 (D-G-D-F#-B-D)				</option>
-				<option value="A#-F-A#-D-A-D">		A#maj7 (A#-F-A#-D-A-D)				</option>
-				<option value="D-G-D-G-B-C">		Gadd4 (D-G-D-G-B-C)					</option>
-				<option value="E-B-D-G-A-D">		Em11 (E-B-D-G-A-D)					</option>
-			</optgroup>	
-		  </optgroup>
-			<optgroup label="Regular tunings">
-				<option value="C-D-E-F#-G#-A#">		Major seconds (C-D-E-F#-G#-A#)				</option>
-				<option value="C#-D#-F-G-A-B">		Major seconds Alternative (C#-D#-F-G-A-B)	</option>
-				<option value="E-G#-C-e-g#-c'">		Major thirds(E-G#-C-e-g#-c')				</option>
-				<option value="C-E-G#-c-e-g">		Major thirds Alternative(C-E-G#-c-e-g)		</option>
-				<option value="E-A-d-g-c'-f'">		All fourths (E-A-d-g-c'-f')					</option>
-				<option value="C-F#-c-f#-c'-f#'">	Augmented fourths(C-F#-c-f#-c'-f#')			</option>
-				<option value="B-F-b-f-b'-f'">		Augmented fourths Alternative (B-F-b-f-b'-f')</option>
-				<option value="C-G-D-A-E'-B'">		Mandoguitar (C-G-D-A-E'-B')					</option>
-				<option value="G'-D-A-E'-B-F#'">	Mandoguitar Alternative (G'-D-A-E'-B-F#')	</option>
-				<option value="C-G-D-A-E'-g'">		New Standard Tuning (C-G-D-A-E'-g')			</option>
-				<option value="E-E-e-e-e'-e'">		Ostrich tuning (E-E-e-e-e'-e')				</option>
-				<option value="C-C-c-c-c'-c'">		Ostrich tuning Alternative (C-C-c-c-c'-c')	</option>
-			</optgroup>
-			<optgroup label="Dropped">
-				<option value="D-A-D-G-B-E">		Drop D (D-A-D-G-B-E)						</option>
-				<option value="C-G-c-F-A-D">		Drop C (C-G-c-F-A-D)						</option>
-				<option value="B-F#-b-E-G#-C#">		Drop B (B-F#-b-E-G#-C#)						</option>
-				<option value="B-Gb-b-E-Ab-Db">		Drop B Alternative (B-Gb-b-E-Ab-Db)			</option>
-				<option value="A#-F-a#-D#-G-C">		Drop A#/Drop Bb (A#-F-a#-D#-G-C)			</option>
-				<option value="A-E-a-D-F#-B">		Drop A (A-E-a-D-F#-B)						</option>
-				<option value="A-a-D-G-B-E">		Drop A in standard variation (A-a-D-G-B-E)	</option>
-				<option value="G#-D#-g#-C#-F-A#">	Drop G#/Drop Ab (G#-D#-g#-C#-F-A#)			</option>
-				<option value="G-D-g-C-E-A">		Drop G (G-D-g-C-E-A)						</option>
-				<option value="F#-C#-f#-B-D#-G#">	Drop F#/Drop Gb (F#-C#-f#-B-D#-G#)			</option>
-				<option value="F-C-f-A#-D-G">		Drop F (F-C-f-A#-D-G)						</option>
-				<option value="D#-A#-d#-G#-C-F">	Drop D#/Drop Eb (D#-A#-d#-G#-C-F)			</option>
-				<option value="D-A-d-G-B-E">		Drop D1 (D-A-d-G-B-E)						</option>
-				<option value="C#-G#-c#-F#-A#-D#">	Drop C#1/Drop Db1 (C#-G#-c#-F#-A#-D#)		</option>
-				<option value="C#-A-D-G-B-E">		Drop C#/Drop Db in standard variation (C#-A-D-G-B-E)</option>
-				<option value="C-A-D-G-B-E">		Drop C in standard variation (C-A-D-G-B-E)	</option>
-				<option value="B-A-D-G-b-E">		Drop B in standard variation (B-A-D-G-b-E)	</option>
-				<option value="B-E-D-G-b-e">		Drop B-E (B-E-D-G-b-e)						</option>
-			</optgroup>  				
-			<optgroup label="Shifted">
-				<option value="Eb-Ab-Db-Gb-Bb-Eb">			Eb tuning (Eb-Ab-Db-Gb-Bb-Eb)						</option>
-				<option value="D-G-C-F-A-D">				D tuning (D-G-C-F-A-D)								</option>
-				<option value="C#-F#-B-E-G#-C#">			C#/Db tuning (C#-F#-B-E-G#-C# / Db-Gb-B-E-Ab-Db)	</option>
-				<option value="C-F-Bb-Eb-G-C">				C tuning (C-F-Bb-Eb-G-C / C-F-A#-D#-G-C)			</option>
-				<option value="B-E-A-D-Gb-B">				B tuning (B-E-A-D-Gb-B / B-E-A-D-F#-B)				</option>
-				<option value="A#-D#-G#-C#-F-A#">			A#/Bb tuning (A#-D#-G#-C#-F-A# / Bb-Eb-Ab-Db-F-Bb)	</option>
-				<option value="A-D-G-C-E-A">				A tuning (A-D-G-C-E-A)								</option>
-				<option value="G#-C#-F#-B-D#-G#">			G#/Ab tuning (G#-C#-F#-B-D#-G# / Ab-Db-Gb-B-Eb-Ab)	</option>
-				<option value="G-C-F-A#-D-G">				G tuning (G-C-F-A#-D-G / G-C-F-Bb-D-G)				</option>
-				<option value="F#-B-E-A-C#-F#">				F#/Gb tuning (F#-B-E-A-C#-F# / Gb-B-E-A-Db-Gb)		</option>
-				<option value="F-A#-D#-G#-C-F">				F tuning (F-A#-D#-G#-C-F / F-Bb-Eb-Ab-C-F)			</option>
-				<option value="E-A-D-G-B-E">				Octave Tuning (E-A-D-G-B-E)							</option>				
-			</optgroup>  
-			<optgroup label="Raised">		
-				<option value="F-A#-D#-G#-C-F">				F tuning (F-A#-D#-G#-C-F / F-Bb-Eb-Ab-C-F)			</option>
-				<option value="F#-B-E-A-C#-F#">				F#/Gb tuning (F#-B-E-A-C#-F# / Gb-B-E-A-Db-Gb)		</option>
-				<option value="G-C-F-A#-D-G">				G tuning / Terz tuning (G-C-F-A#-D-G / G-C-F-Bb-D-G)</option>
-				<option value="G#-C#-F#-B-D#-G#">			G#/Ab tuning (G#-C#-F#-B-D#-G# / Ab-Db-Gb-B-Eb-Ab)	</option>
-				<option value="A-D-G-C-E-A">				A tuning (A-D-G-C-E-A)								</option>
-				<option value="A#-D#-G#-C#-F-A#">			A#/Bb tuning (A#-D#-G#-C#-F-A# / Bb-Eb-Ab-Db-F-Bb)	</option>			
-			</optgroup>  
-			<optgroup label="Double Dropped">	
-				<option value="D-A-D-G-B-D">				Double Drop D (D-A-D-G-B-D)									</option>
-				<option value="C#-G#-C#-F#-A#-C#">			Double Drop C#/Drop Db (C#-G#-C#-F#-A#-C# / Db-Ab-Db-Gb-Bb-Db/)</option>
-				<option value="C-G-C-F-A-C">				Double Drop C (C-G-C-F-A-C)									</option>
-				<option value="B-F#-B-E-G#-B">				Double Drop B (B-F#-B-E-G#-B / B-Gb-B-E-Ab-B)				</option>
-				<option value="A#-F-A#-D#-G-A#">			Double Drop A#/Drop Bb (A#-F-A#-D#-G-A# / Bb-F-Bb-Eb-G-Bb)	</option>
-				<option value="A-E-A-D-F#-A">				Double Drop A (A-E-A-D-F#-A / A-E-A-D-Gb-A)					</option>
-				<option value="G#-D#-G#-C#-F-G#">			Double Drop G#/Drop Ab (G#-D#-G#-C#-F-G# / Ab-Eb-Ab-Db-F-Ab)</option>
-				<option value="G-D-G-C-E-G">				Double Drop G (G-D-G-C-E-G)									</option>
-				<option value="F#-C#-F#-B-D#-F#">			Double Drop F#/Drop Gb (F#-C#-F#-B-D#-F# / Gb-Db-Gb-B-Eb-Gb)</option>
-				<option value="F-C-F-A#-D-F">				Double Drop F (F-C-F-A#-D-F / F-C-F-Bb-D-F)					</option>
-				<option value="E-B-E-A-C#-E">				Double Drop E (E-B-E-A-C#-E / E-B-E-A-Db-E)					</option>
-				<option value="D#-A#-D#-G#-C-D#">			Double Drop D#/Double Drop Eb (D#-A#-D#-G#-C-D# / Eb-Bb-Eb-Ab-C-Eb)</option>
-				<option value="D-A-D-G-B-D">				Double Drop D1 Tuning (D-A-D-G-B-D)</option>			
-			</optgroup>  
-			<optgroup label="Other">
-				<option value="D-A-d-g-a-d'">				Dad-Gad (D-A-d-g-a-d')				</option>
-				<option value="D-A-d-d-a-d'">				Dad-Dad (D-A-d-d-a-d')				</option>
-				<option value="C-G-d-a-b-e'">				Cello/Standard guitar (C-G-d-a-b-e')</option>
-				<option value="B-F#-b-g-b-e'">				"Karnivool" tuning (B-F#-b-g-b-e')	</option>
-				<option value="E-A-d'-g-b-e'">				"Mi-composé" (E-A-d'-g-b-e')		</option>
-				<option value="B-D-D-D-d-d">				"Iris" Tuning (B-D-D-D-d-d)			</option>
-				<option value="E-A-C#-F#-A-C#">				"Sleeping Ute" (E-A-C#-F#-A-C#")	</option>
-				<option value="D-A-D-Gb-B-E">				José González tuning (D-A-D-Gb-B-E)	</option>
-				<option value="D-A-D-F#-A-E">				Dadd9 tuning (D-A-D-F#-A-E)			</option>
-				<option value="D-F#-A-E-F#-A">				Mr.Tom tuning (D-F#-A-E-F#-A)		</option>
-				<option value="E-A-D-g-c'-e'">				"Liberty" tuning (E-A-D-g-c'-e')	</option>
-			</optgroup>  
-		</select>
-	</section>	
+	<div id="flexContainer">
 	
-	<section id="sectionGuitarTab"></section>		
-	
-	<section id="sectionOutput">	
-		<p id="paraOutput"></p>
-	</section>		
-	
-	<section id="sectionControls">	
-		<img src="Media/mute.png" alt="Mute / Unmute" id="imgMute">
-		<img src="Media/unmute.png" alt="Mute / Unmute" id="imgUnmute">
-		<img src="Media/clear.png" alt="Clear!" id="imgClear">
-		<img src="Media/musicalnote.png" alt="Show me the notes" id="imgNote">
-		<img src="Media/play.png" alt="Play the chord" id="imgPlay">
-	</section>		
+		<section id="sectionTuning">	
+			<select id="selTuning">
+			  <option value="E-A-D-g-b-e">Standard Tuning</option>
+			  <optgroup label="Open Tunings">
+				<optgroup label="Major">
+					<option value="E-A-C#-E-A-E">		Open A (E-A-C#-E-A-E)				</option>
+					<option value="A-E-A-E-A-C#">		Open A Alternative 1 (A-E-A-E-A-C#)	</option>
+					<option value="E-A-E-A-E-A">		Open A (Sitar A) (E-A-E-A-E-A)		</option>
+					<option value="B-F#-B-F#-B-D#">		Open B (B-F#-B-F#-B-D#)				</option>
+					<option value="F#-B-D#-F#-B-D#">	Open B Alternative (F#-B-D#-F#-B-D#)</option>
+					<option value="C-G-C-G-C-E">		Open C (C-G-C-G-C-E)				</option>
+					<option value="D-A-D-F#-A-D">		Open D (D-A-D-F#-A-D)				</option>
+					<option value="C#-G#-C#-F-G#-C#">	Open D Alternative (C#-G#-C#-F-G#-C#)</option>
+					<option value="E-B-E-G#-B-E">		Open E (E-B-E-G#-B-E)				</option>
+					<option value="F-A-C-F-C-F">		Open F (F-A-C-F-C-F)				</option>
+					<option value="C-F-C-F-A-C">		Open F Alternative 1 (C-F-C-F-A-C)	</option>
+					<option value="F-F-C-F-A-C">		Open F Alternative 2 (F-F-C-F-A-C)	</option>
+					<option value="F-A-C-G-C-E">		Open F Alternative 3 (F-A-C-G-C-E)	</option>
+					<option value="D-G-D-G-B-D">		Open G (D-G-D-G-B-D)				</option>
+					<option value="G-B-D-G-B-D">		Open G Alternative 1 (G-B-D-G-B-D)	</option>
+					<option value="C-G-D-G-B-D">		Open G Alternative 2 (C-G-D-G-B-D)	</option>
+					<option value="G-B-D-G-B-D">		Dobro Open G (G-B-D-G-B-D)			</option>
+				</optgroup>
+				<optgroup label="Minor">
+					<option value="E-A-E-A-C-E">		Cross-note A (E-A-E-A-C-E)			</option>
+					<option value="E-A-C-E-A-E">		Cross-note A Alternative (E-A-C-E-A-E)</option>
+					<option value="C-G-C-G-C-Eb">		Cross-note C (C-G-C-G-C-Eb)			</option>
+					<option value="C-C-G-C-D#-G">		Cross-note C Alternative 1 (C-C-G-C-Eb-G)</option>
+					<option value="C-C-G-C-D#-Ab">		Cross-note C Alternative 2 (C-C-G-C-Eb-Ab)</option>
+					<option value="D-A-D-F-A-D">		Cross-note D (D-A-D-F-A-D)			</option>
+					<option value="D-A-D-A-D-F">		Cross-note D Alternative 1 (D-A-D-A-D-F)</option>
+					<option value="E-B-E-G-B-E">		Cross-note E (E-B-E-G-B-E)			</option>
+					<option value="F-G#-C-F-C-F">		Cross-note F (F-Ab-C-F-C-F)			</option>
+					<option value="F-C-F-G#-C-F">		Cross-note F Alternative 1(F-C-F-Ab-C-F)</option>
+					<option value="D-G-D-G-A#-D">		Cross-note G (D-G-D-G-Bb-D)		</option>
+				</optgroup>	
+				<optgroup label="Minor">
+					<option value="E-A-B-E-A-E">		Asus2 (E-A-B-E-A-E)					</option>
+					<option value="E-A-D-E-A-E">		Asus4 (E-A-D-E-A-E)					</option>				
+					<option value="A#-F-A#-D#-G-A">		Bb modal (Bb-F-Bb-Eb-G-Bb)			</option>
+					<option value="B-E-B-E-B-E">		B modal (B-E-B-E-B-E)				</option>
+					<option value="B-F#-B-E-F#-B">		Bsus4 (B-F#-B-E-F#-B)				</option>
+					<option value="B-F#-C#-F#-B-D#">	Badd9 (B-F#-C#-F#-B-D#)				</option>
+					<option value="C-G-C-G-C-D">		Csus2 (C-G-C-G-C-D)					</option>
+					<option value="C-G-C-F-C-D">		Csus4+9 (C-G-C-F-C-D)				</option>
+					<option value="C-G-C-F-G-C">		Csus4 (C-G-C-F-G-C)					</option>
+					<option value="C-G-D-G-A-D">		Low C (C-G-D-G-A-D)					</option>
+					<option value="D-A-D-E-A-D">		Dsus2 (D-A-D-E-A-D)					</option>
+					<option value="D-A-D-G-A-D">		Dsus4 (D-A-D-G-A-D)					</option>
+					<option value="E-B-E-F#-B-E">		Esus2 (E-B-E-F#-B-E)				</option>
+					<option value="E-B-E-A-B-E">		Esus4 (E-B-E-A-B-E)					</option>
+					<option value="E-A-B-E-B-E">		Esus4 Alternative (E-A-B-E-B-E )	</option>
+					<option value="E-A-D-E-B-E">		E7sus4 (E-A-D-E-B-E)				</option>
+					<option value="D-G-D-G-A-D">		Gsus2 (D-G-D-G-A-D)					</option>
+					<option value="D-G-D-G-C-D">		Gsus4 (D-G-D-G-C-D)					</option>
+					<option value="C-G-D-G-C-D">		Gsus4/4/Orkney Tuning (C-G-D-G-C-D)</option>				
+					<option value="E-E-E-E-B-E">		Bruce Palmer Modal Tuning (E-E-E-E-B-E)</option>
+					<option value="E-B-E-E-B-E">		E modal (E-B-E-E-B-E)				</option>
+					<option value="E-E-B-B-B-B">		E modal Alternative (E-E-B-B-B-B)	</option>
+				</optgroup>	
+				<optgroup label="Extended Chord">
+					<option value="E-B-D#-F#-B-E">		B add4 (E-B-D#-F#-B-E)				</option>
+					<option value="C-A-C-G-C-E">		C6 (C-A-C-G-C-E)					</option>
+					<option value="C-F-C-G-B-E">		Cmaj11 (C-F-C-G-B-E)				</option>
+					<option value="C-F-C-G-C-D#">		Cm add4 (C-F-C-G-C-D#)				</option>
+					<option value="D-G-C-G-C-D">		Open Page/Csus2/Gsus4(D-G-C-G-C-D)	</option>
+					<option value="D-A-D-F-A-C">		Dm7 (D-A-D-F-A-C)					</option>
+					<option value="D-A-D-F-A-E">		Dm add9 (D-A-D-F-A-E)				</option>
+					<option value="D-A-D-F#-A-E">		Dadd9 (D-A-D-F#-A-E)				</option>
+					<option value="D-A-D-F#-A-C">		D7 (D-A-D-F#-A-C)					</option>
+					<option value="D-A-D-F#-A-C#">		Dmaj7 (D-A-D-F#-A-C#)				</option>
+					<option value="F-G#-D#-F#-A#-D#">	D#m add2/4 (F-G#-D#-F#-A#-D#)		</option>
+					<option value="C-G-D-G-B-E">		Em7/C (C-G-D-G-B-E)					</option>
+					<option value="F-A-C-G-C-E">		Fmaj9 (F-A-C-G-C-E)					</option>
+					<option value="D-G-D-G-B-E">		G6 (D-G-D-G-B-E)					</option>
+					<option value="D-G-D-G-B-F">		G7 (D-G-D-G-B-F)					</option>
+					<option value="D-G-D-F#-B-D">		Gmaj7 (D-G-D-F#-B-D)				</option>
+					<option value="A#-F-A#-D-A-D">		A#maj7 (A#-F-A#-D-A-D)				</option>
+					<option value="D-G-D-G-B-C">		Gadd4 (D-G-D-G-B-C)					</option>
+					<option value="E-B-D-G-A-D">		Em11 (E-B-D-G-A-D)					</option>
+				</optgroup>	
+			  </optgroup>
+				<optgroup label="Regular tunings">
+					<option value="C-D-E-F#-G#-A#">		Major seconds (C-D-E-F#-G#-A#)				</option>
+					<option value="C#-D#-F-G-A-B">		Major seconds Alternative (C#-D#-F-G-A-B)	</option>
+					<option value="E-G#-C-e-g#-c'">		Major thirds(E-G#-C-e-g#-c')				</option>
+					<option value="C-E-G#-c-e-g">		Major thirds Alternative(C-E-G#-c-e-g)		</option>
+					<option value="E-A-d-g-c'-f'">		All fourths (E-A-d-g-c'-f')					</option>
+					<option value="C-F#-c-f#-c'-f#'">	Augmented fourths(C-F#-c-f#-c'-f#')			</option>
+					<option value="B-F-b-f-b'-f'">		Augmented fourths Alternative (B-F-b-f-b'-f')</option>
+					<option value="C-G-D-A-E'-B'">		Mandoguitar (C-G-D-A-E'-B')					</option>
+					<option value="G'-D-A-E'-B-F#'">	Mandoguitar Alternative (G'-D-A-E'-B-F#')	</option>
+					<option value="C-G-D-A-E'-g'">		New Standard Tuning (C-G-D-A-E'-g')			</option>
+					<option value="E-E-e-e-e'-e'">		Ostrich tuning (E-E-e-e-e'-e')				</option>
+					<option value="C-C-c-c-c'-c'">		Ostrich tuning Alternative (C-C-c-c-c'-c')	</option>
+				</optgroup>
+				<optgroup label="Dropped">
+					<option value="D-A-D-G-B-E">		Drop D (D-A-D-G-B-E)						</option>
+					<option value="C-G-c-F-A-D">		Drop C (C-G-c-F-A-D)						</option>
+					<option value="B-F#-b-E-G#-C#">		Drop B (B-F#-b-E-G#-C#)						</option>
+					<option value="B-Gb-b-E-Ab-Db">		Drop B Alternative (B-Gb-b-E-Ab-Db)			</option>
+					<option value="A#-F-a#-D#-G-C">		Drop A#/Drop Bb (A#-F-a#-D#-G-C)			</option>
+					<option value="A-E-a-D-F#-B">		Drop A (A-E-a-D-F#-B)						</option>
+					<option value="A-a-D-G-B-E">		Drop A in standard variation (A-a-D-G-B-E)	</option>
+					<option value="G#-D#-g#-C#-F-A#">	Drop G#/Drop Ab (G#-D#-g#-C#-F-A#)			</option>
+					<option value="G-D-g-C-E-A">		Drop G (G-D-g-C-E-A)						</option>
+					<option value="F#-C#-f#-B-D#-G#">	Drop F#/Drop Gb (F#-C#-f#-B-D#-G#)			</option>
+					<option value="F-C-f-A#-D-G">		Drop F (F-C-f-A#-D-G)						</option>
+					<option value="D#-A#-d#-G#-C-F">	Drop D#/Drop Eb (D#-A#-d#-G#-C-F)			</option>
+					<option value="D-A-d-G-B-E">		Drop D1 (D-A-d-G-B-E)						</option>
+					<option value="C#-G#-c#-F#-A#-D#">	Drop C#1/Drop Db1 (C#-G#-c#-F#-A#-D#)		</option>
+					<option value="C#-A-D-G-B-E">		Drop C#/Drop Db in standard variation (C#-A-D-G-B-E)</option>
+					<option value="C-A-D-G-B-E">		Drop C in standard variation (C-A-D-G-B-E)	</option>
+					<option value="B-A-D-G-b-E">		Drop B in standard variation (B-A-D-G-b-E)	</option>
+					<option value="B-E-D-G-b-e">		Drop B-E (B-E-D-G-b-e)						</option>
+				</optgroup>  				
+				<optgroup label="Shifted">
+					<option value="Eb-Ab-Db-Gb-Bb-Eb">			Eb tuning (Eb-Ab-Db-Gb-Bb-Eb)						</option>
+					<option value="D-G-C-F-A-D">				D tuning (D-G-C-F-A-D)								</option>
+					<option value="C#-F#-B-E-G#-C#">			C#/Db tuning (C#-F#-B-E-G#-C# / Db-Gb-B-E-Ab-Db)	</option>
+					<option value="C-F-Bb-Eb-G-C">				C tuning (C-F-Bb-Eb-G-C / C-F-A#-D#-G-C)			</option>
+					<option value="B-E-A-D-Gb-B">				B tuning (B-E-A-D-Gb-B / B-E-A-D-F#-B)				</option>
+					<option value="A#-D#-G#-C#-F-A#">			A#/Bb tuning (A#-D#-G#-C#-F-A# / Bb-Eb-Ab-Db-F-Bb)	</option>
+					<option value="A-D-G-C-E-A">				A tuning (A-D-G-C-E-A)								</option>
+					<option value="G#-C#-F#-B-D#-G#">			G#/Ab tuning (G#-C#-F#-B-D#-G# / Ab-Db-Gb-B-Eb-Ab)	</option>
+					<option value="G-C-F-A#-D-G">				G tuning (G-C-F-A#-D-G / G-C-F-Bb-D-G)				</option>
+					<option value="F#-B-E-A-C#-F#">				F#/Gb tuning (F#-B-E-A-C#-F# / Gb-B-E-A-Db-Gb)		</option>
+					<option value="F-A#-D#-G#-C-F">				F tuning (F-A#-D#-G#-C-F / F-Bb-Eb-Ab-C-F)			</option>
+					<option value="E-A-D-G-B-E">				Octave Tuning (E-A-D-G-B-E)							</option>				
+				</optgroup>  
+				<optgroup label="Raised">		
+					<option value="F-A#-D#-G#-C-F">				F tuning (F-A#-D#-G#-C-F / F-Bb-Eb-Ab-C-F)			</option>
+					<option value="F#-B-E-A-C#-F#">				F#/Gb tuning (F#-B-E-A-C#-F# / Gb-B-E-A-Db-Gb)		</option>
+					<option value="G-C-F-A#-D-G">				G tuning / Terz tuning (G-C-F-A#-D-G / G-C-F-Bb-D-G)</option>
+					<option value="G#-C#-F#-B-D#-G#">			G#/Ab tuning (G#-C#-F#-B-D#-G# / Ab-Db-Gb-B-Eb-Ab)	</option>
+					<option value="A-D-G-C-E-A">				A tuning (A-D-G-C-E-A)								</option>
+					<option value="A#-D#-G#-C#-F-A#">			A#/Bb tuning (A#-D#-G#-C#-F-A# / Bb-Eb-Ab-Db-F-Bb)	</option>			
+				</optgroup>  
+				<optgroup label="Double Dropped">	
+					<option value="D-A-D-G-B-D">				Double Drop D (D-A-D-G-B-D)									</option>
+					<option value="C#-G#-C#-F#-A#-C#">			Double Drop C#/Drop Db (C#-G#-C#-F#-A#-C# / Db-Ab-Db-Gb-Bb-Db/)</option>
+					<option value="C-G-C-F-A-C">				Double Drop C (C-G-C-F-A-C)									</option>
+					<option value="B-F#-B-E-G#-B">				Double Drop B (B-F#-B-E-G#-B / B-Gb-B-E-Ab-B)				</option>
+					<option value="A#-F-A#-D#-G-A#">			Double Drop A#/Drop Bb (A#-F-A#-D#-G-A# / Bb-F-Bb-Eb-G-Bb)	</option>
+					<option value="A-E-A-D-F#-A">				Double Drop A (A-E-A-D-F#-A / A-E-A-D-Gb-A)					</option>
+					<option value="G#-D#-G#-C#-F-G#">			Double Drop G#/Drop Ab (G#-D#-G#-C#-F-G# / Ab-Eb-Ab-Db-F-Ab)</option>
+					<option value="G-D-G-C-E-G">				Double Drop G (G-D-G-C-E-G)									</option>
+					<option value="F#-C#-F#-B-D#-F#">			Double Drop F#/Drop Gb (F#-C#-F#-B-D#-F# / Gb-Db-Gb-B-Eb-Gb)</option>
+					<option value="F-C-F-A#-D-F">				Double Drop F (F-C-F-A#-D-F / F-C-F-Bb-D-F)					</option>
+					<option value="E-B-E-A-C#-E">				Double Drop E (E-B-E-A-C#-E / E-B-E-A-Db-E)					</option>
+					<option value="D#-A#-D#-G#-C-D#">			Double Drop D#/Double Drop Eb (D#-A#-D#-G#-C-D# / Eb-Bb-Eb-Ab-C-Eb)</option>
+					<option value="D-A-D-G-B-D">				Double Drop D1 Tuning (D-A-D-G-B-D)</option>			
+				</optgroup>  
+				<optgroup label="Other">
+					<option value="D-A-d-g-a-d'">				Dad-Gad (D-A-d-g-a-d')				</option>
+					<option value="D-A-d-d-a-d'">				Dad-Dad (D-A-d-d-a-d')				</option>
+					<option value="C-G-d-a-b-e'">				Cello/Standard guitar (C-G-d-a-b-e')</option>
+					<option value="B-F#-b-g-b-e'">				"Karnivool" tuning (B-F#-b-g-b-e')	</option>
+					<option value="E-A-d'-g-b-e'">				"Mi-composé" (E-A-d'-g-b-e')		</option>
+					<option value="B-D-D-D-d-d">				"Iris" Tuning (B-D-D-D-d-d)			</option>
+					<option value="E-A-C#-F#-A-C#">				"Sleeping Ute" (E-A-C#-F#-A-C#")	</option>
+					<option value="D-A-D-Gb-B-E">				José González tuning (D-A-D-Gb-B-E)	</option>
+					<option value="D-A-D-F#-A-E">				Dadd9 tuning (D-A-D-F#-A-E)			</option>
+					<option value="D-F#-A-E-F#-A">				Mr.Tom tuning (D-F#-A-E-F#-A)		</option>
+					<option value="E-A-D-g-c'-e'">				"Liberty" tuning (E-A-D-g-c'-e')	</option>
+				</optgroup>  
+			</select>
+		</section>	
+		
+		<section id="sectionGuitarTab"></section>		
+		
+		<section id="sectionOutput">	
+			<p id="paraOutput"></p>
+		</section>		
+		
+		<section id="sectionControls">	
+			<img src="Media/mute.png" alt="Mute / Unmute" id="imgMute">
+			<img src="Media/unmute.png" alt="Mute / Unmute" id="imgUnmute">
+			<img src="Media/clear.png" alt="Clear!" id="imgClear">
+			<img src="Media/musicalnote.png" alt="Show me the notes" id="imgNote">
+			<img src="Media/play.png" alt="Play the chord" id="imgPlay">
+		</section>		
+
+	</div> 
 
 	<script type="text/javascript" src="JS/ReverseCHORD.js"></script>
 </body>

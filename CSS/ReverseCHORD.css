@@ -2,6 +2,7 @@ html {
    box-sizing: border-box;
    font-family: Verdana,  Geneva, sans-serif;;
    padding: 0px; margin: 0px; border: 0px solid #000000;  
+   scroll-behavior: smooth; 
 }
 *, *::before, *::after {
   box-sizing: inherit;
@@ -119,19 +120,24 @@ html {
 
 }
 
-#sectionTuning{
+
+#flexContainer{
 	display: flex;	
-	justify-content: center;	
-	margin: auto;
+	flex-direction: column;
+	margin: auto;	
+	justify-content:flex-end;
+	
+	
+}
+
+#sectionTuning{
+	margin: auto;	
 	overflow-y:auto;
     padding-top: 0.2vh;
     padding-bottom: 0.2vh;
 }
-
 #sectionGuitarTab{
-	display: flex; 
-	justify-content: center;	
-	margin: auto;
+	margin: auto;	
 	margin-top: 1vh; 
 	overflow-y:auto;
 	background-color: white;	
@@ -141,28 +147,28 @@ html {
 	padding-top: 0.2vh;
     padding-bottom: 0.2vh;	
 }
-
 #sectionOutput {
+	margin: auto;	
 	border-style: none;
-	display: flex; 
-	justify-content: center;	
-	margin: auto;
 	margin-top: 1vh; 
 	margin-bottom: 1vh; 
 	overflow-y:auto;
 	background-color: white;	
+	min-width: 3vw; 
 }
-
 #sectionControls{
+	margin: auto;	
 	border-style: none;
-	display: flex; 
-	justify-content: center;	
 	align-items: center;	
-	margin: auto;
 	margin-top: 1vh; 
 	padding-top: 1vh; 
 	padding-bottom: 1vh; 
-	
+
+
+	/* DEBUG Start */
+	border-style: solid; border-width: thin; border-color: red;	
+	/* DEBUG End */
+		
 }
 
 .gridline{
@@ -180,7 +186,6 @@ html {
 	stroke-width: 0.75;
 	opacity: 1;	
 	filter: drop-shadow(3px 5px 2px gray);
-			
 }
 
 .dotUnpressedTEXT{
@@ -207,6 +212,7 @@ img{
 	opacity: 1;
 	width: 3vh;
 	height:3vh;
-	margin-left: 1vw; 
+	margin-left: 1vw; 	
 	margin-right: 1vw; 
 }
+
