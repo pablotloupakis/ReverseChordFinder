@@ -7,168 +7,111 @@ html {
 *, *::before, *::after {
   box-sizing: inherit;
 }
+section{
+	padding-top: 0.2vh; padding-bottom: 0.2vh;	
+	border-style: none;	
+	margin: auto;	
+	overflow-y:auto;
+}
 
  /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-	#sectionOutput {
-		font-size: 2vh;  
-	}	
+	section {
+		width: 100vw; 		
+	}
+	#sectionTuning {
+		align-items: center; 
+		justify-content: center; 		
+	}
 	#selTuning{
-		font-size: 2vh;	
-		width: 80vw;	
-		padding-left: 1vw;
-	}	
-	#sectionOutput{
-		font-size: 2vh;
-		max-height: 30vh;
-	}	
-	.SVGGuitar{
-		font-size: 2vh;
-	}	
+		height:4vh;
+		width: 100vw; 
+	}
 	#sectionGuitarTab{
-		height: 40vh;
+		height:60vh;
 	}		
+	#sectionOutput{
+		height:20vh;
+		display: flex;
+		align-items: center; 
+		background-color: LightGrey;		
+	}	
+	#sectionControls{
+		height:6vh;	
+		display: flex;
+		align-items: center; 
+		justify-content: center; 
+	}
+	p{
+		margin: 1vh 2vw 1vh 2vw; 
+		font-size: 2.5vh;
+	}	
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-	#sectionOutput {
-		font-size: 2vh;  
-	}	
-	#selTuning{
-		font-size: 2vh;	
-		width: 60vw;	
-		padding-left: 1vw;
-	}	
-	#sectionOutput{
-		font-size: 2vh;
-		max-height: 20vh;
-	}	
-	.SVGGuitar{
-		font-size: 2vh;
-	}	
-	#sectionGuitarTab{
-		height: 40vh;
-	}		
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-	#sectionOutput {
-		font-size: 2vh;  
-	}	
-	#selTuning{
-		font-size: 1.5vh;	
-		width: 40vw;	
-		padding-left: 1vw;
-	}	
-	#sectionOutput{
-		font-size: 1.5vh;
-	}	
-	.SVGGuitar{
-		font-size: 1.5vh;
-	}	
-	#sectionGuitarTab{
-		height: 40vh;
-	}		
-
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
-	#sectionOutput {
-		font-size: 2vh;  
-	}	
-	#selTuning{
-		font-size: 2vh;	
-		width: 30vw;	
-		padding-left: 1vw;
-	}	
-	#sectionOutput{
-		font-size: 2vh;
-	}	
-	.SVGGuitar{
-		font-size: 2vh;
-	}	
-	#sectionGuitarTab{
-		height: 50vh;
-	}	
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
-	#sectionOutput {
-		font-size: 2vh;  
-	}	
-	#selTuning{
-		font-size: 2vh;	
-		width: 30vw;	
-		padding-left: 1vw;
-	}	
-	#sectionOutput{
-		font-size: 2vh;
-	}	
-	.SVGGuitar{
-		font-size: 2vh;
-	}	
-	#sectionGuitarTab{
-		height: 60vh;
+	section {
+		width: 16vw; 	
 	}
+	#sectionTuning {
+		align-items: center; 
+		justify-content: center; 		
+	}
+	#selTuning{
+		height:3vh;
+		width: 100vw; 
+	}
+	#sectionGuitarTab{
+		height:50vh;
+	}		
+	#sectionOutput{
+		height:20vh;
+		display: flex;
+		align-items: center; 	
+		background-color: LightGrey;			
+	}	
+	#sectionControls{
+		height:6vh;	
+		display: flex;
+		align-items: center; 
+		justify-content: center; 
+	}
+	p{
+		margin: 2vh 2vw 2vh 2vw; 
+		font-size: 1.5vh;
+	}	
 } 
 
-#selTuning{
 
+img{
+	opacity: 1;
+	width: 3vh;
+	height:3vh;
+	margin-top: 1vh; 
+	margin-left: 1vw; 	
+	margin-right: 1vw; 
 }
-
 
 #flexContainer{
 	display: flex;	
 	flex-direction: column;
 	margin: auto;	
-	justify-content:flex-end;
-	
-	
+	gap: 10px 20px;
 }
-
-#sectionTuning{
-	margin: auto;	
-	overflow-y:auto;
-    padding-top: 0.2vh;
-    padding-bottom: 0.2vh;
-}
-#sectionGuitarTab{
-	margin: auto;	
-	margin-top: 1vh; 
-	overflow-y:auto;
-	background-color: white;	
-
-	min-width: 3vw; 
-    
-	padding-top: 0.2vh;
-    padding-bottom: 0.2vh;	
-}
-#sectionOutput {
-	margin: auto;	
-	border-style: none;
-	margin-top: 1vh; 
-	margin-bottom: 1vh; 
-	overflow-y:auto;
-	background-color: white;	
-	min-width: 3vw; 
-}
-#sectionControls{
-	margin: auto;	
-	border-style: none;
-	align-items: center;	
-	margin-top: 1vh; 
-	padding-top: 1vh; 
-	padding-bottom: 1vh; 
-
-
-	/* DEBUG Start */
-	border-style: solid; border-width: thin; border-color: red;	
-	/* DEBUG End */
-		
+#selTuning{
+	width: 30vh;
 }
 
 .gridline{
@@ -208,11 +151,4 @@ html {
 	stroke-linecap:round;	
 }
 
-img{
-	opacity: 1;
-	width: 3vh;
-	height:3vh;
-	margin-left: 1vw; 	
-	margin-right: 1vw; 
-}
 
