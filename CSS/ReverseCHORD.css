@@ -17,11 +17,11 @@ section{
  /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
 	section {
-		width: 100vw; 		
-	}
-	#sectionTuning {
+		width: 100vw; 	
 		align-items: center; 
 		justify-content: center; 		
+	}
+	#sectionTuning {
 	}
 	#selTuning{
 		height:4vh;
@@ -33,31 +33,108 @@ section{
 	#sectionOutput{
 		height:20vh;
 		display: flex;
-		align-items: center; 
 		background-color: LightGrey;		
 	}	
 	#sectionControls{
 		height:6vh;	
 		display: flex;
-		align-items: center; 
-		justify-content: center; 
 	}
 	p{
-		margin: 1vh 2vw 1vh 2vw; 
-		font-size: 2.5vh;
+		margin: 2.5vh 2vw 1vh 2vw; 
+		font-size: 2vh;
 	}	
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
+	section {
+		width: 50vw; 	
+		align-items: center; 
+		justify-content: center; 	
+	}
+	#sectionTuning {
+	}
+	#selTuning{
+		height:3vh;
+		width: 50vw; 
+	}
+	#sectionGuitarTab{
+		height:40vh;
+	}		
+	#sectionOutput{
+		height:20vh;
+		display: flex;
+		background-color: LightGrey;		
+	}	
+	#sectionControls{
+		height:6vh;	
+		display: flex;
+	}
+	p{
+		margin: 2.5vh 2vw 1vh 2vw; 
+		font-size: 1.5vh;
+	}	
 }
-
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
+	section {
+		width: 50vw; 	
+		align-items: center; 
+		justify-content: center; 	
+	}
+	#sectionTuning {
+	}
+	#selTuning{
+		height:3vh;
+		width: 50vw; 
+	}
+	#sectionGuitarTab{
+		height:40vh;
+	}		
+	#sectionOutput{
+		height:20vh;
+		display: flex;
+		background-color: LightGrey;		
+	}	
+	#sectionControls{
+		height:6vh;	
+		display: flex;
+	}
+	p{
+		margin: 2.5vh 2vw 1vh 2vw; 
+		font-size: 1.5vh;
+	}	
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
+	section {
+		width: 50vw; 	
+		align-items: center; 
+		justify-content: center; 	
+	}
+	#sectionTuning {
+	}
+	#selTuning{
+		height:3vh;
+		width: 50vw; 
+	}
+	#sectionGuitarTab{
+		height:40vh;
+	}		
+	#sectionOutput{
+		height:20vh;
+		display: flex;
+		background-color: LightGrey;		
+	}	
+	#sectionControls{
+		height:6vh;	
+		display: flex;
+	}
+	p{
+		margin: 2.5vh 2vw 1vh 2vw; 
+		font-size: 1.5vh;
+	}
 }
 
 /* Extra large devices (large laptops and desktops, 1200px and up) */
@@ -71,7 +148,7 @@ section{
 	}
 	#selTuning{
 		height:3vh;
-		width: 100vw; 
+		width: 16vw; 
 	}
 	#sectionGuitarTab{
 		height:50vh;
@@ -110,9 +187,7 @@ img{
 	margin: auto;	
 	gap: 10px 20px;
 }
-#selTuning{
-	width: 30vh;
-}
+
 
 .gridline{
 	stroke:grey; 
