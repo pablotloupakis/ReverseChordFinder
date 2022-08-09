@@ -447,7 +447,7 @@ function DrawGuitar() {
 }
 
 function SetNotes(){
-	//sets the Musical Note attribute for each note in the fretboard
+	//sets the Musical Note attribute(s) for each note in the fretboard (sNote="E", sNote8="E3")
 	//needs to be invoked whenever the tuning changes
 	//INPUT: none
 	//OUTPUT: none
@@ -460,17 +460,19 @@ function SetNotes(){
 	for (let i=0; i < colDots.length; i++){
         let iString = parseInt(colDots[i].getAttribute("String"));
         let iFret = parseInt(colDots[i].getAttribute("Fret"));
-		let sNote = GetNoteForFret (iString, iFret, sTuning); 
+		let sNote = GetNoteForFret (iString, iFret, sTuning);   //Example: sNote = "E"
+		let sNote8 = GetNoteForFret8 (iString, iFret, sTuning);  //Example: sNote8 = "E2", "E3" 8 is for Octave
 		
 		//set the attribute = Note 
 		colDots[i].setAttribute("Note", sNote);
+		colDots[i].setAttribute("Note8", sNote8);
 		
 		//sets the SVG text = Note 
 		let txtID = "TXT" + "String" + iString.toString() + "Fret" + iFret.toString(); 
 		let svgTextElement = document.getElementById(txtID);
 		let textNode = svgTextElement.childNodes[0];
 		textNode.nodeValue = sNote;		
-	}		
+	}
 }
 
 function ShowNotes(){
@@ -577,9 +579,6 @@ function PlayNote (iString, iFret){
 }
 function PlayChord(){
 	console.log ("PlayChord"); 
-}
-
-function PlayTab(tab){
 	//INPUT: array with TABS in order by string: 6,5,4,3,2,1
 
 	var sFile6, sFile5, sFile4, sFile3, sFile2, sFile1;
@@ -604,9 +603,9 @@ function PlayTab(tab){
 	if(typeof s4 !== "undefined"){s4.play();}
 	if(typeof s3 !== "undefined"){s3.play();}
 	if(typeof s2 !== "undefined"){s2.play();}
-	if(typeof s1 !== "undefined"){s1.play();}
-	
+	if(typeof s1 !== "undefined"){s1.play();}	
 }
+
 //-------Music Theory-----------------------------------------------------
 function GetNoteForFret(iString, iFret, strTuning) {
     //INPUT:  a guitar string number (1 to 6), fret number and tuning
@@ -640,7 +639,6 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	const arrTuning = strTuning.split ("-"); 
 	if (arrTuning.length < 6) {return "ERROR: arguments"}
 
-
 	//build the string 
     let strFirstNote = ""; 
 	switch (iString) {
@@ -664,6 +662,88 @@ function GetNoteForFret(iString, iFret, strTuning) {
 	}
 
 	return arrString[iFret];
+}
+function GetNoteForFret8(iString, iFret, strTuning) {
+    //INPUT:  a guitar string number (1 to 6), fret number and tuning
+	//OUTPUT: (string) note in that string/fret
+	//strTuning format: "E-A-D-g-b-e" 
+
+	if (arguments.length < 3) {return "ERROR: Invalid number of arguments"}; 
+	if (typeof(iString) !== "number") {return "ERROR: Invalid type"}; 
+	if (typeof(iFret) !== "number") {return "ERROR: Invalid type"}; 
+	if (iString < 0 || iString > 6) {return "ERROR: Invalid arguments"};
+	if (iFret < 0) {return "ERROR: Invalid arguments"};
+		
+	//reference, we build the string from here 
+	let arrString = ["C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2","C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3","C4", "C#4", "D4","D#4", "E4", "F4", "F#4", "G4", "G#4", "A4", "A#4", "B4","C5", "C#5", "D5", "D#5", "E5", "F5", "F#5", "G5", "G#5", "A5", "A#5", "B5","C6", "C#6", "D6", "D#6", "E6", "F6", "F#6", "G6", "G#6", "A6", "A#6", "B6","C7", "C#7", "D7", "D#7", "E7", "F7", "F#7", "G7", "G#7", "A7", "A#7", "B7"]; 	
+	
+	let arrString2 = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B","C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B","C", "C#", "D","D#", "E", "F", "F#", "G", "G#", "A", "A#", "B","C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B","C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B","C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"]; 		
+	
+	//----------------sanitize strTuning--------------
+	if (strTuning.indexOf("'") > -1 ){
+		strTuning = strTuning.replace (/'/g,''); 
+	}
+	if (strTuning.indexOf("b") > -1 ){
+		strTuning = strTuning.replace (/Ab/g,'G#'); 
+		strTuning = strTuning.replace (/Bb/g,'A#'); 
+		strTuning = strTuning.replace (/Cb/g,'B'); 
+		strTuning = strTuning.replace (/Db/g,'C#'); 
+		strTuning = strTuning.replace (/Eb/g,'D#'); 
+		strTuning = strTuning.replace (/Fb/g,'E'); 
+		strTuning = strTuning.replace (/Gb/g,'F#');
+	}
+	//-------------------------------------------------
+		
+	const arrTuning = strTuning.split ("-"); 
+	if (arrTuning.length < 6) {return "ERROR: arguments"}
+	
+	//----------------everything to uppercase---------- 
+	for (let i=0; i<arrTuning.length; i++){
+		arrTuning[i]=arrTuning[i].toUpperCase(); 
+	}
+	//-------------------------------------------------
+	
+	//----------------we build the guitar for this tuning---------- 
+	let s0String6 = arrTuning[0]+"2";  //find the lowest note 
+	let i0String6 = arrString.indexOf(s0String6); 
+	
+	let i0String5 = arrString2.indexOf(arrTuning[1], i0String6); 
+	let s0String5 = arrString[i0String5]; 
+	
+	let i0String4 = arrString2.indexOf(arrTuning[2], i0String5); 
+	let s0String4 = arrString[i0String4]; 	
+	
+	let i0String3 = arrString2.indexOf(arrTuning[3], i0String4); 
+	let s0String3 = arrString[i0String3]; 
+
+	let i0String2 = arrString2.indexOf(arrTuning[4], i0String3); 
+	let s0String2 = arrString[i0String2]; 
+
+	let i0String1 = arrString2.indexOf(arrTuning[5], i0String2); 
+	let s0String1 = arrString[i0String1]; 		
+	
+	//-------------------------------------------------------------
+
+	//------------this is a hack for the Ostrich tuning:   E-E-e-e-e'-e' or C-C-c-c-c'-c'
+	if (i0String6 === i0String5 && i0String4 === i0String3 &&  i0String2 === i0String1) {
+		s0String6 = arrTuning[0]+"2";
+		s0String5 = arrTuning[0]+"2";
+		s0String4 = arrTuning[0]+"3"; i0String4 = i0String6 + 12; 
+		s0String3 = arrTuning[0]+"3"; i0String3 = i0String4; 	
+		s0String2 = arrTuning[0]+"4"; i0String2 = i0String3 + 12; 
+		s0String1 = arrTuning[0]+"4"; i0String1 = i0String2; 		
+	}
+
+	switch (iString){
+		case 6: return (arrString[i0String6+iFret]); 
+		case 5: return (arrString[i0String5+iFret]); 
+		case 4: return (arrString[i0String4+iFret]); 
+		case 3: return (arrString[i0String3+iFret]); 
+		case 2: return (arrString[i0String2+iFret]);  
+		case 1: return (arrString[i0String1+iFret]); 
+	}
+
+	return (""); 
 }
 
 function GetChordFormulaINT(arrIN){

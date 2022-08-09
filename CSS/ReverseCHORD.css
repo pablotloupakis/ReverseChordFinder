@@ -13,6 +13,12 @@ section{
 	margin: auto;	
 	overflow-y:auto;
 }
+#sectionOutput{
+	display: flex;
+	align-items: center; 	
+	background-color: Lightgray;	
+	border-radius: 25px; 		
+}	
 
  /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
@@ -25,22 +31,21 @@ section{
 	}
 	#selTuning{
 		height:4vh;
-		width: 100vw; 
+		width: 90vw; 
 	}
 	#sectionGuitarTab{
 		height:60vh;
 	}		
 	#sectionOutput{
 		height:20vh;
-		display: flex;
-		background-color: LightGrey;		
+		width: 90vw; 		
 	}	
 	#sectionControls{
 		height:6vh;	
-		display: flex;
+		display:flex;
 	}
 	p{
-		margin: 2.5vh 2vw 1vh 2vw; 
+		margin: 2.5vh 2vw 2.5vh 2vw; 
 		font-size: 2vh;
 	}	
 }
@@ -63,8 +68,6 @@ section{
 	}		
 	#sectionOutput{
 		height:20vh;
-		display: flex;
-		background-color: LightGrey;		
 	}	
 	#sectionControls{
 		height:6vh;	
@@ -93,8 +96,7 @@ section{
 	}		
 	#sectionOutput{
 		height:20vh;
-		display: flex;
-		background-color: LightGrey;		
+		width: 45vw;
 	}	
 	#sectionControls{
 		height:6vh;	
@@ -124,8 +126,7 @@ section{
 	}		
 	#sectionOutput{
 		height:20vh;
-		display: flex;
-		background-color: LightGrey;		
+		width: 15vw;
 	}	
 	#sectionControls{
 		height:6vh;	
@@ -155,9 +156,7 @@ section{
 	}		
 	#sectionOutput{
 		height:20vh;
-		display: flex;
 		align-items: center; 	
-		background-color: LightGrey;			
 	}	
 	#sectionControls{
 		height:6vh;	
