@@ -36,7 +36,7 @@ function ReverseChordMain(){
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let arrNames = []; let arrNames2 = []; 
 	let sName = "";
-	console.clear(); 
+	//console.clear(); 
 	console.log ("-----------------------------------------------------------------------------------------------------------------------------------"); 
 	console.log ("Frets pressed: " + arrNotesInt.join()); 
 	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
@@ -128,6 +128,7 @@ function AddListenersToControls(){
 		document.getElementById("imgMute").addEventListener("click", MuteUnmute, false);
 	}	
 	if (document.getElementById("imgUnmute")){
+		document.getElementById("imgMute").setAttribute("IsMuted", "Yes");
 		document.getElementById('imgUnmute').style.display = "none";
 		document.getElementById("imgUnmute").addEventListener("click", MuteUnmute, false);
 	}		
@@ -243,6 +244,12 @@ function funcClickNote(eventObj){
 		//console.log ("PUSE el dedo"); 
 		eventObj.target.setAttribute("Pressed", "Yes");
 		eventObj.target.setAttribute("class", "dotPressed");
+		
+		//-----there was sound --------------------------------------------
+		if (document.getElementById("imgMute").getAttribute("IsMuted") === "No"){
+			PlayNote (eventObj.target.getAttribute("Note8")); 			
+		}
+		//-----------------------------------------------------------------
 		
 		//unpress all the arrDots in the same string 
         let arrDots = []; 
@@ -569,14 +576,24 @@ function ReadAllNotesPressedOInt(){
 	return (arrNotesInt); 
 }
 
-
 //-------Sound------------------------------------------------------------
-function PlayNote (iString, iFret){
-	let sFile = "audio/" + iString.toString()+iFret.toString()+".mp3";
+function PlayNote (sNote8){
+    //INPUT:  <string> of a note to be played. E.g.: "E3", "C#4" ("E" not valid, need to specify note AND octave
+	//OUTPUT: sound! 
+
+	if (arguments.length !== 1) {return "ERROR: Invalid number of arguments"}; 
+	if (typeof(sNote8) !== "string") {return "ERROR: Invalid type"}; 
+	
+	if (sNote8.includes("#")){
+		sNote8 = sNote8.replace (/#/g,"sharp"); 
+	}
+	
+	let sFile = "Audio/" + sNote8+".mp3";
 	let sound = new Audio();sound.type = "audio/mpeg"; sound.src  = sFile; 
 
-	if(typeof sound !== "undefined"){sound.play();}
+	if(typeof sound !== "undefined"){sound.play();}	
 }
+
 function PlayChord(){
 	console.log ("PlayChord"); 
 	//INPUT: array with TABS in order by string: 6,5,4,3,2,1
@@ -701,7 +718,6 @@ function GetNoteForFret8(iString, iFret, strTuning) {
 	for (let i=0; i<arrTuning.length; i++){
 		arrTuning[i]=arrTuning[i].toUpperCase(); 
 	}
-	//-------------------------------------------------
 	
 	//----------------we build the guitar for this tuning---------- 
 	let s0String6 = arrTuning[0]+"2";  //find the lowest note 
@@ -721,8 +737,6 @@ function GetNoteForFret8(iString, iFret, strTuning) {
 
 	let i0String1 = arrString2.indexOf(arrTuning[5], i0String2); 
 	let s0String1 = arrString[i0String1]; 		
-	
-	//-------------------------------------------------------------
 
 	//------------this is a hack for the Ostrich tuning:   E-E-e-e-e'-e' or C-C-c-c-c'-c'
 	if (i0String6 === i0String5 && i0String4 === i0String3 &&  i0String2 === i0String1) {
@@ -733,6 +747,7 @@ function GetNoteForFret8(iString, iFret, strTuning) {
 		s0String2 = arrTuning[0]+"4"; i0String2 = i0String3 + 12; 
 		s0String1 = arrTuning[0]+"4"; i0String1 = i0String2; 		
 	}
+	//-------------------------------------------------------------	
 
 	switch (iString){
 		case 6: return (arrString[i0String6+iFret]); 
