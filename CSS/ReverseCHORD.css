@@ -141,7 +141,7 @@ section{
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
 	section {
-		width: 20vw; 	
+		width: 18vw; 	
 	}
 	#sectionTuning {
 		align-items: center; 
@@ -157,7 +157,6 @@ section{
 	#sectionOutput{
 		height:20vh;
 		align-items: center; 	
-background-color: Pink;			
 	}	
 	#sectionControls{
 		height:6vh;	
