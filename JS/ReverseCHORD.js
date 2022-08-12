@@ -595,32 +595,13 @@ function PlayNote (sNote8){
 }
 
 function PlayChord(){
-	console.log ("PlayChord"); 
-	//INPUT: array with TABS in order by string: 6,5,4,3,2,1
-
-	var sFile6, sFile5, sFile4, sFile3, sFile2, sFile1;
-	var s6, s5, s4, s3, s2, s1; 
-	
-	if (tab[0] !== "x"){sFile6 = "audio/" + "6" + tab[0].toString()+".mp3";}
-	if (tab[1] !== "x"){sFile5 = "audio/" + "5" + tab[1].toString()+".mp3";}
-	if (tab[2] !== "x"){sFile4 = "audio/" + "4" + tab[2].toString()+".mp3";}
-	if (tab[3] !== "x"){sFile3 = "audio/" + "3" + tab[3].toString()+".mp3";}
-	if (tab[4] !== "x"){sFile2 = "audio/" + "2" + tab[4].toString()+".mp3";}
-	if (tab[5] !== "x"){sFile1 = "audio/" + "1" + tab[5].toString()+".mp3";}
-
-	s6 = new Audio();s6.type = "audio/mpeg"; s6.src  = sFile6; 
-	s5 = new Audio();s5.type = "audio/mpeg"; s5.src  = sFile5;
-	s4 = new Audio();s4.type = "audio/mpeg"; s4.src  = sFile4;
-	s3 = new Audio();s3.type = "audio/mpeg"; s3.src  = sFile3;
-	s2 = new Audio();s2.type = "audio/mpeg"; s2.src  = sFile2;
-	s1 = new Audio();s1.type = "audio/mpeg"; s1.src  = sFile1;	
-	
-	if(typeof s6 !== "undefined"){s6.play();}
-	if(typeof s5 !== "undefined"){s5.play();}
-	if(typeof s4 !== "undefined"){s4.play();}
-	if(typeof s3 !== "undefined"){s3.play();}
-	if(typeof s2 !== "undefined"){s2.play();}
-	if(typeof s1 !== "undefined"){s1.play();}	
+	if (document.getElementById("imgMute").getAttribute("IsMuted") !== "Yes"){
+		let dots = document.getElementsByClassName("dotPressed");
+		for (let i = 0; i < dots.length; i++) {
+			let sNote = dots[i].getAttribute("Note8"); 
+			PlayNote (sNote); 
+		}	
+	}
 }
 
 //-------Music Theory-----------------------------------------------------
