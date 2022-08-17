@@ -584,9 +584,7 @@ function PlayNote (sNote8){
 	if (arguments.length !== 1) {return "ERROR: Invalid number of arguments"}; 
 	if (typeof(sNote8) !== "string") {return "ERROR: Invalid type"}; 
 	
-	if (sNote8.includes("#")){
-		sNote8 = sNote8.replace (/#/g,"sharp"); 
-	}
+	if (sNote8.includes("#")){sNote8 = sNote8.replace (/#/g,"sharp");}
 	
 	let sFile = "Audio/" + sNote8+".mp3";
 	let sound = new Audio();sound.type = "audio/mpeg"; sound.src  = sFile; 
@@ -595,12 +593,22 @@ function PlayNote (sNote8){
 }
 
 function PlayChord(){
+	let arrSounds = []; 
+	
 	if (document.getElementById("imgMute").getAttribute("IsMuted") !== "Yes"){
 		let dots = document.getElementsByClassName("dotPressed");
+		
 		for (let i = 0; i < dots.length; i++) {
 			let sNote = dots[i].getAttribute("Note8"); 
-			PlayNote (sNote); 
-		}	
+			if (sNote.includes("#")){sNote = sNote.replace (/#/g,"sharp");	}
+			let sFile = "Audio/" + sNote+".mp3";
+			let sound = new Audio();sound.type = "audio/mpeg"; sound.src  = sFile; 
+			arrSounds.push (sound); 
+		}
+		
+		for (let i = 0; i < arrSounds.length; i++) {
+			arrSounds[i].play(); 
+		}
 	}
 }
 
