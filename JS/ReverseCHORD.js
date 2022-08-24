@@ -36,10 +36,12 @@ function ReverseChordMain(){
 	//4.For each rotation: get the formulas (INTEGER and Degrees) for each permutation, triad and iSeven
 	let arrNames = []; let arrNames2 = []; 
 	let sName = "";
-	//console.clear(); 
-	console.log ("-----------------------------------------------------------------------------------------------------------------------------------"); 
-	console.log ("Frets pressed: " + arrNotesInt.join()); 
-	console.log ("Notes in fretboard: "+ arrNotes.join() + "   Notes: " + arrNotesClean.join() + "   Root:  "+strRoot);  
+	console.clear(); 
+	console.log ("%c-----------------------------------------------------------------------------------------------------------------------------------", 'color: cyan'); 
+	console.log ("%cFrets pressed      :", "color: cyan", arrNotesInt.join()); 
+	console.log ("%cNotes in fretboard :", "color: cyan", arrNotes.join());  
+	console.log ("%cNotes              :", "color: cyan", arrNotesClean.join()); 
+	console.log ("%cRoot               :", "color: cyan", strRoot); 
 	for (let i=0; i < rotations.length; i++){ 		
 		let arrFormulaINT2 = GetChordFormulaINT2(rotations[i]);
 		let arrFormulas =[]; //stores all possible formulas for this rotation. E.g. for a Major chord: [[0,7,4 ] ,[0,7,16], [0,19,4], [0,19,16]] 
@@ -96,7 +98,7 @@ function ReverseChordMain(){
 		}		
 		
 		
-		console.log ("Rotation: " + rotations[i].join()); 
+		console.log ("%cRotation           :","color: cyan", rotations[i].join()); 
 		for (let j=0; j < arrFormulas.length; j++){//finally, for each formula in each rotation, build the chord name
 			let arrFormulaINT = arrFormulas[j]; 
 			let arrFormulaSTR = GetChordFormulaSTR (arrFormulaINT); 			
@@ -1326,122 +1328,5 @@ function AddListenersToBarre(){
 	}
 }
 
-//yet another chord generator test 
-function PRUEBA (){
-    let arr1 = ["1"];
-	let arr2 = ["","b2", "2"]; 
-	let arr3 = ["","b3", "3"];
-    let arr4 = ["", "4"]; 
-	let arr5 = ["","b5", "5", "#5"];
-    let arr6 = ["", "6"];
-    let arr7 = ["", "bb7", "b7", "7"];
-	let arr9 = ["", "b9", "9", "#9"];
-    let arr11 = ["", "b11", "11", "#11"];
-    let arr13 = ["", "b13", "13", "#13"];												
- 
-    let i1, i2, i4, i3, i5, i6, i7, i9, i11, i13;
-	
-    let counterChords = 0;
-	let bolOk = true; 	
-	
-	for (i1 = 0; i1 < arr1.length; i1++){
-		for (i2 = 0; i2 < arr2.length; i2++) {
-			for (i3 = 0; i3 < arr3.length; i3++) {
-				for (i4=0; i4< arr4.length; i4++){
-					for (i5 = 0; i5 < arr5.length; i5++) {
-						for (i6 = 0; i6 < arr6.length; i6++) {
-							for (i7 = 0; i7 < arr7.length; i7++) {
-								for (i9 = 0; i9 < arr9.length; i9++) {
-									for (i11 = 0; i11 < arr11.length; i11++) {
-										for (i13 = 0; i13 < arr13.length; i13++) {
-											//console.log ("1", arr2[i2], arr3[i3], arr5[i5], arr6[i6], arr7[i7], arr9[i9], arr11[i11], arr13[i13]);	
-											bolOk = true;
-											
-											//generate the Chord FormulaStr 
-											let arrFormulaStr=[]; 
-											arrFormulaStr.length = 0; 
-											if (arr1[i1] !== "") {arrFormulaStr.push(arr1[i1])}; 
-											if (arr2[i2] !== "") {arrFormulaStr.push(arr2[i2])};
-											if (arr3[i3] !== "") {arrFormulaStr.push(arr3[i3])};
-											if (arr4[i4] !== "") {arrFormulaStr.push(arr4[i4])};
-											if (arr5[i5] !== "") {arrFormulaStr.push(arr5[i5])};
-											if (arr6[i6] !== "") {arrFormulaStr.push(arr6[i6])};
-											if (arr7[i7] !== "") {arrFormulaStr.push(arr7[i7])};
-											if (arr9[i9] !== "") {arrFormulaStr.push(arr9[i9])};
-											if (arr11[i11] !== "") {arrFormulaStr.push(arr11[i11])};
-											if (arr13[i13] !== "") {arrFormulaStr.push(arr13[i13])};
-											
-											//remember that 9, 11 and 13 can also be thought of as 2, 4 and 6
-											if (1){
-												if (arr1[i1] ==="1" 	&& arr7[i7]  ==="#7")	{bolOk = false;}
-												if (arr2[i2] ==="b2" 	&& arr9[i9]  ==="b9") 	{bolOk = false;}	
-												if (arr2[i2] ==="2" 	&& arr9[i9]  ==="9") 	{bolOk = false;}
-												if (arr3[i3] ==="b3" 	&& arr9[i9]  ==="#9") 	{bolOk = false;}		
-												if (arr3[i3] ==="3" 	&& arr11[i11] ==="b11")	{bolOk = false;}	
-												if (arr4[i4] ==="4" 	&& arr11[i11] ==="11") 	{bolOk = false;}
-												if (arr5[i5] ==="b5" 	&& arr11[i11] ==="#11")	{bolOk = false;}	
-												if (arr5[i5] ==="5" 	&& arr13[i13] ==="bb13"){bolOk = false;}	
-												if (arr5[i5] ==="#5" 	&& arr13[i13] ==="b13") {bolOk = false;}
-												if (arr6[i6] ==="6" 	&& arr13[i13] ==="13") 	{bolOk = false;}
-												if (arr7[i7] ==="b7" 	&& arr13[i13] ==="#13") {bolOk = false;}
-												if (arr7[i7] ==="bb7" 	&& arr6[i6]   ==="6") 	{bolOk = false;}		
-											}
-											
-											//bb7 only valid for Dim 
-											if (arr7[i7] === "bb7") {
-												if (arr2[i2] === "" && arr3[i3]=== "b3" && arr4[i4] === "" && arr5[i5] === "b5" && arr6[i6]  === "") {
-													//do nothing 
-												}
-												else {
-													bolOk = false;
-												}
-											}											
-											
-											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="") {bolOk = false;} 
-											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="" && arr5[i5] ==="") {bolOk = false;} 
-											if (arr3[i3] !=="" && arr2[i2] !=="") {bolOk = false;} //2 and 3 not a valid triad
-											if (arr3[i3] !=="" && arr4[i4] !=="") {bolOk = false;} //3 and 4 not a valid triad
-											if (arr2[i2] !=="" && arr4[i4] !=="") {bolOk = false;} //2 and 4 not a valid triad
-											if (arr2[i2] ==="2" && arr5[i5] ==="b5") {bolOk = false;} //2 and b5 not a valid triad
-											if (arr2[i2] ==="2" && arr5[i5] ==="#5") {bolOk = false;} //2 and #5 not a valid triad
-											if (arr2[i2] ==="b2" && arr5[i5] ==="#5") {bolOk = false;} //b2 and #5 not a valid triad
-											if (arr3[i3] ==="b3" && arr5[i5] ==="#5") {bolOk = false;} //b3 and #5 not a valid triad
-											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="4" && arr5[i5] ==="#5") {bolOk = false;} //b3 and #5 not a valid triad
-											if (arr2[i2] ==="" && arr3[i3] ==="" && arr4[i4] ==="" && arr5[i5] ==="b5") {bolOk = false;} 
-											
-											//5 is optional for 7/9/11/13 chords 
-											if (arr5[i5] === ""){
-												if (arr7[i7] === "b7" || arr7[i7] === "7" || arr7[i7] === "bb7") { } else {bolOk = false;}
-											}
-											//9 is optional por 11/13 chords 
-											if (arr9[i9] === ""){
-												if (arr7[i7] === "b7" || arr7[i7] === "7" || arr7[i7] === "bb7") { } else {bolOk = false;}
-												if (arr11[i11] === "11" ) { } else {bolOk = false;}
-											}
-											
-											//11 is optional por 13 chords 
-											if (arr11[i11] === ""){
-												
-												
-											}
-											
-											
-											if (bolOk){
-												counterChords++;
-												console.log (arrFormulaStr.join()); 
-											}
-										
-										}
-									}
-								}														
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-console.log (counterChords + "  " + "chords!");  
-}
 
 		

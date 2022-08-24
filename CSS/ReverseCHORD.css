@@ -89,14 +89,13 @@ section{
 	}
 	#selTuning{
 		height:3vh;
-		width: 50vw; 
 	}
 	#sectionGuitarTab{
 		height:40vh;
 	}		
 	#sectionOutput{
 		height:20vh;
-		width: 45vw;
+		width: 50vw;		
 	}	
 	#sectionControls{
 		height:6vh;	
@@ -105,6 +104,7 @@ section{
 	p{
 		margin: 2.5vh 2vw 1vh 2vw; 
 		font-size: 1.5vh;
+		width: 50vw; 
 	}	
 }
 
